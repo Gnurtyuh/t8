@@ -2,7 +2,7 @@ package com.project.t8.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "department")
+@Table(name = "departments")
 public class Department {
 
     @Id
