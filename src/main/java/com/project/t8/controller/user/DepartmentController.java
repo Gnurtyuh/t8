@@ -22,4 +22,6 @@ public class DepartmentController {
     public List<Department> getDepartments(){
         return departmentRepo.findAll();
     }
+
+    // Get department by ID
 }
