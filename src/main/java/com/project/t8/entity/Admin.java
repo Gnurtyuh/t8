@@ -10,11 +10,11 @@ public class Admin {
     @Column(name = "admin_id")
     private Long adminId;
 
-    @Column(name = "username")
+    @Column(name = "username",nullable = false)
     private String userName;
 
-    @Column(name = "password")
-    private String passWord;
+    @Column(name = "password", nullable = false)
+    private byte[] passWord;
 
     @Column(name = "email")
     private String email;
@@ -22,7 +22,7 @@ public class Admin {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "role_level", columnDefinition = "SMALLINT")
+    @Column(name = "role_level", columnDefinition = "SMALLINT", nullable = false)
     private Short roleLevel;
 
     public Admin() {
@@ -45,11 +45,11 @@ public class Admin {
         this.userName = userName;
     }
 
-    public String getPassWord() {
+    public byte[] getPassWord() {
         return passWord;
     }
 
-    public void setPassWord(String passWord) {
+    public void setPassWord(byte[] passWord) {
         this.passWord = passWord;
     }
 
