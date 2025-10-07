@@ -20,13 +20,13 @@ public class User {
     private String email;
 
     @Column(name = "full_name")
-    private String fullname;
+    private String fullName;
 
     @Column(name = "role_level", columnDefinition = "SMALLINT")
-    private Short rolelevel;
+    private Short roleLevel;
 
     @Column(name = "department_id")
-    private Long departmentid;
+    private Long departmentId;
 
     public User() {
 
@@ -65,26 +65,26 @@ public class User {
     }
 
     public String getFullname() {
-        return fullname;
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullname(String fullName) {
+        this.fullName = fullName;
     }
 
     public Short getRolelevel() {
-        return rolelevel;
+        return roleLevel;
     }
 
-    public void setRolelevel(Short rolelevel) {
-        this.rolelevel = rolelevel;
+    public void setRolelevel(Short roleLevel) {
+        this.roleLevel = roleLevel;
     }
 
-    public Long getDepartmentid() {
-        return departmentid;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartmentid(Long departmentid) {
-        this.departmentid = departmentid;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 }
