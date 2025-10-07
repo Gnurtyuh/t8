@@ -13,7 +13,7 @@ public class Admin {
     @Column(name = "username",nullable = false)
     private String userName;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false,columnDefinition = "BYTEA")
     private byte[] passWord;
 
     @Column(name = "email")
