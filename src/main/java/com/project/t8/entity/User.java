@@ -26,7 +26,7 @@ public class User {
     private Short rolelevel;
 
     @Column(name = "department_id")
-    private Integer departmentid;
+    private Long departmentid;
 
     public User() {
 
@@ -80,11 +80,11 @@ public class User {
         this.rolelevel = rolelevel;
     }
 
-    public Integer getDepartmentid() {
+    public Long getDepartmentid() {
         return departmentid;
     }
 
-    public void setDepartmentid(Integer departmentid) {
+    public void setDepartmentid(Long departmentid) {
         this.departmentid = departmentid;
     }
 }
