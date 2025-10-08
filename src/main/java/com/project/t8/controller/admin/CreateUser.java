@@ -1,18 +1,19 @@
 package com.project.t8.controller.admin;
 
 import com.project.t8.dto.UserDto;
-import com.project.t8.repository.UserRepo;
+import com.project.t8.service.admin.CreateUserSv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class CreateUser {
     @Autowired
-    public UserRepo userRepo;
-
+    public CreateUserSv createUserSv;
+    @PostMapping("/create")
+    public ResponseEntity<UserDto> createuser(@RequestBody UserDto userDto) {
+        UserDto saveUser = createUserSv.createuser(userDto);
+        return ResponseEntity.ok(saveUser);
+    }
 }

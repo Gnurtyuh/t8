@@ -2,7 +2,7 @@ package com.project.t8.dto;
 
 public class UserDto {
     private String username;
-    private byte[] password;
+    private String password;
     private String email;
     private String fullName;
     private Short roleLevel;
@@ -15,10 +15,10 @@ public class UserDto {
         return username;
     }
 
-    public void setPassword(byte[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
-    public byte[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
