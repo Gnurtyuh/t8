@@ -32,13 +32,13 @@ public class Log {
     private String description;
 
     @Column(name = "created_at")
-    private Timestamp created_At;
+    private Timestamp createdAt;
 
     @Column(name = "completed_at")
-    private Timestamp completed_At;
+    private Timestamp completedAt;
 
     @Column(name = "department_id")
-    private Long department_Id;
+    private Long departmentId;
 
     public Log() {
 
@@ -100,21 +100,21 @@ public class Log {
         this.description = description;
     }
 
-    public Timestamp getCreated_At() {
-        return created_At;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
 
-    public Timestamp getCompleted_At() {
-        return completed_At;
+    public Timestamp getCompletedAt() {
+        return completedAt;
     }
 
 
-    public Long getDepartment_Id() {
-        return department_Id;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment_Id(Long department_Id) {
-        this.department_Id = department_Id;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 }
