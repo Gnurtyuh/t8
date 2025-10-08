@@ -1,6 +1,9 @@
 spring:
-  database:
-    url: jdbc:postgresql://localhost:5432/data-ecommerce?createDatabaseNotExist=false&autoReconnect=true&userSSl=false&userUnicode=true&characterEncoding=utf-8
+  application:
+    name:
+      Documents
+  datasource:
+    url: jdbc:postgresql://localhost:5432/t8
     username: postgres
     password: 123456
     driverClassName: org.postgresql.Driver
