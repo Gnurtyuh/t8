@@ -24,7 +24,7 @@ public class Document {
     private String filePath;
 
     @Column(name = "uploaded_by_user")
-    private String uploadedByUser;
+    private Long uploadedByUser;
 
     @Column(name = "department_id")
     private Long departmentId;
@@ -65,11 +65,11 @@ public class Document {
         this.filePath = filePath;
     }
 
-    public String getUploadedByUser() {
+    public Long getUploadedByUser() {
         return uploadedByUser;
     }
 
-    public void setUploadedByUser(String uploadedByUser) {
+    public void setUploadedByUser(Long uploadedByUser) {
         this.uploadedByUser = uploadedByUser;
     }
 

@@ -13,7 +13,7 @@ public class CreateUser {
     public CreateUserSv createUserSv;
     @PostMapping("/create")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto saveUser = createUserSv.createuser(userDto);
+        UserDto saveUser = createUserSv.createUser(userDto);
         return ResponseEntity.ok(saveUser);
     }
 }

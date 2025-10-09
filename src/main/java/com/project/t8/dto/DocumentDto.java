@@ -9,7 +9,7 @@ public class DocumentDto {
     private String description;
     private Timestamp uploadDate;
     private String filePath;
-    private String uploadedByUser;
+    private Long uploadedByUser;
     private Long departmentId;
 
     public String getTitle() {
@@ -44,11 +44,11 @@ public class DocumentDto {
         this.filePath = filePath;
     }
 
-    public String getUploadedByUser() {
+    public Long getUploadedByUser() {
         return uploadedByUser;
     }
 
-    public void setUploadedByUser(String uploadedByUser) {
+    public void setUploadedByUser(Long uploadedByUser) {
         this.uploadedByUser = uploadedByUser;
     }
 

@@ -27,7 +27,7 @@ public class DocumentService {
         }
         return documentsDto;
     }
-    public List<DocumentDto> findByUser(String username) {
+    public List<DocumentDto> findByUser(Long username) {
         List<Document> documents = documentRepo.findByUser(username);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {

@@ -14,8 +14,8 @@ public class CreateUserSv {
     @Autowired
     private UserRepo userRepo;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    public UserDto createuser(UserDto userDto) {
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    public UserDto createUser(UserDto userDto) {
         // Chuyen dto sang entity
         User user = new User();
         user.setUsername(userDto.getUsername());
