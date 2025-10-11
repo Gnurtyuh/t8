@@ -1,0 +1,234 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none; /* xóa gạch chân cho logo */
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #007bff;
+}
+
+.downloadBtn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.downloadBtn:hover {
+    background-color: #0056b3;
+}
+
+.menuToggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Hero section */
+.heroSection {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.heroSection h2 {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.heroSection h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.heroSection p {
+    font-size: 18px;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+/* Features */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.featureItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    padding: 0;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featureItem img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.featureLabel {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.featureItem:hover {
+    transform: translateY(-5px);
+}
+
+/* Toàn bộ khung <a> bao quanh feature */
+.featureLinkWrapper {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.featureLinkWrapper:hover .featureItem {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Get Started */
+.getStartedBtn {
+    background-color: #000;
+    color: #fff;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.getStartedBtn:hover {
+    background-color: #333;
+}
+
+/* Signup Options */
+.signupOptions {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.signupOptions span {
+    margin: 0 10px;
+}
+
+/* Links (giả định chứa Gửi Tài Liệu và Nhận Tài Liệu) */
+.links a {
+    font-size: 16px;
+    font-weight: 700; /* In đậm giống h1 */
+    color: #007bff; /* Màu tương tự hover nav a */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: #0056b3; /* Giống hover nav a */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
+}
+
+.partners span {
+    margin: 0 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Toàn bộ thẻ <a> đều bỏ gạch chân và giữ màu chữ */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    nav {
+        display: none;
+    }
+
+    .menuToggle {
+        display: block;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .heroSection h1 {
+        font-size: 36px;
+    }
+
+    .heroSection p {
+        font-size: 16px;
+    }
+
+    .links a {
+        font-size: 14px; /* Điều chỉnh kích thước trên mobile */
+    }
+}

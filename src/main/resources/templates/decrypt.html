@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Giải Mã - Phần mềm Quản lý Tài liệu</title>
+    <link rel="stylesheet" href="../static/decrypt.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="home.html" class="logo">📄 PHẦN MỀM QUẢN LÝ TÀI LIỆU</a>
+            <nav>
+                <a href="index.html">Product</a>
+                <a href="#">Resources</a>
+                <a href="#">Our Work</a>
+                <a href="#">FAQ</a>
+                <a href="#" class="downloadBtn">ĐĂNG NHẬP</a>
+                <div class="notification-bell">🔔</div>
+                <div class="menuToggle">≡</div>
+            </nav>
+            <div class="notification-panel">
+                <h3>Lịch Sử Thông Báo</h3>
+                <ul class="notification-list">
+                    <li>✅ Tập tin "document.pdf" đã được giải mã lúc 04:45 PM, 10/10/2025.</li>
+                    <li>⚠️ Lỗi giải mã tập tin "report.docx" lúc 04:30 PM, 10/10/2025.</li>
+                </ul>
+            </div>
+        </header>
+
+        <main>
+            <section class="decryptionSection">
+                <h1>Giải Mã</h1>
+                <p class="subtitle">Đơn giản, nhanh chóng, giải mã tập tin an toàn tại phía máy khách</p>
+
+                <div class="tabs">
+                    <a href="encrypt.html" class="tab">Mã Hóa</a>
+                    <a href="decrypt.html" class="tab active">Giải Mã</a>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <span class="stepNumber">1</span>
+                        <h3>Chọn tập tin để giải mã</h3>
+                        <div class="fileUpload">
+                            <p>Kéo thả hoặc duyệt tập tin mã hóa</p>
+                            <label for="fileInput" class="browseBtn">Duyệt Tập Tin</label>
+                            <input type="file" id="fileInput" multiple style="display: none;">
+                            <p id="fileNameDisplay" class="fileNameDisplay"></p>
+                        </div>
+                        <p class="note">Tập tin không được tải lên máy chủ, mọi thứ được xử lý ngoại tuyến trong trình duyệt của bạn.</p>
+                    </div>
+
+                    <div class="step">
+                        <span class="stepNumber">2</span>
+                        <h3>Nhập mật khẩu</h3>
+                        <input type="password" id="password" placeholder="Nhập mật khẩu" required>
+                        <button type="button" class="toggle-password-btn">👁️</button>
+                    </div>
+
+                    <div class="step">
+                        <span class="stepNumber">3</span>
+                        <h3>Tải tập tin giải mã</h3>
+                        <button class="nextBtn" disabled>TẢI VỀ</button>
+                    </div>
+
+                    <div class="step">
+                        <span class="stepNumber">4</span>
+                        <h3>Gửi dữ liệu</h3>
+                        <button class="sendDataBtn" disabled>GỬI DỮ LIỆU</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="partners">
+                <span>© NCR</span>
+                <span>monday.com</span>
+                <span>PHILIPS</span>
+                <span>Dropbox</span>
+                <span>Upwork</span>
+            </div>
+        </footer>
+    </div>
+    <script src="../static/js/decrypt.js"></script>
+</body>
+</html>
