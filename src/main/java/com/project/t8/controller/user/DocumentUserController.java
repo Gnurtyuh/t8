@@ -1,7 +1,6 @@
 package com.project.t8.controller.user;
 
 import com.project.t8.dto.DocumentDto;
-import com.project.t8.entity.Department;
 import com.project.t8.entity.Document;
 import com.project.t8.service.DocumentService;
 import com.project.t8.service.LogService;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/document")
-public class DocumentController {
+public class DocumentUserController {
     @Autowired
     private DocumentService documentService;
     @Autowired
