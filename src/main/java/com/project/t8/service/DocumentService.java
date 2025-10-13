@@ -23,7 +23,7 @@ public class DocumentService {
         List<Document> documents = documentRepo.findByDepartmentId(departmentId);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {
-            documentsDto.add(DtoMapEntityDoc(document));
+            documentsDto.add(dtoMapEntityDoc(document));
         }
         return documentsDto;
     }
@@ -31,7 +31,7 @@ public class DocumentService {
         List<Document> documents = documentRepo.findByUser(username);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {
-            documentsDto.add(DtoMapEntityDoc(document));
+            documentsDto.add(dtoMapEntityDoc(document));
         }
         return documentsDto;
     }
@@ -39,7 +39,7 @@ public class DocumentService {
         List<Document> documents = documentRepo.findAll();
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {
-            documentsDto.add(DtoMapEntityDoc(document));
+            documentsDto.add(dtoMapEntityDoc(document));
         }
         return documentsDto;
     }
@@ -55,7 +55,7 @@ public class DocumentService {
         document.setUploadedByUser(documentDto.getUploadedByUser());
         return document;
     }
-    public DocumentDto DtoMapEntityDoc(Document doc) {
+    public DocumentDto dtoMapEntityDoc(Document doc) {
         DocumentDto document = new DocumentDto();
         document.setTitle(doc.getTitle());
         document.setDescription(doc.getDescription());
