@@ -4,7 +4,7 @@ import com.project.t8.dto.DepartmentDto;
 import com.project.t8.dto.UserDto;
 import com.project.t8.entity.Department;
 import com.project.t8.entity.User;
-import com.project.t8.repository.DepartmentRepo;
+
 import com.project.t8.repository.UserRepo;
 import com.project.t8.service.admin.DepartmentService;
 import jakarta.persistence.EntityNotFoundException;

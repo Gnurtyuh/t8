@@ -1,6 +1,7 @@
 package com.project.t8.service.admin;
 
 import com.project.t8.dto.UserDto;
+import com.project.t8.entity.Department;
 import com.project.t8.entity.User;
 import com.project.t8.repository.UserRepo;
 import com.project.t8.service.user.UserService;
@@ -14,21 +15,22 @@ import java.nio.charset.StandardCharsets;
 public class CreateUserSv {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private DepartmentService departmentService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    public UserDto createUser(UserDto userDto) {
+    public User createUser(UserDto userDto) {
         // Chuyen dto sang entity
+        Department department= departmentService.dtoMapEntity(userDto.getDepartmentDto());
         User user = new User();
         user.setUsername(userDto.getUsername());
-        user.setFullname(userDto.getFullname());
+        user.setFullName(userDto.getFullName());
         user.setEmail(userDto.getEmail());
-        user.setDepartmentId(userDto.getDepartmentId());
-        user.setRolelevel(userDto.getRoleLevel());
+        user.setDepartmentId(department.getDepartmentId());
+        user.setRoleLevel(userDto.getRoleLevel());
         user.setPassword(encoder.encode(userDto.getPassword()).getBytes(StandardCharsets.UTF_8));
-        User saveUser = userRepo.save(user);
-        // Chuyen entity sang dto
-        UserDto response = new UserDto();
-        response.setFullName(user.getFullname());
-        return response;
+        return userRepo.save(user);
     }
 }
