@@ -1,8 +1,15 @@
 package com.project.t8.service;
 
 import com.project.t8.dto.DocumentDto;
+import com.project.t8.entity.Department;
 import com.project.t8.entity.Document;
+import com.project.t8.entity.User;
+import com.project.t8.repository.DepartmentRepo;
 import com.project.t8.repository.DocumentRepo;
+import com.project.t8.repository.UserRepo;
+import com.project.t8.service.admin.DepartmentService;
+import com.project.t8.service.user.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +20,10 @@ import java.util.List;
 public class DocumentService {
     @Autowired
     private DocumentRepo documentRepo;
+    @Autowired
+    private DepartmentService departmentService;
+    @Autowired
+    private UserService userService;
     public Document createDocument(DocumentDto documentDto) {
         return documentRepo.save(entityMapDtoDoc(documentDto));
     }
@@ -26,6 +37,9 @@ public class DocumentService {
             documentsDto.add(dtoMapEntityDoc(document));
         }
         return documentsDto;
+    }
+    public Document getDocumentById(long id) {
+        return documentRepo.findById(id).orElseThrow(()->new EntityNotFoundException("Document not found"));
     }
     public List<DocumentDto> findByUser(Long username) {
         List<Document> documents = documentRepo.findByUser(username);
@@ -48,20 +62,25 @@ public class DocumentService {
     }
     public Document entityMapDtoDoc(DocumentDto documentDto) {
         Document document = new Document();
+        Department department = departmentService.dtoMapEntity(documentDto.getDepartmentDto());
+        User user = userService.dtoMapEntity(documentDto.getUserDto());
         document.setTitle(documentDto.getTitle());
         document.setDescription(documentDto.getDescription());
-        document.setDepartmentId(documentDto.getDepartmentId());
+        document.setDepartmentId(department.getDepartmentId());
         document.setFilePath(documentDto.getFilePath());
-        document.setUploadedByUser(documentDto.getUploadedByUser());
+        document.setUploadedByUser(user.getUserId());
         return document;
     }
     public DocumentDto dtoMapEntityDoc(Document doc) {
         DocumentDto document = new DocumentDto();
+        Department department = departmentService.getDepartmentById(doc.getDepartmentId());
+        User user = userService.findByUserId(doc.getUploadedByUser());
         document.setTitle(doc.getTitle());
         document.setDescription(doc.getDescription());
-        document.setDepartmentId(doc.getDepartmentId());
+        document.setDepartmentDto(departmentService.entityMapDto(department));
         document.setFilePath(doc.getFilePath());
-        document.setUploadedByUser(doc.getUploadedByUser());
+        document.setUserDto(userService.entityMapDto(user));
+        document.setUploadDate(doc.getUploadDate());
         return document;
     }
 

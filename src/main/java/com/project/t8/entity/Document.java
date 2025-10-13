@@ -1,7 +1,9 @@
 package com.project.t8.entity;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import lombok.Data;
 
+import java.sql.Timestamp;
+@Data
 @Entity
 @Table(name = "documents")
 public class Document {
@@ -29,55 +31,5 @@ public class Document {
     @Column(name = "department_id")
     private Long departmentId;
 
-    public Long getDocumentId() {
-        return documentId;
-    }
 
-    public void setDocumentId(Long documentId) {
-        this.documentId = documentId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Timestamp getUploadDate() {
-        return uploadDate;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public Long getUploadedByUser() {
-        return uploadedByUser;
-    }
-
-    public void setUploadedByUser(Long uploadedByUser) {
-        this.uploadedByUser = uploadedByUser;
-    }
-
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
 }

@@ -16,11 +16,7 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepo departmentRepo;
     public Department createDepartment(DepartmentDto departmentdto) {
-        Department department = new Department();
-        department.setDepartmentName(departmentdto.getDepartmentName());
-        department.setDivision(departmentdto.getDivision());
-        department.setDescription(departmentdto.getDescription());
-        return departmentRepo.save(department);
+        return departmentRepo.save(dtoMapEntity(departmentdto));
     }
     public Department getDepartmentById(long id){
         return departmentRepo.findById(id).orElseThrow(()->new EntityNotFoundException("Department not found"));
@@ -33,7 +29,7 @@ public class DepartmentService {
         department.setDepartmentName(departmentdto.getDepartmentName());
         department.setDivision(departmentdto.getDivision());
         department.setDescription(departmentdto.getDescription());
-        departmentRepo.save(department);
+        return departmentRepo.save(department);
     }
     public void deleteDepartment(Department department) {
         departmentRepo.delete(department);
@@ -42,22 +38,18 @@ public class DepartmentService {
         List<DepartmentDto> departmentDtos = new ArrayList<>();
         List<Department> departments = departmentRepo.findAll();
         for (Department department : departments) {
-            DepartmentDto dto = new DepartmentDto();
-            dto.setDepartmentName(department.getDepartmentName());
-            dto.setDivision(department.getDivision());
-            dto.setDescription(department.getDescription());
-            departmentDtos.add(dto);
+            departmentDtos.add(entityMapDto(department));
         }
         return departmentDtos;
     }
-    Department dtoMapEntity(DepartmentDto departmentDto){
+    public Department dtoMapEntity(DepartmentDto departmentDto){
         Department department = new Department();
         department.setDepartmentName(departmentDto.getDepartmentName());
         department.setDivision(departmentDto.getDivision());
         department.setDescription(departmentDto.getDescription());
         return department;
     }
-    DepartmentDto entityMapDto(Department department){
+    public DepartmentDto entityMapDto(Department department){
         DepartmentDto departmentDto = new DepartmentDto();
         departmentDto.setDepartmentName(department.getDepartmentName());
         departmentDto.setDivision(department.getDivision());

@@ -3,6 +3,7 @@ package com.project.t8.service.admin;
 import com.project.t8.dto.UserDto;
 import com.project.t8.entity.User;
 import com.project.t8.repository.UserRepo;
+import com.project.t8.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class CreateUserSv {
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     public UserDto createUser(UserDto userDto) {

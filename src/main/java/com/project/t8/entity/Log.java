@@ -1,10 +1,11 @@
 package com.project.t8.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.TimerTask;
-
+@Data
 @Entity
 @Table(name = "logs")
 public class Log {
@@ -42,79 +43,5 @@ public class Log {
 
     public Log() {
 
-    }
-
-    public Long getLogId() {
-        return logId;
-    }
-
-    public void setLogId(Long logId) {
-        this.logId = logId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public Long getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(Long documentId) {
-        this.documentId = documentId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-
-    public Timestamp getCompletedAt() {
-        return completedAt;
-    }
-
-
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
     }
 }
