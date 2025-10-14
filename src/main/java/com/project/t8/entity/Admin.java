@@ -13,10 +13,10 @@ public class Admin {
     private Long adminId;
 
     @Column(name = "username",nullable = false)
-    private String userName;
+    private String username;
 
     @Column(name = "password", nullable = false,columnDefinition = "BYTEA")
-    private byte[] passWord;
+    private byte[] password;
 
     @Column(name = "email")
     private String email;
@@ -24,7 +24,7 @@ public class Admin {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "role_level", columnDefinition = "SMALLINT", nullable = false)
+    @Column(name = "role_level", columnDefinition = "SMALLINT",updatable = false, insertable = false)
     private Short roleLevel;
 
     public Admin() {

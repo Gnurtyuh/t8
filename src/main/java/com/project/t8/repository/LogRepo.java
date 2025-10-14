@@ -13,8 +13,8 @@ import java.util.List;
 public interface LogRepo extends JpaRepository<Log,Long>{
     @Query(value = "select d from Log d where d.userId = :userId")
     List<Log> findByUserId(@Param("userId") Long userId);
-    @Query("SELECT l FROM Log l WHERE FUNCTION('MONTH', l.createdAt) = :month")
-    List<Log> findByMonth(@Param("month") int month);
+    @Query("SELECT l FROM Log l WHERE (:userId IS NULL OR l.userId = :userId) and FUNCTION('MONTH', l.createdAt) = :month")
+    List<Log> findByMonth(@Param("userId") Long userId,@Param("month") int month);
     List<Log> findByDepartmentId(Long departmentId);
     Log findByLogId(Long logId);
 }

@@ -24,7 +24,7 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "role_level", columnDefinition = "SMALLINT",nullable = false)
+    @Column(name = "role_level", columnDefinition = "SMALLINT",updatable = false, insertable = false)
     private Short roleLevel;
 
     @Column(name = "department_id")

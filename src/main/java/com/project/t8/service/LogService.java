@@ -1,5 +1,6 @@
 package com.project.t8.service;
 
+import com.project.t8.dto.DocumentDto;
 import com.project.t8.dto.LogDto;
 import com.project.t8.entity.Department;
 import com.project.t8.entity.Document;
@@ -11,6 +12,7 @@ import com.project.t8.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +26,22 @@ public class LogService {
     private UserService userService;
     @Autowired
     private DocumentService documentService;
-    public Log createLog(LogDto logDto) {
+    public Log createLog(DocumentDto documentDto,String action) {
+        LogDto logDto=new LogDto();
+        logDto.setUserDto(documentDto.getUserDto());
+        logDto.setDepartmentDto(documentDto.getDepartmentDto());
+        logDto.setAction(action);
+        logDto.setDocumentDto(documentDto);
+        logDto.setTarget(documentDto.getTitle());
+        logDto.setDescription(documentDto.getDescription());
         return logRepo.save(dtoMapEntityLog(logDto));
     }
-    public Log updateLog(LogDto logDto) {
-        return logRepo.save(dtoMapEntityLog(logDto));
+    public Log updateLog(long id,LogDto logDto) {
+        Log log = dtoMapEntityLog(findByLogId(id));
+        log.setAction("UPDATED");
+        log.setDescription(logDto.getDescription());
+        log.setCompletedAt(new Timestamp(System.currentTimeMillis()));
+        return logRepo.save(log);
     }
 
     public List<LogDto> findByUserId(Long userId) {
@@ -39,8 +52,8 @@ public class LogService {
         }
         return logDto;
     }
-    public List<LogDto> findByMonth(int month) {
-        List<Log> logs = logRepo.findByMonth(month);
+    public List<LogDto> findByMonth(Long userId ,int month) {
+        List<Log> logs = logRepo.findByMonth(userId,month);
         List<LogDto> logDto = new ArrayList<>();
         for (Log log : logs) {
             logDto.add(entityMapDtoLog(log));
@@ -49,6 +62,14 @@ public class LogService {
     }
     public List<LogDto> findByDepartmentId(Long departmentId) {
         List<Log> logs = logRepo.findByDepartmentId(departmentId);
+        List<LogDto> logDto = new ArrayList<>();
+        for (Log log : logs) {
+            logDto.add(entityMapDtoLog(log));
+        }
+        return logDto;
+    }
+    public List<LogDto> getAllLog() {
+        List<Log> logs = logRepo.findAll();
         List<LogDto> logDto = new ArrayList<>();
         for (Log log : logs) {
             logDto.add(entityMapDtoLog(log));

@@ -1,6 +1,7 @@
 package com.project.t8.service;
 
 import com.project.t8.dto.DocumentDto;
+import com.project.t8.dto.LogDto;
 import com.project.t8.entity.Department;
 import com.project.t8.entity.Document;
 import com.project.t8.entity.User;
@@ -24,11 +25,17 @@ public class DocumentService {
     private DepartmentService departmentService;
     @Autowired
     private UserService userService;
+
     public Document createDocument(DocumentDto documentDto) {
         return documentRepo.save(entityMapDtoDoc(documentDto));
     }
-    public Document updateDocument(DocumentDto documentDto) {
-        return documentRepo.save(entityMapDtoDoc(documentDto));
+
+    public Document updateDocument(long id, DocumentDto documentDto) {
+        Document document = getDocumentById(id);
+        document.setTitle(documentDto.getTitle());
+        document.setDescription(documentDto.getDescription());
+        document.setFilePath(documentDto.getFilePath());
+        return documentRepo.save(document);
     }
     public List<DocumentDto> findByDepartmentId(Long departmentId) {
         List<Document> documents = documentRepo.findByDepartmentId(departmentId);
@@ -38,11 +45,22 @@ public class DocumentService {
         }
         return documentsDto;
     }
+    public List<DocumentDto> findByDepartmentName(String departmentName) {
+        List<Department> departments = departmentService.getDepartmentByName(departmentName);
+        List<DocumentDto> documentsDto = new ArrayList<>();
+        for(Department department : departments) {
+            List<Document> documents = documentRepo.findByDepartmentId(department.getDepartmentId());
+            for (Document document : documents) {
+                documentsDto.add(dtoMapEntityDoc(document));
+            }
+        }
+        return documentsDto;
+    }
     public Document getDocumentById(long id) {
         return documentRepo.findById(id).orElseThrow(()->new EntityNotFoundException("Document not found"));
     }
-    public List<DocumentDto> findByUser(Long username) {
-        List<Document> documents = documentRepo.findByUser(username);
+    public List<DocumentDto> findByUser(Long userId) {
+        List<Document> documents = documentRepo.findByUser(userId);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {
             documentsDto.add(dtoMapEntityDoc(document));

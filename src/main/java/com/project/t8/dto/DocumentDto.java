@@ -14,6 +14,4 @@ public class DocumentDto {
     private String filePath;
     private UserDto userDto;
     private DepartmentDto departmentDto;
-
-
 }

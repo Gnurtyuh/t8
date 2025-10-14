@@ -18,8 +18,8 @@ public class DepartmentService {
     public Department createDepartment(DepartmentDto departmentdto) {
         return departmentRepo.save(dtoMapEntity(departmentdto));
     }
-    public Department getDepartmentById(long id){
-        return departmentRepo.findById(id).orElseThrow(()->new EntityNotFoundException("Department not found"));
+    public Department getDepartmentById(long departmentId){
+        return departmentRepo.findById(departmentId).orElseThrow(()->new EntityNotFoundException("Department not found"));
     }
     public Department updateDepartment(DepartmentDto departmentdto, long id) {
         Department department = getDepartmentById(id);
@@ -30,6 +30,9 @@ public class DepartmentService {
         department.setDivision(departmentdto.getDivision());
         department.setDescription(departmentdto.getDescription());
         return departmentRepo.save(department);
+    }
+    public List<Department> getDepartmentByName(String departmentName) {
+        return departmentRepo.findByDepartmentName(departmentName);
     }
     public void deleteDepartment(Department department) {
         departmentRepo.delete(department);

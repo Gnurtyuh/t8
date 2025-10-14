@@ -8,5 +8,4 @@ public class DepartmentDto {
     private String departmentName;
     private String division;
     private String description;
-
 }
