@@ -17,36 +17,40 @@ public class LogUserController {
     @Autowired
     private LogService logService;
 
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getLog(@PathVariable long id) {
         LogDto logDto = logService.findByLogId(id);
         return ResponseEntity.ok(logDto);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateLog( @PathVariable long id, @RequestBody LogDto logDto) {
-        Log log = logService.updateLog(id,logDto);
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateLog(@PathVariable long id, @RequestBody LogDto logDto) {
+        Log log = logService.updateLog(id, logDto);
         return ResponseEntity.ok(log);
     }
+
     @PreAuthorize("authentication.principal.roleLevel <= 3")
-    @GetMapping("/{userId}")
+    @GetMapping("/userid/{userId}")
     public ResponseEntity<?> getLogByUserId(@PathVariable long userId) {
         List<LogDto> logs = logService.findByUserId(userId);
         return ResponseEntity.ok(logs);
     }
+
     @PreAuthorize("authentication.principal.roleLevel <= 2")
-    @GetMapping("/{departmentId}")
+    @GetMapping("/deparment/{departmentId}")
     public ResponseEntity<?> getLogByDepartmentId(@PathVariable long departmentId) {
         List<LogDto> logs = logService.findByDepartmentId(departmentId);
         return ResponseEntity.ok(logs);
     }
+
     @PreAuthorize("authentication.principal.roleLevel <= 3")
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getLogByMonth(@PathVariable Long userId,@RequestParam int month) {
-        List<LogDto> logs = logService.findByMonth(userId,month);
+    @GetMapping("/userbymonth/{userId}")
+    public ResponseEntity<?> getLogByMonth(@PathVariable Long userId, @RequestParam int month) {
+        List<LogDto> logs = logService.findByMonth(userId, month);
         return ResponseEntity.ok(logs);
     }
-    @GetMapping("/{logId}")
+
+    @GetMapping("/logid/{logId}")
     public ResponseEntity<?> findLogById(@PathVariable long logId) {
         LogDto logs = logService.findByLogId(logId);
         return ResponseEntity.ok(logs);

@@ -16,33 +16,38 @@ import com.project.t8.repository.DepartmentRepo;
 public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
+
     @GetMapping("/AllDepartment")
-    public ResponseEntity<List<DepartmentDto>> getAllDepartment(){
-        List<DepartmentDto> departmentDto= departmentService.getAllDepartments();
-        if (departmentDto.isEmpty()){
+    public ResponseEntity<List<DepartmentDto>> getAllDepartment() {
+        List<DepartmentDto> departmentDto = departmentService.getAllDepartments();
+        if (departmentDto.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(departmentDto);
     }
+
     @PostMapping
-    public ResponseEntity<Department> saveDepartment(@RequestBody DepartmentDto departmentDto){
-        Department department= departmentService.createDepartment(departmentDto);
-        if (department==null){
+    public ResponseEntity<Department> saveDepartment(@RequestBody DepartmentDto departmentDto) {
+        Department department = departmentService.createDepartment(departmentDto);
+        if (department == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(department);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Department> updateDepartment(@RequestBody DepartmentDto departmentDto, @PathVariable long id){
-        Department department= departmentService.updateDepartment(departmentDto,id);
-        if (department==null){
+    public ResponseEntity<Department> updateDepartment(@RequestBody DepartmentDto departmentDto,
+            @PathVariable long id) {
+        Department department = departmentService.updateDepartment(departmentDto, id);
+        if (department == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(department);
     }
-    @GetMapping("/{departmentId}")
-    public ResponseEntity<?> getDepartment(@PathVariable long departmentId){
-        Department department= departmentService.getDepartmentById(departmentId);
+
+    @GetMapping("/deparment/{departmentId}")
+    public ResponseEntity<?> getDepartment(@PathVariable long departmentId) {
+        Department department = departmentService.getDepartmentById(departmentId);
         return ResponseEntity.ok(departmentService.entityMapDto(department));
     }
 

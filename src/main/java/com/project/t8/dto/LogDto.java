@@ -6,6 +6,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 import java.sql.Timestamp;
+
 @Data
 public class LogDto {
     private String action;
@@ -17,7 +18,4 @@ public class LogDto {
     private Timestamp completedAt;
     private DepartmentDto departmentDto;
     private UserDto userDto;
-
-
-
 }

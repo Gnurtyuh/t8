@@ -8,7 +8,11 @@ import com.project.t8.entity.User;
 import com.project.t8.repository.UserRepo;
 import com.project.t8.service.admin.DepartmentService;
 import jakarta.persistence.EntityNotFoundException;
+
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,16 +22,34 @@ public class UserService {
     @Autowired
     private DepartmentService departmentService;
 
-    public User updateUser(UserDto userDto) {
-        return userRepo.save(dtoMapEntity(userDto));
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+
+    // public User updateUser(UserDto userDto) {
+    // return userRepo.save(dtoMapEntity(userDto));
+    // }
+    public void ChangePassword(Long userid, String currrentPassword, String newPassword) {
+
+        User user = userRepo.findById(userid).orElseThrow(() -> new RuntimeException("User not found"));
+        String encodePassword = new String(user.getPassword());
+        if (!passwordEncoder.matches(currrentPassword, encodePassword)) {
+            throw new RuntimeException("Mật khẩu không khớp vui lòng nhập lại");
+        }
+        if (newPassword.length() < 9) {
+            throw new RuntimeException("Mật khẩu mới phải có ít nhất 9 ký tự");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword).getBytes());
+        userRepo.save(user);
     }
+
     public User findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+
     public User findByUserId(long userId) {
-        return userRepo.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
+        return userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
-    public UserDto entityMapDto(User user){
+
+    public UserDto entityMapDto(User user) {
         UserDto userDto = new UserDto();
         Department department = departmentService.getDepartmentById(user.getDepartmentId());
         userDto.setUsername(user.getUsername());
@@ -37,7 +59,8 @@ public class UserService {
         userDto.setRoleLevel(user.getRoleLevel());
         return userDto;
     }
-    public User dtoMapEntity(UserDto userDto){
+
+    public User dtoMapEntity(UserDto userDto) {
         User user = new User();
         DepartmentDto departmentDto = userDto.getDepartmentDto();
         user.setDepartmentId(departmentService.dtoMapEntity(departmentDto).getDepartmentId());

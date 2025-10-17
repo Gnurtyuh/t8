@@ -10,35 +10,41 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @PreAuthorize("authentication.principal.roleLevel = 0")
 @RestController
 @RequestMapping("/admin/document")
 public class DocumentController {
     @Autowired
     private DocumentService documentService;
-    @GetMapping
+
+    @GetMapping("/all")
     public ResponseEntity<?> getAllDocument() {
         List<DocumentDto> documentDtos = documentService.getAllDocuments();
         return ResponseEntity.ok(documentDtos);
     }
-    @GetMapping("/{id}")
+
+    @GetMapping("/document/{id}")
     public ResponseEntity<?> getDocument(@PathVariable long id) {
-        Document document= documentService.getDocumentById(id);
+        Document document = documentService.getDocumentById(id);
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
+
     @GetMapping("/departmentId")
     public ResponseEntity<?> getDocumentByDepartmentId(@RequestParam long departmentId) {
-        List<DocumentDto> documentDto= documentService.findByDepartmentId(departmentId);
+        List<DocumentDto> documentDto = documentService.findByDepartmentId(departmentId);
         return ResponseEntity.ok(documentDto);
     }
+
     @GetMapping
     public ResponseEntity<?> getDocumentByDepartmentName(@RequestParam String departmentName) {
-        List<DocumentDto> documentDto= documentService.findByDepartmentName(departmentName);
+        List<DocumentDto> documentDto = documentService.findByDepartmentName(departmentName);
         return ResponseEntity.ok(documentDto);
     }
+
     @GetMapping("/{userId}")
     public ResponseEntity<?> getDocumentByUser(@PathVariable Long userId) {
-        List<DocumentDto> documentDto= documentService.findByUser(userId);
+        List<DocumentDto> documentDto = documentService.findByUser(userId);
         return ResponseEntity.ok(documentDto);
     }
 }
