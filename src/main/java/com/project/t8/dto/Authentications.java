@@ -1,4 +1,4 @@
-package com.project.t8.entity;
+package com.project.t8.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

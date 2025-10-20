@@ -10,6 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
@@ -25,15 +31,15 @@ public class DocumentUserController {
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PostMapping
-    public ResponseEntity<?> createDocument(@RequestBody DocumentDto documentDto) {
-        Document document= documentService.createDocument(documentDto);
+    public ResponseEntity<?> createDocument(@RequestParam String password , @RequestBody DocumentDto documentDto) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, IOException, InvalidKeyException {
+        Document document= documentService.createDocument(password.toCharArray(),documentDto);
         logService.createLog(documentDto,"CREATED");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PreAuthorize("authentication.principal.roleLevel <= 2")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateDocument(@PathVariable long id, @RequestBody DocumentDto documentDto ) {
-        Document document= documentService.updateDocument(id,documentDto);
+    public ResponseEntity<?> updateDocument(@PathVariable long id,@RequestParam String password, @RequestBody DocumentDto documentDto ) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, IOException, InvalidKeyException {
+        Document document= documentService.updateDocument(id,password.toCharArray(),documentDto);
         logService.createLog(documentDto,"UPDATED");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
@@ -50,9 +56,9 @@ public class DocumentUserController {
         return ResponseEntity.ok(documentDto);
     }
     @PreAuthorize("authentication.principal.roleLevel <= 3")
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getDocumentByUser(@PathVariable Long  userId) {
-        List<DocumentDto> documentDto= documentService.findByUser(userId);
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getDocumentByUsername(@PathVariable String username) {
+        List<DocumentDto> documentDto= documentService.findByUser(username);
         return ResponseEntity.ok(documentDto);
     }
 }

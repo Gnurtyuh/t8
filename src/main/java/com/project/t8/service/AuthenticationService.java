@@ -22,13 +22,12 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.project.t8.dto.AuthenticationDto;
 import com.project.t8.entity.Admin;
-import com.project.t8.entity.Authentications;
+import com.project.t8.dto.Authentications;
 import com.project.t8.entity.User;
 import com.project.t8.repository.AdminRepo;
 import com.project.t8.repository.UserRepo;
 import com.project.t8.util.TokenBlacklist;
 import org.springframework.security.core.Authentication;
-import lombok.var;
 import lombok.experimental.NonFinal;
 
 @Service

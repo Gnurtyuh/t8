@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.t8.dto.AuthenticationDto;
-import com.project.t8.entity.Authentications;
+import com.project.t8.dto.Authentications;
 import com.project.t8.service.AuthenticationService;
 
 import lombok.AccessLevel;
