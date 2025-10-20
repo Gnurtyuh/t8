@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
-        return userRepo.findByUsername(username);
+        return userRepo.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     public User findByUserId(long userId) {
