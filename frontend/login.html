@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng Nhập - Phần mềm Quản lý Tài liệu</title>
-    <link rel="stylesheet" href="../static/login.css">
+    <link rel="stylesheet" href="/t8/frontend/static/login.css">
 </head>
 <body>
     <div class="container">
@@ -22,9 +22,9 @@
                 <h1>Đăng Nhập</h1>
                 
                 <form class="loginForm">
-                    <input type="email" placeholder="Email" required>
+                    <input type="username" placeholder="Tên đăng nhập" required>
                     <input type="password" placeholder="Mật khẩu" required>
-                    <button type="submit" class="loginBtn">Đăng Nhập</button>
+                    <button type="submit" class="loginBtn" onclick="loginbtn()">Đăng Nhập</button>
                 </form>
                 <div class="links">
                     <a href="send-file.html">Gửi File</a>
@@ -44,5 +44,6 @@
             </div>
         </footer>
     </div>
+    <script src="/t8/frontend/static/js/login.js"></script>
 </body>
 </html>
