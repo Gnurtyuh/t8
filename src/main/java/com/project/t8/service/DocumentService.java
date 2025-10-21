@@ -34,21 +34,15 @@ public class DocumentService {
     @Autowired
     private UserService userService;
 
-    public Document createDocument(char[] password,DocumentDto documentDto) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, IOException, InvalidKeyException {
-        File input = new File(documentDto.getFilePath());
-        String path = AesUtil.encrypt(password,input);
-        documentDto.setFilePath(path);
+    public Document createDocument(DocumentDto documentDto) {
         return documentRepo.save(entityMapDtoDoc(documentDto));
     }
 
-    public Document updateDocument(long id,char[] password, DocumentDto documentDto) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, IOException, InvalidKeyException {
+    public Document updateDocument(long id, DocumentDto documentDto) {
         Document document = getDocumentById(id);
         document.setTitle(documentDto.getTitle());
         document.setDescription(documentDto.getDescription());
         document.setFilePath(documentDto.getFilePath());
-        File input = new File(documentDto.getFilePath());
-        String path = AesUtil.encrypt(password,input);
-        document.setFilePath(path);
         return documentRepo.save(document);
     }
     public List<DocumentDto> findByDepartmentId(Long departmentId) {

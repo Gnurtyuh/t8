@@ -1,5 +1,7 @@
 package com.project.t8.util;
 
+import org.springframework.stereotype.Component;
+
 import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
@@ -14,6 +16,7 @@ import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Random;
 
+@Component
 public class AesUtil {
     public static String salt ="TrungTanThinhCuong";
     public static SecretKey generateAesKey(char[] password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -62,7 +65,7 @@ public class AesUtil {
         return name.substring(lastIndex); // Bao gồm dấu chấm, ví dụ ".pdf"
     }
 
-    public static void decrypt(char[] password, File input) throws Exception {
+    public static String decrypt(char[] password, File input) throws Exception {
         try (FileInputStream fis = new FileInputStream(input)) {
             int extLen = fis.read();
             byte[] extBytes = new byte[extLen];
@@ -85,6 +88,7 @@ public class AesUtil {
                 while ((n = cis.read(buffer)) != -1) {
                     fos.write(buffer, 0, n);
                 }
+                return  output;
             } finally {
                 Arrays.fill(password, '\0');
             }
