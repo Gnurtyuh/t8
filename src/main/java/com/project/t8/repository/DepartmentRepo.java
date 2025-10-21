@@ -13,4 +13,5 @@ import java.util.List;
 public interface DepartmentRepo extends JpaRepository<Department,Long> {
     @Query("SELECT d FROM Department d WHERE d.departmentName = :departmentName")
     List<Department> findByDepartmentName(@Param("departmentName") String departmentName);
+    Department findByDepartmentNameAndDivision(String departmentName, String division);
 } 
