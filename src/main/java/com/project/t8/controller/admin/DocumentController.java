@@ -42,9 +42,9 @@ public class DocumentController {
         return ResponseEntity.ok(documentDto);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getDocumentByUser(@PathVariable Long userId) {
-        List<DocumentDto> documentDto = documentService.findByUser(userId);
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getDocumentByUser(@PathVariable String  username) {
+        List<DocumentDto> documentDto = documentService.findByUser(username);
         return ResponseEntity.ok(documentDto);
     }
 }

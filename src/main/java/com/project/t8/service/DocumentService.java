@@ -10,10 +10,18 @@ import com.project.t8.repository.DocumentRepo;
 import com.project.t8.repository.UserRepo;
 import com.project.t8.service.admin.DepartmentService;
 import com.project.t8.service.user.UserService;
+import com.project.t8.util.AesUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.NoSuchPaddingException;
+import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +67,9 @@ public class DocumentService {
     public Document getDocumentById(long id) {
         return documentRepo.findById(id).orElseThrow(()->new EntityNotFoundException("Document not found"));
     }
-    public List<DocumentDto> findByUser(Long userId) {
+    public List<DocumentDto> findByUser(String username) {
+        User user = userService.findByUsername(username);
+        Long userId = user.getUserId();
         List<Document> documents = documentRepo.findByUser(userId);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {

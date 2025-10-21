@@ -5,6 +5,7 @@ import com.project.t8.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Collections;
 
 import java.util.List;
 
@@ -16,25 +17,29 @@ public class LogAdminController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getLogByUserId(@PathVariable long userId) {
-        List<LogDto> logs = logService.findByUserId(userId).reversed();
+        List<LogDto> logs = logService.findByUserId(userId);
+        Collections.reverse(logs);
         return ResponseEntity.ok(logs);
     }
 
     @GetMapping("/{departmentId}")
     public ResponseEntity<?> getLogByDepartmentId(@PathVariable long departmentId) {
-        List<LogDto> logs = logService.findByDepartmentId(departmentId).reversed();
+        List<LogDto> logs = logService.findByDepartmentId(departmentId);
+        Collections.reverse(logs);
         return ResponseEntity.ok(logs);
     }
 
     @GetMapping
     public ResponseEntity<?> getLogByMonth(@RequestParam int month) {
-        List<LogDto> logs = logService.findByMonth(null, month).reversed();
+        List<LogDto> logs = logService.findByMonth(null, month);
+        Collections.reverse(logs);
         return ResponseEntity.ok(logs);
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllLog() {
-        List<LogDto> logs = logService.getAllLog().reversed();
+        List<LogDto> logs = logService.getAllLog();
+        Collections.reverse(logs);
         return ResponseEntity.ok(logs);
     }
 

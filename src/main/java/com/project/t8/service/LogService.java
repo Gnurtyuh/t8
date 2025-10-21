@@ -44,8 +44,9 @@ public class LogService {
         return logRepo.save(log);
     }
 
-    public List<LogDto> findByUserId(Long userId) {
-        List<Log> logs = logRepo.findByUserId(userId);
+    public List<LogDto> findByUser(String username) {
+        User user=userService.findByUsername(username);
+        List<Log> logs = logRepo.findByUserId(user.getUserId());
         List<LogDto> logDto = new ArrayList<>();
         for (Log log : logs) {
             logDto.add(entityMapDtoLog(log));
