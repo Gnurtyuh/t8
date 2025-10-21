@@ -23,13 +23,14 @@
 
         // Quản Lý Người Dùng
         let users = [
-            { fullName: "Nguyen Van A", username: "user1", email: "a@example.com", role: "user", note: "Nhân viên IT" },
+            { fullName: "Nguyen Van A", username: "user1", email: "a@example.com",department: "Phòng tài chính", role: "user", note: "Nhân viên IT" },
             { fullName: "Tran Thi B", username: "user2", email: "b@example.com", role: "admin", note: "Quản lý nhân sự" },
             { fullName: "Le Van C", username: "user3", email: "c@example.com", role: "user", note: "" },
             { fullName: "Pham Thi D", username: "user4", email: "d@example.com", role: "user", note: "Nhân viên CNTT" }
         ];
 
         function loadUserTable() {
+           
             const tbody = document.getElementById('user-table').getElementsByTagName('tbody')[0];
             tbody.innerHTML = '';
             users.forEach((user, index) => {
@@ -38,6 +39,7 @@
                     <td>${user.fullName}</td>
                     <td>${user.username}</td>
                     <td>${user.email}</td>
+                    <td>${user.department}</td>
                     <td>${user.role}</td>
                     <td>${user.note || ''}</td>
                     <td><button class="action-btn" onclick="deleteUser(${index})">Xóa</button></td>
@@ -59,27 +61,41 @@
             });
         }
 
-        function addUser() {
-            const fullName = document.getElementById('full-name').value;
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const note = document.getElementById('note').value;
-            const role = document.getElementById('role').value;
+        // function addUser() {
+        
+        //     const newUser = {
+        //         username: document.getElementById('username').value,
+        //         password: document.getElementById('password').value,
+        //         email: document.getElementById('email').value,
+        //         fullName: document.getElementById('full-name').value,
+        //         departmentDto : document.getElementById()
+        //     }
+        //     try {
+        //    const response = fetch(addreddApiCreateUser, {
+        //         method: 'POST',
+        //         headers: 
+        //         {'Content-Type' : 'application/json',},
+        //         body:
+        //         JSON.stringify(newUser);
+        //     });
+        //     if(!response.ok) throw new Error("Lỗi khi gọi Api");
 
-            if (fullName && username && email && password && role) {
-                users.push({ fullName, username, email, role, note });
-                alert(`Đã thêm người dùng: ${username}`);
-                document.getElementById('full-name').value = '';
-                document.getElementById('username').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('password').value = '';
-                document.getElementById('note').value = '';
-                document.getElementById('role').value = '';
-                loadUserTable();
-                loadRecentUsers();
-            }
-        }
+        // } catch(err){
+        //     console.error(err);
+        // }
+        //     if (fullName && username && email && password && role) {
+        //         users.push({ fullName, username, email,department, role});
+        //         alert(`Đã thêm người dùng: ${username}`);
+        //         document.getElementById('full-name').value = '';
+        //         document.getElementById('username').value = '';
+        //         document.getElementById('email').value = '';
+        //         document.getElementById('departmetn').value = '';
+        //         document.getElementById('password').value = '';
+        //         document.getElementById('role').value = '';
+        //         loadUserTable();
+        //         loadRecentUsers();
+        //     }
+        // }
 
         function deleteUser(index) {
             if (confirm('Bạn có chắc muốn xóa người dùng này?')) {
@@ -353,25 +369,53 @@
         }
 
         // Quản Lý Phòng Ban
+        // function loadDepartments() {
+        //     const departments = [
+        //         { name: "Phòng Nhân Sự", description: "Quản lý nhân sự công ty", division: "Bộ phận Hành chính" },
+        //         { name: "Phòng CNTT", description: "Hỗ trợ công nghệ thông tin", division: "Bộ phận Công nghệ" }
+        //     ];
+        //     const departmentList = document.getElementById('department-list');
+        //     departmentList.innerHTML = '';
+        //     departments.forEach(dept => {
+        //         const card = document.createElement('div');
+        //         card.className = 'dept-card';
+        //         card.innerHTML = `
+        //             <p class="title">Tên Phòng Ban: ${dept.name}</p>
+        //             <p>Mô Tả: ${dept.description}</p>
+        //             <p>Tên Bộ Phận: ${dept.division}</p>
+        //         `;
+        //         departmentList.appendChild(card);
+        //     });
+        // }
         function loadDepartments() {
-            const departments = [
-                { name: "Phòng Nhân Sự", description: "Quản lý nhân sự công ty", division: "Bộ phận Hành chính" },
-                { name: "Phòng CNTT", description: "Hỗ trợ công nghệ thông tin", division: "Bộ phận Công nghệ" }
-            ];
-            const departmentList = document.getElementById('department-list');
-            departmentList.innerHTML = '';
-            departments.forEach(dept => {
-                const card = document.createElement('div');
-                card.className = 'dept-card';
-                card.innerHTML = `
-                    <p class="title">Tên Phòng Ban: ${dept.name}</p>
-                    <p>Mô Tả: ${dept.description}</p>
-                    <p>Tên Bộ Phận: ${dept.division}</p>
-                `;
-                departmentList.appendChild(card);
-            });
+            fetch(addreddApiGetAll)
+            .then(response => {
+                if(!response.ok) throw new Error("Lỗi khi lấy thông tin phòng ban!");
+                return response.json();
+            })
+            .then(data => {
+                const departmentList = document.getElementById('department-list');
+                departmentList.innerHTML = '';
+        
+                data.forEach(depart => {
+                    const card = document.createElement('div');
+                    card.className = 'dept-card';
+                    card.innerHTML = `
+                     <p class="title">Tên Phòng Ban: ${depart.departmentName}</p>
+                            <p>Mô Tả: ${depart.description}</p>
+                            <p>Tên Bộ Phận: ${depart.division}</p>
+                    `;
+                    departmentList.append(card);
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            })
         }
+        // setInterval(loadDepartments, 5000);
+        window.onload = loadDepartments;
 
+        
         function loadDepartmentInfo() {
             const departments = [
                 { name: "Phòng Nhân Sự", description: "Quản lý nhân sự công ty", division: "Bộ phận Hành chính" },
@@ -391,35 +435,58 @@
             });
         }
 
-        function createDepartment() {
-            const name = document.getElementById('dept-name').value;
-            const description = document.getElementById('dept-description').value;
-            const division = document.getElementById('dept-division').value;
-            if (name && description && division) {
-                alert(`Đã tạo phòng ban: ${name} - ${description} - ${division}`);
-                document.getElementById('dept-name').value = '';
-                document.getElementById('dept-description').value = '';
-                document.getElementById('dept-division').value = '';
-                loadDepartments();
-                loadDepartmentInfo();
-            }
-        }
+        // function createDepartment() {
+        //     const name = document.getElementById('dept-name').value;
+        //     const description = document.getElementById('dept-description').value;
+        //     const division = document.getElementById('dept-division').value;
+        //     if (name && description && division) {
+        //         alert(`Đã tạo phòng ban: ${name} - ${description} - ${division}`);
+        //         document.getElementById('dept-name').value = '';
+        //         document.getElementById('dept-description').value = '';
+        //         document.getElementById('dept-division').value = '';
+        //         loadDepartments();
+        //         loadDepartmentInfo();
+        //     }
+        // }
 
-        function toggleAssignForm() {
-            const assignForm = document.getElementById('assign-form');
-            assignForm.classList.toggle('active');
-        }
+        // function toggleAssignForm() {
+        //     const assignForm = document.getElementById('assign-form');
+        //     assignForm.classList.toggle('active');
+        // }
 
         function assignUserToDepartment() {
-            const dept = document.getElementById('assign-dept').value;
-            const user = document.getElementById('assign-user').value;
-            if (dept && user) {
-                alert(`Đã gán ${user} vào ${dept}`);
-                document.getElementById('assign-dept').value = '';
-                document.getElementById('assign-user').value = '';
-                toggleAssignForm();
-            }
+            const assignForm = document.getElementById('assign-form');
+            assignForm.classList.toggle('active');
+            fetch(addreddApiGetAll)
+            .then(response => {
+                if(!response.ok) throw new Error("Error");
+                return response.json();
+            })
+            .then(data => {
+                const departSelect = document.getElementById("assign-dept");
+                data.forEach(depart => {
+                    const option = document.createElement("option");
+                    option.textContent = depart.departmentName;
+                    departSelect.appendChild(option);
+                });
+                console.log(data);
+            })
+            .catch(error => 
+                console.error(error));
+            
+            
         }
+            
+            
+            // const dept = document.getElementById('assign-dept').value;
+            // const user = document.getElementById('assign-user').value;
+            // if (dept && user) {
+            //     alert(`Đã gán ${user} vào ${dept}`);
+            //     document.getElementById('assign-dept').value = '';
+            //     document.getElementById('assign-user').value = '';
+            //     toggleAssignForm();
+            // }
+        
 
         function filterDepartments() {
             const searchTerm = document.getElementById('search-department').value.toLowerCase();
