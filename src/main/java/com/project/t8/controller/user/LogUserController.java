@@ -30,9 +30,9 @@ public class LogUserController {
     }
 
     @PreAuthorize("authentication.principal.roleLevel <= 3")
-    @GetMapping("/userid/{userId}")
-    public ResponseEntity<?> getLogByUserId(@PathVariable long userId) {
-        List<LogDto> logs = logService.findByUserId(userId);
+    @GetMapping("/userid/{username}")
+    public ResponseEntity<?> getLogByUserId(@PathVariable String username) {
+        List<LogDto> logs = logService.findByUser(username);
         return ResponseEntity.ok(logs);
     }
 

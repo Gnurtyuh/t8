@@ -31,14 +31,14 @@ public class DocumentUserController {
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PostMapping
-    public ResponseEntity<?> createDocument(@RequestParam String password , @RequestBody DocumentDto documentDto) {
+    public ResponseEntity<?> createDocument( @RequestBody DocumentDto documentDto) {
         Document document= documentService.createDocument(documentDto);
         logService.createLog(documentDto,"CREATED");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PreAuthorize("authentication.principal.roleLevel <= 2")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateDocument(@PathVariable long id,@RequestParam String password, @RequestBody DocumentDto documentDto ){
+    public ResponseEntity<?> updateDocument(@PathVariable long id, @RequestBody DocumentDto documentDto ){
         Document document= documentService.updateDocument(id,documentDto);
         logService.createLog(documentDto,"UPDATED");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));

@@ -15,9 +15,9 @@ public class LogAdminController {
     @Autowired
     private LogService logService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getLogByUserId(@PathVariable long userId) {
-        List<LogDto> logs = logService.findByUserId(userId);
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getLogByUser(@PathVariable String username) {
+        List<LogDto> logs = logService.findByUser(username);
         Collections.reverse(logs);
         return ResponseEntity.ok(logs);
     }
