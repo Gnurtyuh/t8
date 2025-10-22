@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>GuiFile - Phần mềm Quản lý Tài liệu</title>
+    <link rel="stylesheet" href="/t8/frontend/static/receive-file.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+           <a href="home.html" class="logo">📄 PHẦN MỀM QUẢN LÝ TÀI LIỆU</a>
+            <nav>
+                <a href="index.html"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#" class="downloadBtn">ĐĂNG NHẬP</a>
+                <div class="menuToggle">≡</div>
+            </nav>
+        </header>
+        <main>
+            <section class="sendFileSection">
+                <h1>Gửi File</h1>
+                <p class="subTitle">Chia sẻ tài liệu an toàn và nhanh chóng với đồng nghiệp hoặc đối tác</p>
+                <div class="tabs">
+                    <a href="sendFile.html" class="tab active">Gửi File</a>
+                    <a href="receiveFile.html" class="tab">Nhận File</a>
+                </div>
+                <div class="steps">
+                    <div class="step">
+                        <span class="stepNumber">1</span>
+                        <h3>Chọn tập tin để gửi</h3>
+                        <div class="fileUpload">
+                            <p>Kéo thả hoặc duyệt tập tin</p>
+                            <label for="fileInput" class="browseBtn">Duyệt Tập Tin</label>
+                            <input type="file" id="fileInput" multiple style="display: none;">
+                        </div>
+                        <p class="note">Tập tin được xử lý ngoại tuyến và truyền tải an toàn.</p>
+                    </div>
+                    <div class="step">
+                        <span class="stepNumber">2</span>
+                        <h3>Nhập thông tin người nhận</h3>
+                        <input type="email" id="recipientEmail" placeholder="Email người nhận" required>
+                    </div>
+                    <div class="step">
+                        <span class="stepNumber">3</span>
+                        <h3>Gửi tập tin</h3>
+                        <button class="nextBtn" disabled>TIẾP THEO</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="partners">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Gửi File - Phần mềm Quản lý Tài liệu</title>
+    <link rel="stylesheet" href="/t8/frontend/static/send-file.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="home.html" class="logo">📄 PHẦN MỀM QUẢN LÝ TÀI LIỆU</a>
+            <nav>
+                <a href="index.html"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#" class="downloadBtn">ĐĂNG NHẬP</a>
+                <div class="notificationBell">🔔</div>
+                <div class="menuToggle">≡</div>
+            </nav>
+            <div class="notificationPanel">
+                <h3>Lịch Sử Thông Báo</h3>
+                <ul class="notificationList">
+                    <li>✅ Tập tin "document.pdf" đã được gửi lúc 04:55 PM, 10/10/2025.</li>
+                    <li>⚠️ Lỗi gửi tập tin "report.docx" lúc 04:50 PM, 10/10/2025.</li>
+                </ul>
+            </div>
+        </header>
+        <main>
+            <section class="sendFileSection">
+                <h1>Gửi File</h1>
+                <p class="subtitle">Chia sẻ tài liệu an toàn và nhanh chóng với đồng nghiệp hoặc đối tác</p>
+                <div class="tabs">
+                    <a href="sendFile.html" class="tab active">Gửi File</a>
+                    <a href="receiveFile.html" class="tab">Nhận File</a>
+                </div>
+                <div class="steps">
+                    <div class="step">
+                        <span class="stepNumber">1</span>
+                        <h3>Chọn tập tin để gửi</h3>
+                        <div class="fileUpload">
+                            <p>Kéo thả hoặc duyệt tập tin</p>
+                            <label for="fileInput" class="browseBtn">Duyệt Tập Tin</label>
+                            <input type="file" id="fileInput" multiple style="display: none;">
+                            <p id="fileNameDisplay" class="fileNameDisplay"></p>
+                        </div>
+                        <p class="note">Tập tin được xử lý ngoại tuyến và truyền tải an toàn.</p>
+                    </div>
+                    <div class="step">
+                        <span class="stepNumber">2</span>
+                        <h3>Nhập thông tin người nhận</h3>
+                        <input type="email" id="recipientEmail" placeholder="Email người nhận" required>
+                        <button type="button" class="togglePasswordBtn">👁️</button>
+                    </div>
+                    <div class="step">
+                        <span class="stepNumber">3</span>
+                        <h3>Gửi tập tin</h3>
+                        <button class="nextBtn" disabled>TIẾP THEO</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="partners">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </footer>
+    </div>
+    <script src="../static/js/send-file.js"></script>
+</body>
+</html>

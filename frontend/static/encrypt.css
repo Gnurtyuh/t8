@@ -427,3 +427,32 @@ a {
 .toggle-password-btn:hover {
     background-color: #2b6cb0;
 }
+.icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.icon-link:hover {
+    transform: scale(1.1);
+}
+
+.menu-icon {
+    width: 26px;         /* Đồng bộ kích thước icon */
+    height: 26px;
+    object-fit: contain; /* Giữ tỉ lệ ảnh */
+    transition: opacity 0.3s ease;
+}
+
+.menu-icon:hover {
+    opacity: 0.8;
+}
+
+/* Giúp các phần trong header cân đều */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 22px; /* Khoảng cách giữa các icon và nút đăng nhập */
+}

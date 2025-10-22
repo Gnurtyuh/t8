@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Tài Liệu</title>
+    <link rel="stylesheet" href="/t8/frontend/static/document-management.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="home.html" class="logo">📄 PHẦN MỀM QUẢN LÝ TÀI LIỆU</a>
+            <nav>
+                <nav>
+                <a href="index.html"></a>
+                <a href="document-management.html" class="icon-link">
+                    <img src="../static/image/8964905.png" alt="Tài liệu" class="menu-icon">
+                </a>
+                <a href="encrypt.html" class="icon-link">
+                    <img src="../static/image/2343641.png" alt="Mã hóa" class="menu-icon">
+                </a>
+                <a href="decrypt.html" class="icon-link">
+                    <img src="../static/image/764c6d46ed10774520977a072541654c.jpg" alt="Giải mã" class="menu-icon">
+                </a>
+                <a href="approve-document.html" class="icon-link">
+                    <img src="../static/image/793717.png" alt="Phê duyệt" class="menu-icon">
+                </a>
+                <a href="#" class="downloadBtn">ĐĂNG NHẬP</a>
+                <div class="notification-bell">🔔</div>
+            </nav>
+        </header>
+        <main>
+            <section class="heroSection">
+                <h2></h2>
+                <h1>QUẢN LÝ TÀI LIỆU DOANH NGHIỆP</h1>
+                <p>Xem và quản lý tài liệu một cách nhanh chóng, hiệu quả</p>
+                <div class="document-features">
+                    <div class="featureItem">
+                        <img src="../static/image/4468641.png" alt="Xem Tài Liệu">
+                        <span class="featureLabel">Xem Tài Liệu</span>
+                        <div id="document-list" class="document-list"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="partners">
+                <span></span>
+                <span></span>      
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </footer>
+    </div>
+    <script src="../static/js/document-management.js"></script>
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.textContent === 'Xem') {
+                const parent = e.target.closest('.document-item');
+                if (parent) {
+                    const fileName = parent.querySelector('.file-name').textContent;
+                    const date = parent.querySelector('.file-date').textContent;
+                    const author = parent.querySelector('.file-author').textContent;
+                    window.location.href = `decrypt.html?file=${encodeURIComponent(fileName)}&date=${encodeURIComponent(date)}&author=${encodeURIComponent(author)}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

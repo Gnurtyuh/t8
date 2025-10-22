@@ -21,6 +21,8 @@ import java.util.Random;
 @Component
 public class AesUtil {
     public static String salt ="TrungTanThinhCuong";
+    
+    // Tạo khóa AES từ mật khẩu
     public static SecretKey generateAesKey(char[] password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] saltBytes = salt.getBytes();
         SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2withHmacSHA256");
@@ -28,6 +30,8 @@ public class AesUtil {
         byte[] key = secretKeyFactory.generateSecret(spec).getEncoded();
         return new SecretKeySpec(key, "AES");
     }
+
+    //mã hóa
     public static String encrypt(char[] password, File input) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         byte[] iv = new byte[16];
         String extension = getFileExtension(input);
@@ -60,6 +64,8 @@ public class AesUtil {
     static String rename(String fileName){
         return fileName.substring(0, fileName.lastIndexOf('.'));
     }
+
+    // Lấy phần mở rộng của tập tin
     public static String getFileExtension(File file) {
         String name = file.getName();
         int lastIndex = name.lastIndexOf('.');
