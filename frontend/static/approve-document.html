@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Duyệt Tài Liệu - Phần mềm Quản lý Tài Liệu</title>
+    <link rel="stylesheet" href="/t8/frontend/static/aprove.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="home.html" class="logo">📄 PHẦN MỀM QUẢN LÝ TÀI LIỆU</a>
+            <nav>
+                <a href="document-management.html" class="icon-link">
+                    <img src="../static/image/8964905.png" alt="Tài liệu" class="menu-icon">
+                </a>
+                <a href="encrypt.html" class="icon-link">
+                    <img src="../static/image/2343641.png" alt="Mã hóa" class="menu-icon">
+                </a>
+                <a href="decrypt.html" class="icon-link">
+                    <img src="../static/image/764c6d46ed10774520977a072541654c.jpg" alt="Giải mã" class="menu-icon">
+                </a>
+                <a href="approve-document.html" class="icon-link">
+                    <img src="../static/image/793717.png" alt="Phê duyệt" class="menu-icon">
+                </a>
+                <a href="login.html" class="downloadBtn">ĐĂNG NHẬP</a>
+                 <div class="notification-bell">🔔</div>
+               
+            </nav>
+        </header>
+
+        <main>
+            <section class="heroSection">
+                <h2>— DUYỆT TÀI LIỆU —</h2>
+                <p>Xác nhận hoặc từ chối tài liệu được gửi đến hệ thống</p>
+
+                <div class="document-box">
+                    <div class="document-info">
+                        <div class="info-row">
+                            <span class="info-label">Tên tài liệu:</span>
+                            <span class="info-value" id="file-name">Hợp đồng lao động.pdf</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Người gửi:</span>
+                            <span class="info-value" id="file-author">Nguyễn Văn A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Ngày gửi:</span>
+                            <span class="info-value" id="file-date">21/10/2025</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="approve-btn">Xác nhận</button>
+                        <button class="reject-btn">Từ chối</button>
+                        <button class="view-btn">Xem</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2025 Phần mềm Quản lý Tài liệu. Mọi quyền được bảo lưu.</p>
+        </footer>
+    </div>
+
+    <script src="../static/js/approve-document.js"></script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+/* ===== RESET & BODY ===== */
 body {
     font-family: 'Arial', 'Helvetica Neue', sans-serif;
     margin: 0;
@@ -6,6 +7,18 @@ body {
     color: #2d3748;
     line-height: 1.6;
 }
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+}
+
+/* ===== HEADER ===== */
 
 .container {
     max-width: 1200px;
@@ -22,6 +35,7 @@ header {
     align-items: center;
     padding: 20px 0;
     border-bottom: 1px solid #e2e8f0;
+    position: relative;
 }
 
 .logo {
@@ -49,165 +63,189 @@ nav a {
     font-weight: 500;
     transition: color 0.3s ease;
 }
-
-nav a:hover {
-    color: #3182ce;
+.icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
 }
 
-.menuToggle {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
+.icon-link:hover {
+    transform: scale(1.1);
+}
+
+.menu-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+}
+
+.menu-icon:hover {
+    opacity: 0.8;
+}
+
+.downloadBtn {
+    background-color: #3182ce;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.downloadBtn:hover {
+    background-color: #2b6cb0;
+}
+
+/* ===== HERO SECTION ===== */
+.heroSection {
+    text-align: center;
+    padding: 60px 0;
+    background-color: #f9fafc;
+    border-radius: 12px;
+}
+
+.heroSection h2 {
+    font-size: 18px;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.heroSection p {
+    color: #4a5568;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    font-size: 16px;
+}
+
+/* ===== DOCUMENT BOX ===== */
+.document-box {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 650px;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.document-box:hover {
+    transform: translateY(-3px);
+}
+
+.document-info {
+    background-color: #f7fafc;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 25px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.info-value {
     color: #4a5568;
 }
 
-.loginSection {
-    text-align: center;
-    padding: 60px 0;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.loginSection h1 {
-    font-size: 40px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #1a202c;
-}
-
-.subTitle {
-    font-size: 18px;
-    color: #718096;
-    margin-bottom: 30px;
-}
-
-.roleSelection {
+/* ===== BUTTONS ===== */
+.action-buttons {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 30px;
+    gap: 15px;
 }
 
-.roleSelection label {
-    font-size: 16px;
-    font-weight: 500;
-    color: #2d3748;
-    cursor: pointer;
-}
-
-.roleSelection input[type="radio"] {
-    margin-right: 8px;
-    accent-color: #3182ce;
-}
-
-.loginForm {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.loginForm input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 16px;
-    color: #2d3748;
-    transition: border-color 0.3s ease;
-}
-
-.loginForm input:focus {
-    border-color: #3182ce;
-    outline: none;
-    box-shadow: 0 0 5px rgba(49, 130, 206, 0.3);
-}
-
-.loginBtn {
-    background-color: #3182ce;
-    color: #fff;
-    padding: 12px;
+.approve-btn,
+.reject-btn,
+.view-btn {
+    flex: 1;
+    padding: 10px 0;
     border: none;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.loginBtn:hover {
+.approve-btn {
+    background-color: #38a169;
+    color: #fff;
+}
+
+.approve-btn:hover {
+    background-color: #2f855a;
+}
+
+.reject-btn {
+    background-color: #e53e3e;
+    color: #fff;
+}
+
+.reject-btn:hover {
+    background-color: #c53030;
+}
+
+.view-btn {
+    background-color: #3182ce;
+    color: #fff;
+}
+
+.view-btn:hover {
     background-color: #2b6cb0;
-    transform: translateY(-2px);
 }
 
-.links {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.links a {
-    text-decoration: none;
-    color: #3182ce;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.links a:hover {
-    color: #2b6cb0;
-}
-
-.signUp {
-    font-size: 14px;
-    color: #718096;
-    margin-top: 15px;
-}
-
-.signUp a {
-    color: #3182ce;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.signUp a:hover {
-    color: #2b6cb0;
-}
-
+/* ===== FOOTER ===== */
 footer {
     text-align: center;
-    padding: 20px 0;
+    padding: 25px 0;
     border-top: 1px solid #e2e8f0;
     margin-top: 60px;
     color: #718096;
-}
-
-.partners span {
-    margin: 0 15px;
     font-size: 14px;
-    color: #718096;
 }
 
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     nav {
         display: none;
     }
+
     .menuToggle {
         display: block;
     }
-    .loginSection h1 {
-        font-size: 30px;
+
+    .heroSection {
+        padding: 40px 15px;
     }
-    .subTitle {
-        font-size: 16px;
+
+    .document-box {
+        width: 100%;
     }
-    .roleSelection {
+
+    .action-buttons {
         flex-direction: column;
-        gap: 15px;
     }
-    .loginForm {
-        gap: 15px;
+
+    .approve-btn,
+    .reject-btn,
+    .view-btn {
+        width: 100%;
     }
 }
 .notification-bell {
@@ -310,4 +348,3 @@ nav {
     align-items: center;
     gap: 22px; /* Khoảng cách giữa các icon và nút đăng nhập */
 }
-

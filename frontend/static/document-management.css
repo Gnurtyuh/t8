@@ -1,0 +1,390 @@
+/* ====== RESET & LAYOUT ====== */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+}
+
+/* ====== HEADER ====== */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #e2e8f0;
+    position: relative;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2d3748;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: #3182ce;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.downloadBtn {
+    background-color: #1da1f2;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.downloadBtn:hover {
+    background-color: #0d8ae5;
+}
+
+/* ====== HERO SECTION ====== */
+.heroSection {
+    text-align: center;
+    padding: 70px 20px;
+    background-color: #fafafa;
+    border-radius: 15px;
+    margin: 40px auto;
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.heroSection h2 {
+    color: #777;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.heroSection h1 {
+    font-size: 42px;
+    color: #111;
+    margin: 10px 0 20px;
+    font-weight: 800;
+}
+
+.heroSection p {
+    color: #666;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+/* ====== FEATURE SECTION ====== */
+.document-features {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.featureItem {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.featureItem img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+.featureLabel {
+    display: block;
+    margin-top: 10px;
+    color: #111;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+/* ====== DOCUMENT LIST ====== */
+/* ====== DOCUMENT LIST (ĐÃ TINH CHỈNH) ====== */
+.document-list {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.document-item {
+    background-color: #fff;
+    border-radius: 15px; /* Giảm bán kính viền */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Giảm độ mờ của shadow */
+    padding: 20px 30px; /* Giảm padding để khung nhỏ hơn */
+    width: 350px; /* Giảm chiều rộng */
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    text-align: left; /* căn lề trái cho các dòng thông tin */
+    line-height: 1.7;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Phân bổ không gian để nút ở giữa */
+    min-height: 250px; /* Đảm bảo chiều cao tối thiểu */
+}
+
+.document-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.document-item h3 {
+    text-align: center;
+    color: #111;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.document-item span {
+    display: block;
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 6px;
+    padding-left: 5px;
+}
+
+.view-btn {
+    display: block;
+    background-color: #1da1f2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 12px; /* Giữ kích thước nhỏ gọn */
+    font-size: 12px;   /* Giữ font-size nhỏ */
+    cursor: pointer;
+    margin: 0 auto; /* Căn giữa theo chiều ngang */
+    align-self: center; /* Căn giữa theo chiều dọc trong flex container */
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.view-btn:hover {
+    background-color: #0d8ae5;
+    transform: scale(1.04);
+}
+
+/* ====== FOOTER ====== */
+footer {
+    text-align: center;
+    padding: 25px 0;
+    color: #777;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    margin-top: 50px;
+}
+.icon-link {
+    font-size: 20px;
+    color: #333;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: color 0.3s;
+}
+
+.icon-link:hover {
+    color: #1da1f2;
+}
+
+.icon-link span {
+    display: inline-block;
+    vertical-align: middle;
+}
+.icon-link img.menu-icon {
+    width: 22px;          /* Kích thước tương đương emoji 📄 */
+    height: 22px;
+    vertical-align: middle;
+    margin-right: 10px;
+    transition: transform 0.2s ease;
+}
+
+.icon-link img.menu-icon:hover {
+    transform: scale(1.15);
+}
+.notification-bell {
+    font-size: 24px;
+    cursor: pointer;
+    color: #4a5568;
+    transition: color 0.3s ease;
+}
+
+.notification-bell:hover {
+    color: #3182ce;
+}
+
+.notification-panel {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 1000;
+}
+
+.notification-panel h3 {
+    font-size: 18px;
+    color: #1a202c;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-list li {
+    font-size: 14px;
+    color: #2d3748;
+    padding: 8px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.notification-list li:last-child {
+    border-bottom: none;
+}
+
+.notification-list li:hover {
+    background-color: #f7fafc;
+}
+
+/* Style cho nút ẩn/hiện mật khẩu */
+.toggle-password-btn {
+    background-color: #3182ce;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+    vertical-align: middle;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-password-btn:hover {
+    background-color: #2b6cb0;
+}
+.icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.icon-link:hover {
+    transform: scale(1.1);
+}
+
+.menu-icon {
+    width: 26px;         /* Đồng bộ kích thước icon */
+    height: 26px;
+    object-fit: contain; /* Giữ tỉ lệ ảnh */
+    transition: opacity 0.3s ease;
+}
+
+.menu-icon:hover {
+    opacity: 0.8;
+}
+
+/* Giúp các phần trong header cân đều */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 22px; /* Khoảng cách giữa các icon và nút đăng nhập */
+}
+.notification-bell {
+    font-size: 24px;
+    cursor: pointer;
+    color: #4a5568;
+    transition: color 0.3s ease;
+}
+
+.notification-bell:hover {
+    color: #3182ce;
+}
+
+.notification-panel {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 1000;
+}
+
+.notification-panel h3 {
+    font-size: 18px;
+    color: #1a202c;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-list li {
+    font-size: 14px;
+    color: #2d3748;
+    padding: 8px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.notification-list li:last-child {
+    border-bottom: none;
+}
+
+.notification-list li:hover {
+    background-color: #f7fafc;
+}
