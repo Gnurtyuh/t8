@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,20 +30,54 @@ public class AesController {
 
     @PostMapping("/encrypt")
     public ResponseEntity<?> encryptFile(
-            @RequestParam String password,
-            @RequestParam String filePath) throws Exception {
-        File input = new File(filePath);
-        String newPath = AesUtil.encrypt(password.toCharArray(), input);
-        return ResponseEntity.ok(newPath);
+            @RequestParam("password") String password,
+            @RequestParam("file") MultipartFile file) throws Exception {
+
+        //  Tạo file tạm trên server
+        File tempFile = File.createTempFile("upload_", "_" + file.getOriginalFilename());
+        file.transferTo(tempFile);
+
+        try {
+            String encryptedPath = AesUtil.encrypt(password.toCharArray(), tempFile);
+
+            Files.deleteIfExists(tempFile.toPath());
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "File encrypted successfully",
+                    "path", encryptedPath
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
+
     @PostMapping("/decrypt")
-    public ResponseEntity<?> decryptFile(
-            @RequestParam String password,
-            @RequestParam String filePath) throws Exception {
-        File input = new File(filePath);
-        String newPath = AesUtil.decrypt(password.toCharArray(), input);
-        return ResponseEntity.ok(newPath);
+    public ResponseEntity<byte[]> decryptFile(
+            @RequestParam("password") String password,
+            @RequestParam("filename") String filename) throws Exception {
+
+
+
+        // Giải mã file (hàm decrypt sẽ tạo file giải mã trên server)
+        String decryptedPath = AesUtil.decrypt(password.toCharArray(), filename);
+
+        //  Đọc file giải mã vào bộ nhớ
+        File decryptedFile = new File(decryptedPath);
+        byte[] decryptedBytes = Files.readAllBytes(decryptedFile.toPath());
+
+        // Trả file giải mã về client để tải xuống
+        ResponseEntity<byte[]> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + decryptedFile.getName() + "\"")
+                .body(decryptedBytes);
+
+        //Dọn dẹp: xóa file giải mã sau khi trả về (nếu bạn muốn)
+        Files.deleteIfExists(decryptedFile.toPath());
+
+        return response;
     }
+
     @GetMapping("/download")
     public ResponseEntity<?> downloadFile(@RequestParam String filePath) {
         File file = new File(filePath);
@@ -59,25 +94,6 @@ public class AesController {
                         "attachment; filename=\"" + file.getName() + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteFile(@RequestParam String filePath) {
-        try {
-            Path targetFile = Paths.get(filePath).toAbsolutePath().normalize();
-
-            if (Files.exists(targetFile)) {
-                Files.delete(targetFile);
-                return ResponseEntity.ok("✅ Đã xóa file: " + targetFile.getFileName());
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("⚠️ Không tìm thấy file: " + targetFile);
-            }
-
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("❌ Lỗi khi xóa file: " + e.getMessage());
-        }
     }
 
 

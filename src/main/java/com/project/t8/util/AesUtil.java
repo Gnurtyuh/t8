@@ -8,6 +8,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -33,7 +35,7 @@ public class AesUtil {
     public static String encrypt(char[] password, File input) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         byte[] iv = new byte[16];
         String extension = getFileExtension(input);
-        String path ="path\\"+ rename(input) +".enc";
+        String path ="path\\"+ renameFile(input) +".enc";
         SecretKey secretKey = generateAesKey(password);
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
@@ -55,12 +57,12 @@ public class AesUtil {
             Arrays.fill(password, '\0');
         }
     }
-
-    // Đổi tên tập tin (loại bỏ phần mở rộng)
-    static String rename(File input){
+    static String renameFile(File input){
         String fileName = input.getName();
-        String file = fileName.substring(0, fileName.lastIndexOf('.'));
-        return file;
+        return fileName.substring(0, fileName.lastIndexOf('.'));
+    }
+    static String rename(String fileName){
+        return fileName.substring(0, fileName.lastIndexOf('.'));
     }
 
     // Lấy phần mở rộng của tập tin
@@ -73,9 +75,10 @@ public class AesUtil {
         return name.substring(lastIndex); // Bao gồm dấu chấm, ví dụ ".pdf"
     }
 
-    // Giải mã
-    public static String decrypt(char[] password, File input) throws Exception {
-        try (FileInputStream fis = new FileInputStream(input)) {
+    public static String decrypt(char[] password, String filename) throws Exception {
+        Path encryptedPath = Paths.get("path\\" + rename(filename)+".enc");
+        File encryptedFile = encryptedPath.toFile();
+        try (FileInputStream fis = new FileInputStream(encryptedFile)) {
             int extLen = fis.read();
             byte[] extBytes = new byte[extLen];
             fis.read(extBytes);
@@ -84,7 +87,7 @@ public class AesUtil {
             if (fis.read(iv) != 16) {
                 throw new IllegalArgumentException("File too short or missing iv");
             }
-            String output ="/decrypted/"+ rename(input)+extension;
+            String output ="/decrypted/"+ renameFile(encryptedFile)+extension;
             SecretKey key = generateAesKey(password);
             Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
             GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
