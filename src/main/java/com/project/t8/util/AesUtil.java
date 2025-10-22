@@ -19,6 +19,8 @@ import java.util.Random;
 @Component
 public class AesUtil {
     public static String salt ="TrungTanThinhCuong";
+    
+    // Tạo khóa AES từ mật khẩu
     public static SecretKey generateAesKey(char[] password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] saltBytes = salt.getBytes();
         SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2withHmacSHA256");
@@ -26,6 +28,8 @@ public class AesUtil {
         byte[] key = secretKeyFactory.generateSecret(spec).getEncoded();
         return new SecretKeySpec(key, "AES");
     }
+
+    //mã hóa
     public static String encrypt(char[] password, File input) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         byte[] iv = new byte[16];
         String extension = getFileExtension(input);
@@ -51,11 +55,15 @@ public class AesUtil {
             Arrays.fill(password, '\0');
         }
     }
+
+    // Đổi tên tập tin (loại bỏ phần mở rộng)
     static String rename(File input){
         String fileName = input.getName();
         String file = fileName.substring(0, fileName.lastIndexOf('.'));
         return "path\\"+file;
     }
+
+    // Lấy phần mở rộng của tập tin
     public static String getFileExtension(File file) {
         String name = file.getName();
         int lastIndex = name.lastIndexOf('.');
@@ -65,6 +73,7 @@ public class AesUtil {
         return name.substring(lastIndex); // Bao gồm dấu chấm, ví dụ ".pdf"
     }
 
+    // Giải mã
     public static String decrypt(char[] password, File input) throws Exception {
         try (FileInputStream fis = new FileInputStream(input)) {
             int extLen = fis.read();
