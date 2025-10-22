@@ -45,7 +45,7 @@ public class DepartmentController {
         return ResponseEntity.ok(department);
     }
 
-    @GetMapping("/deparment/{departmentId}")
+    @GetMapping("/{departmentId}")
     public ResponseEntity<?> getDepartment(@PathVariable long departmentId) {
         Department department = departmentService.getDepartmentById(departmentId);
         return ResponseEntity.ok(departmentService.entityMapDto(department));
