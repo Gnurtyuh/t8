@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePasswordBtn = document.querySelector('.toggle-password-btn');
     const sendDataBtn = document.querySelector('.sendDataBtn');
 
-    // ✅ Kiểm tra điều kiện kích hoạt nút tải và gửi
+
+
+    // Kiểm tra điều kiện kích hoạt nút tải và gửi
     function checkButtonState() {
         const hasFile = fileInput.files.length > 0;
         const hasPassword = passwordInput.value.trim() !== '';
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ✅ Hiển thị tên file khi chọn
+    // nhập file và hiển thị tên file khi chọn 
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length > 0) {
             const name = fileInput.files[0].name;
@@ -36,10 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
         checkButtonState();
     });
 
-    // ✅ Nhập mật khẩu
+    // Nhập mật khẩu để kiểm tra trạng thái nút
     passwordInput.addEventListener('input', checkButtonState);
 
-    // ✅ Kéo thả file
+
+    // Kéo thả file
     fileUpload.addEventListener('dragover', (e) => {
         e.preventDefault();
         fileUpload.style.borderColor = '#3182ce';
@@ -60,18 +63,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     // ✅ Fix lỗi click 2 lần
     browseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         fileInput.click();
     });
 
-    // ✅ Xử lý mã hóa & tải file
+
+
+
+    // post path file về cho server xử lý
+    // Xử lý mã hóa & tải file
     nextBtn.addEventListener('click', async () => {
         if (nextBtn.disabled) return;
 
         const file = fileInput.files[0];
         const password = passwordInput.value;
+        fetch("http://localhost:8080/user/encrypt", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fileName: file.name,
+                password: password
+            })
+        });
 
         try {
             const encoder = new TextEncoder();
@@ -142,6 +160,12 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('❌ Đã xảy ra lỗi khi mã hóa tập tin. Vui lòng thử lại!');
         }
     });
+
+
+
+
+
+
 
     // ✅ Xử lý gửi dữ liệu
     sendDataBtn.addEventListener('click', () => {
