@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.project.t8.entity.Department;
-import com.project.t8.repository.DepartmentRepo;
 
 @RestController
 @RequestMapping("/admin/department")

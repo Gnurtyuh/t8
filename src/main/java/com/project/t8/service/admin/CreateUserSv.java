@@ -31,4 +31,8 @@ public class CreateUserSv {
         user.setPassword(encoder.encode(userDto.getPassword()).getBytes(StandardCharsets.UTF_8));
         return userRepo.save(user);
     }
+
+    // public UserDto getInforUser(User user) {
+    // Department department = departmentService.getDepartmentById()
+    // }
 }
