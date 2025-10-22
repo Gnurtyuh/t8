@@ -33,7 +33,7 @@ public class AesUtil {
     public static String encrypt(char[] password, File input) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         byte[] iv = new byte[16];
         String extension = getFileExtension(input);
-        String path = rename(input) +".enc";
+        String path ="path\\"+ rename(input) +".enc";
         SecretKey secretKey = generateAesKey(password);
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
@@ -60,7 +60,7 @@ public class AesUtil {
     static String rename(File input){
         String fileName = input.getName();
         String file = fileName.substring(0, fileName.lastIndexOf('.'));
-        return "path\\"+file;
+        return file;
     }
 
     // Lấy phần mở rộng của tập tin
@@ -84,7 +84,7 @@ public class AesUtil {
             if (fis.read(iv) != 16) {
                 throw new IllegalArgumentException("File too short or missing iv");
             }
-            String output =rename(input)+extension;
+            String output ="/decrypted/"+ rename(input)+extension;
             SecretKey key = generateAesKey(password);
             Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
             GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
@@ -97,7 +97,7 @@ public class AesUtil {
                 while ((n = cis.read(buffer)) != -1) {
                     fos.write(buffer, 0, n);
                 }
-                return  output;
+                return output;
             } finally {
                 Arrays.fill(password, '\0');
             }
