@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user/aes")
@@ -33,11 +34,11 @@ public class AesController {
     @PostMapping("/encrypt")
     public ResponseEntity<?> encryptFile(
             @RequestParam("password") String password,
-            @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal UserDetails user) throws Exception {
+            @RequestParam("file") MultipartFile file) throws Exception {
 
         //  Tạo file tạm trên server
-        File tempFile = File.createTempFile("upload_", "_" + file.getOriginalFilename());
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File tempFile = new File(tempDir, Objects.requireNonNull(file.getOriginalFilename()));
         file.transferTo(tempFile);
 
         try {
@@ -50,7 +51,6 @@ public class AesController {
                     "path", encryptedPath
             ));
         } catch (Exception e) {
-            System.out.println("loi tu day");
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", e.getMessage()));

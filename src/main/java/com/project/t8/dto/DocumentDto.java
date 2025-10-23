@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 @Data
 public class DocumentDto {
+    private long documentId;
     private String title;
     private String description;
     private Timestamp uploadDate;
