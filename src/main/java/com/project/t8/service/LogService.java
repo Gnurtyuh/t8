@@ -69,6 +69,17 @@ public class LogService {
         }
         return logDto;
     }
+    public List<LogDto> findByDepartmentName(String departmentName) {
+        List<Department> departments = departmentService.getDepartmentByName(departmentName);
+        List<LogDto> logDto = new ArrayList<>();
+        for(Department department : departments) {
+            List<Log> logs = logRepo.findByDepartmentId(department.getDepartmentId());
+            for (Log log : logs) {
+                logDto.add(entityMapDtoLog(log));
+            }
+        }
+        return logDto;
+    }
     public List<LogDto> getAllLog() {
         List<Log> logs = logRepo.findAll();
         List<LogDto> logDto = new ArrayList<>();

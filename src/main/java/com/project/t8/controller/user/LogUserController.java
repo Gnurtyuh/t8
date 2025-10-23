@@ -17,15 +17,15 @@ public class LogUserController {
     @Autowired
     private LogService logService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getLog(@PathVariable long id) {
-        LogDto logDto = logService.findByLogId(id);
+    @GetMapping("/{logId}")
+    public ResponseEntity<?> getLog(@PathVariable long logId) {
+        LogDto logDto = logService.findByLogId(logId);
         return ResponseEntity.ok(logDto);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateLog(@PathVariable long id, @RequestBody LogDto logDto) {
-        Log log = logService.updateLog(id, logDto);
+    @PutMapping("/update/{logId}")
+    public ResponseEntity<?> updateLog(@PathVariable long logId, @RequestBody LogDto logDto) {
+        Log log = logService.updateLog(logId, logDto);
         return ResponseEntity.ok(log);
     }
 
@@ -42,7 +42,12 @@ public class LogUserController {
         List<LogDto> logs = logService.findByDepartmentId(departmentId);
         return ResponseEntity.ok(logs);
     }
-
+    @PreAuthorize("authentication.principal.roleLevel <= 1")
+    @GetMapping("/department/{departmentName}")
+    public ResponseEntity<?> getLogByDepartmentName(@PathVariable String departmentName) {
+        List<LogDto> logs = logService.findByDepartmentName(departmentName);
+        return ResponseEntity.ok(logs);
+    }
     @PreAuthorize("authentication.principal.roleLevel <= 3")
     @GetMapping("/userbymonth/{userId}")
     public ResponseEntity<?> getLogByMonth(@PathVariable Long userId, @RequestParam int month) {
