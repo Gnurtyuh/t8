@@ -37,6 +37,7 @@ public class LogService {
         logDto.setDescription(documentDto.getDescription());
         Log log= dtoMapEntityLog(logDto);
         log.setLogId(null);
+        log.setCreatedAt(null);
         return logRepo.save(log);
     }
     public Log updateLog(long id,LogDto logDto) {

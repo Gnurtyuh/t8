@@ -37,6 +37,7 @@ public class DocumentService {
     public Document createDocument(DocumentDto documentDto) {
         Document document = entityMapDtoDoc(documentDto);
         document.setDocumentId(null);
+        document.setUploadDate(null);
         return documentRepo.save(document);
     }
 
