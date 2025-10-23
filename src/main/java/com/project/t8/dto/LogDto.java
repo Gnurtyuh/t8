@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 
 @Data
 public class LogDto {
+    private long logId;
     private String action;
     private String target;
     private String status;
