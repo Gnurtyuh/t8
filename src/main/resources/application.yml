@@ -3,10 +3,12 @@ spring:
     name:
       Documents
   datasource:
-    url: jdbc:postgresql://localhost:5432/TTAPCM
+    url: jdbc:postgresql://localhost:5432/t8
     username: postgres
-    password: 130804
+    password: 123456
     driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: true
 server:
   port: 8080
 
@@ -14,7 +16,3 @@ jwt:
   signerKey: "df-uig-hsd-fighd-sgfids-fghdsfguds-this-is-a-super-long-secret-key-for-hs256-with-more-than-sixty-four-characters!!!"
   valid-duration: 7200 # in second
   refreshable-duration: 72000 # in seconds
-jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
