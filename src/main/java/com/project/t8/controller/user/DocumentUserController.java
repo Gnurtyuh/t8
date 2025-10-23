@@ -56,7 +56,7 @@ public class DocumentUserController {
         return ResponseEntity.ok(documentDto);
     }
     @PreAuthorize("authentication.principal.roleLevel <= 3")
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<?> getDocumentByUsername(@PathVariable String username) {
         List<DocumentDto> documentDto= documentService.findByUser(username);
         return ResponseEntity.ok(documentDto);

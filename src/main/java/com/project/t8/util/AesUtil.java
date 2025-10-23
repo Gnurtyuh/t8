@@ -36,7 +36,9 @@ public class AesUtil {
         byte[] iv = new byte[16];
         String extension = getFileExtension(input);
         File folder = new File("path");
-        folder.mkdirs();
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs(); // chỉ tạo nếu chưa tồn tại
+        }
         String path ="path\\"+ renameFile(input) +".enc";
         SecretKey secretKey = generateAesKey(password);
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");

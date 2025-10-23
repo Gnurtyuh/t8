@@ -16,7 +16,9 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepo departmentRepo;
     public Department createDepartment(DepartmentDto departmentdto) {
-        return departmentRepo.save(dtoMapEntity(departmentdto));
+        Department department = dtoMapEntity(departmentdto);
+        department.setDepartmentId(null);
+        return departmentRepo.save(department);
     }
     public Department getDepartmentById(long departmentId){
         return departmentRepo.findById(departmentId).orElseThrow(()->new EntityNotFoundException("Department not found"));

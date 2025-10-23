@@ -35,7 +35,9 @@ public class DocumentService {
     private UserService userService;
 
     public Document createDocument(DocumentDto documentDto) {
-        return documentRepo.save(entityMapDtoDoc(documentDto));
+        Document document = entityMapDtoDoc(documentDto);
+        document.setDocumentId(null);
+        return documentRepo.save(document);
     }
 
     public Document updateDocument(long id, DocumentDto documentDto) {
