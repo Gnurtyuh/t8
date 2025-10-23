@@ -9,7 +9,8 @@ const documentData = [
 ];
 
 // Lấy dữ liệu cho target "User1"
-const targetUserData = documentData.find(item => item.target === "User1");
+for (const item of documentData) {
+    const targetUserData = documentData.find(d => d.target === item.target);
 
 // Thêm dữ liệu vào giao diện khi trang tải
 document.addEventListener("DOMContentLoaded", function() {
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
         documentInfo.innerHTML = "<div class='info-row'><span class='info-label'>Lỗi:</span><span class='info-value'>Không tìm thấy dữ liệu cho User1</span></div>";
     }
 });
-
+}
 function updateStatus(newStatus, completionTime = "") {
     currentStatus = newStatus;
     const statusElement = document.getElementById("status");

@@ -263,6 +263,7 @@ input[type="password"]:focus, input[type="text"]:focus {
 }
 
 .sendDataBtn {
+    justify-content: center;
     background-color: #e2e8f0;
     color: #fff;
     padding: 12px 25px;
