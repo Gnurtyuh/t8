@@ -69,7 +69,7 @@ public class DocumentService {
     }
     public List<DocumentDto> findByUser(String username) {
         User user = userService.findByUsername(username);
-        Long userId = user.getUserId();
+        Integer userId = Math.toIntExact(user.getUserId());
         List<Document> documents = documentRepo.findByUser(userId);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {

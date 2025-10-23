@@ -46,7 +46,7 @@ public class LogService {
 
     public List<LogDto> findByUser(String username) {
         User user=userService.findByUsername(username);
-        List<Log> logs = logRepo.findByUserId(user.getUserId());
+        List<Log> logs = logRepo.findByUserId( Math.toIntExact(user.getUserId()));
         List<LogDto> logDto = new ArrayList<>();
         for (Log log : logs) {
             logDto.add(entityMapDtoLog(log));
@@ -54,7 +54,7 @@ public class LogService {
         return logDto;
     }
     public List<LogDto> findByMonth(Long userId ,int month) {
-        List<Log> logs = logRepo.findByMonth(userId,month);
+        List<Log> logs = logRepo.findByMonth( Math.toIntExact(userId),month);
         List<LogDto> logDto = new ArrayList<>();
         for (Log log : logs) {
             logDto.add(entityMapDtoLog(log));
