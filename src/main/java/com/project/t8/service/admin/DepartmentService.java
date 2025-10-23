@@ -62,6 +62,7 @@ public class DepartmentService {
     }
     public DepartmentDto entityMapDto(Department department){
         DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.setDepartmentId(department.getDepartmentId());
         departmentDto.setDepartmentName(department.getDepartmentName());
         departmentDto.setDivision(department.getDivision());
         departmentDto.setDescription(department.getDescription());
