@@ -85,6 +85,7 @@ public class LogService {
         User user = userService.findByUserId(log.getUserId());
         Document document = documentService.getDocumentById(log.getDocumentId());
         LogDto logDto = new LogDto();
+        logDto.setLogId(log.getLogId());
         logDto.setAction(log.getAction());
         logDto.setDescription(log.getDescription());
         logDto.setStatus(log.getStatus());
@@ -101,6 +102,7 @@ public class LogService {
         Department department = departmentService.getDepartmentById(log.getDepartmentId());
         User user = userService.findByUserId(log.getUserId());
         Document document = documentService.getDocumentById(log.getDocumentId());
+        log.setLogId(logDto.getLogId());
         log.setAction(logDto.getAction());
         log.setDescription(logDto.getDescription());
         log.setStatus(logDto.getStatus());

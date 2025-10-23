@@ -92,6 +92,7 @@ public class DocumentService {
         Document document = new Document();
         Department department = departmentService.dtoMapEntity(documentDto.getDepartmentDto());
         User user = userService.dtoMapEntity(documentDto.getUserDto());
+        document.setDocumentId(documentDto.getDocumentId());
         document.setTitle(documentDto.getTitle());
         document.setDescription(documentDto.getDescription());
         document.setDepartmentId(department.getDepartmentId());
@@ -103,6 +104,7 @@ public class DocumentService {
         DocumentDto document = new DocumentDto();
         Department department = departmentService.getDepartmentById(doc.getDepartmentId());
         User user = userService.findByUserId(doc.getUploadedByUser());
+        document.setDocumentId(doc.getDocumentId());
         document.setTitle(doc.getTitle());
         document.setDescription(doc.getDescription());
         document.setDepartmentDto(departmentService.entityMapDto(department));
