@@ -33,14 +33,14 @@ public class DocumentUserController {
     @PostMapping
     public ResponseEntity<?> createDocument( @RequestBody DocumentDto documentDto) {
         Document document= documentService.createDocument(documentDto);
-        logService.createLog(documentDto,"CREATED");
+        logService.createLog(documentDto,"CREATED DOCUMENT");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PreAuthorize("authentication.principal.roleLevel <= 2")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateDocument(@PathVariable long id, @RequestBody DocumentDto documentDto ){
         Document document= documentService.updateDocument(id,documentDto);
-        logService.createLog(documentDto,"UPDATED");
+        logService.createLog(documentDto,"UPDATED DOCUMENT");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PreAuthorize("authentication.principal.roleLevel <= 2")
