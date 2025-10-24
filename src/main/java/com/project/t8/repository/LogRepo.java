@@ -17,4 +17,5 @@ public interface LogRepo extends JpaRepository<Log,Long>{
     List<Log> findByMonth(@Param("userId") int userId,@Param("month") int month);
     List<Log> findByDepartmentId(Long departmentId);
     Log findByLogId(Long logId);
+    List<Log> findByDocumentId(Long documentId);
 }
