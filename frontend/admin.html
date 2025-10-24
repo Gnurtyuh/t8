@@ -39,10 +39,10 @@
             <table id="recent-users">
               <thead>
                 <tr>
-                  <th>Full Name</th>
-                  <th>Tên Người Dùng</th>
+                  <th>Họ và tên nhân viên</th>
+                  <th>Tên người dùng</th>
                   <th>Email</th>
-                  <th>Vai Trò</th>
+                  <th>Chức vụ</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -95,37 +95,43 @@
         </section>
 
         <section id="users" class="tab">
-          <h2>Quản Lý Người Dùng</h2>
+          <h2>Quản lý nhân viên</h2>
           <div class="card">
-            <h3>Tìm Kiếm Người Dùng</h3>
-            <div class="search-group">
+            <h3>Tìm kiếm nhân viên</h3>
+            <div class="form-group">
               <input
                 type="text"
-                id="search-user"
-                placeholder="Tìm kiếm người dùng"
+                id="assign-user"
+                placeholder="Tên nhân viên"
                 class="input-field"
               />
-              <button class="action-btn" onclick="filterUsers()">Tìm</button>
+              <div id="assign-results" class="search-results02"></div>
             </div>
           </div>
           <div class="user-section">
-            <div class="user-card">
-              <h3>Thêm Người Dùng</h3>
+            <div id="addUserForm" class="user-card">
+              <h3>Thêm nhân viên</h3>
               <div class="form-group">
                 <input
                   type="text"
                   id="full-name"
-                  placeholder="Full Name"
+                  placeholder="Họ tên đầy đủ"
                   class="input-field"
                 />
+                <span id="warn-fullname" style="display: none; color: red"
+                  >⚠️</span
+                >
               </div>
               <div class="form-group">
                 <input
                   type="text"
                   id="username"
-                  placeholder="Tên người dùng"
+                  placeholder="Tên đăng nhập"
                   class="input-field"
                 />
+                <span id="warn-username" style="display: none; color: red"
+                  >⚠️</span
+                >
               </div>
               <div class="form-group">
                 <input
@@ -134,6 +140,9 @@
                   placeholder="Email"
                   class="input-field"
                 />
+                <span id="warn-email" style="display: none; color: red"
+                  >⚠️</span
+                >
               </div>
               <div class="form-group">
                 <input
@@ -142,38 +151,27 @@
                   placeholder="Mật khẩu"
                   class="input-field"
                 />
+                <span id="warn-password" style="display: none; color: red"
+                  >⚠️</span
+                >
               </div>
               <div id="departmentuser" class="form-group">
-                <select id="department" class="input-field">
-                  <!-- <option value="">Phong ban a</option>
-                  <option value="admin">Phong b</option>
-                  <option value="user">Phong c</option> -->
-                </select>
+                <select id="department" class="input-field"></select>
               </div>
               <button class="action-btn" onclick="addUser()">Thêm</button>
             </div>
             <div class="user-card">
-              <h3>Phân Quyền</h3>
+              <h3>Chỉnh sửa chức vụ</h3>
               <div class="form-group">
                 <input
                   type="text"
                   id="permission-user"
-                  placeholder="Tên người dùng"
+                  placeholder="Tên nhân viên - Tên đăng nhập"
                   class="input-field"
                 />
+                <div id="search-results" class="search-results"></div>
               </div>
-              <div class="form-group">
-                <label id="permission-fullname"><p>Full Name</p></label>
-              </div>
-              <div class="form-group">
-                <label id="permission-fullname"><p>Email</p></label>
-                <!-- <input
-                  type="email"
-                  id="permission-email"
-                  placeholder="Email"
-                  class="input-field"
-                /> -->
-              </div>
+
               <div class="form-group">
                 <select id="permission-role" class="input-field">
                   <option value="3">Nhân viên</option>
@@ -187,17 +185,15 @@
             </div>
           </div>
           <div class="user-card">
-            <h3>Danh Sách Người Dùng</h3>
+            <h3>Danh sách nhân viên:</h3>
             <table class="user-table" id="user-table">
               <thead>
                 <tr>
-                  <th>Full Name</th>
-                  <th>Tên Người Dùng</th>
+                  <th>Họ và tên nhân viên</th>
+                  <th>Tên người dùng</th>
                   <th>Email</th>
-                  <th>Phòng ban</th>
-                  <th>Vai Trò</th>
-                  <th>Ghi Chú</th>
-                  <th>Hành Động</th>
+                  <th>Phòng ban - Bộ phận</th>
+                  <th>Chức vụ</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -303,5 +299,6 @@
     </div>
     <script src="/t8/frontend/static/js/admin.js"></script>
     <script src="/t8/frontend/static/js/fetchdata/admin/department.js"></script>
+    <script src="/t8/frontend/static/js/fetchdata/admin/manageruser.js"></script>
   </body>
 </html>

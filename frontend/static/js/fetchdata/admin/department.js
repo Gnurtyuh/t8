@@ -46,6 +46,8 @@ fetch(addreddApiGetAll)
         const option = document.createElement("option");
         // option.textContent = depart.departmentName;
         option.textContent = `${depart.departmentName} - ${depart.division}`;
+        option.dataset.departmentName = depart.departmentName;
+        option.dataset.division = depart.division;
         departSelect.appendChild(option);
     });
     console.log(data);

@@ -21,14 +21,9 @@
             });
         });
 
-        // Quản Lý Người Dùng
-        let users = [
-            { fullName: "Nguyen Van A", username: "user1", email: "a@example.com",department: "Phòng tài chính", role: "user", note: "Nhân viên IT" },
-            { fullName: "Tran Thi B", username: "user2", email: "b@example.com", role: "admin", note: "Quản lý nhân sự" },
-            { fullName: "Le Van C", username: "user3", email: "c@example.com", role: "user", note: "" },
-            { fullName: "Pham Thi D", username: "user4", email: "d@example.com", role: "user", note: "Nhân viên CNTT" }
-        ];
-
+        // Danh sach nhan vien sau khi call api
+        let users = [];
+        
         function loadUserTable() {
            
             const tbody = document.getElementById('user-table').getElementsByTagName('tbody')[0];
@@ -41,8 +36,7 @@
                     <td>${user.email}</td>
                     <td>${user.department}</td>
                     <td>${user.role}</td>
-                    <td>${user.note || ''}</td>
-                    <td><button class="action-btn" onclick="deleteUser(${index})">Xóa</button></td>
+                  
                 `;
             });
         }
@@ -50,7 +44,7 @@
         function loadRecentUsers() {
             const tbody = document.getElementById('recent-users').getElementsByTagName('tbody')[0];
             tbody.innerHTML = '';
-            users.slice(0, 4).forEach(user => {
+            users.forEach(user => {
                 const row = tbody.insertRow();
                 row.innerHTML = `
                     <td>${user.fullName}</td>
@@ -61,41 +55,68 @@
             });
         }
 
-        // function addUser() {
-        
-        //     const newUser = {
-        //         username: document.getElementById('username').value,
-        //         password: document.getElementById('password').value,
-        //         email: document.getElementById('email').value,
-        //         fullName: document.getElementById('full-name').value,
-        //         departmentDto : document.getElementById()
-        //     }
-        //     try {
-        //    const response = fetch(addreddApiCreateUser, {
-        //         method: 'POST',
-        //         headers: 
-        //         {'Content-Type' : 'application/json',},
-        //         body:
-        //         JSON.stringify(newUser);
-        //     });
-        //     if(!response.ok) throw new Error("Lỗi khi gọi Api");
-
-        // } catch(err){
-        //     console.error(err);
-        // }
-        //     if (fullName && username && email && password && role) {
-        //         users.push({ fullName, username, email,department, role});
-        //         alert(`Đã thêm người dùng: ${username}`);
-        //         document.getElementById('full-name').value = '';
-        //         document.getElementById('username').value = '';
-        //         document.getElementById('email').value = '';
-        //         document.getElementById('departmetn').value = '';
-        //         document.getElementById('password').value = '';
-        //         document.getElementById('role').value = '';
-        //         loadUserTable();
-        //         loadRecentUsers();
-        //     }
-        // }
+        async function addUser() {
+            const fields = [
+                { id: 'username', warnId: 'warn-username' },
+                { id: 'password', warnId: 'warn-password' },
+                { id: 'email', warnId: 'warn-email' },
+                { id: 'full-name', warnId: 'warn-fullname' }
+              ];
+              // Bien de kiem soat tinh hop le 
+              let isValid = true;
+              
+              // Check input rong hay khong 
+              fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const warnIcon = document.getElementById(field.warnId);
+                //Lay gia tri tu input va xoa khoang trang dau/cuoi,
+                if (!input.value.trim()) {
+                  warnIcon.style.display = 'inline';
+                  isValid = false;
+                } else {
+                  warnIcon.style.display = 'none';
+                }
+              });
+              
+              if (!isValid) return;
+            const select = document.getElementById('department')
+            const selectedOption = select.options[select.selectedIndex];
+            const departmentName = selectedOption.dataset.departmentName;
+            const division = selectedOption.dataset.division;
+            const newUser = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                email: document.getElementById('email').value,
+                fullName: document.getElementById('full-name').value,
+                departmentDto : {
+                    departmentName,
+                    division
+                }
+            }
+            try {
+           const response = await fetch(addreddApiCreateUser, {
+                method: 'POST',
+                headers: 
+                {'Content-Type' : 'application/json'},
+                body:
+                JSON.stringify(newUser)
+            });
+            if(!response.ok) {throw new Error("Lỗi khi gọi Api")}
+            alert("Thêm thành công nhân viên:",username);
+            console.log(newUser);
+            //Xoa cac phan input vua nhap
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('full-name').value = '';
+            document.getElementById('department').selectedIndex = 0;
+            fields.forEach(field => {
+                document.getElementById(field.warnId).style.display = 'none';
+              });
+        } catch(err){
+            console.error(err);
+        }
+    }
 
         function deleteUser(index) {
             if (confirm('Bạn có chắc muốn xóa người dùng này?')) {
@@ -104,26 +125,123 @@
                 loadRecentUsers();
             }
         }
-
-        function updatePermission() {
-            const username = document.getElementById('permission-user').value;
-            const fullName = document.getElementById('permission-fullname').value;
-            const email = document.getElementById('permission-email').value;
-            const role = document.getElementById('permission-role').value;
-
-            const userIndex = users.findIndex(user => user.username === username);
-            if (userIndex !== -1 && role) {
-                if (fullName) users[userIndex].fullName = fullName;
-                if (email) users[userIndex].email = email;
-                users[userIndex].role = role;
-                alert(`Đã cập nhật quyền cho ${username}`);
-                loadUserTable();
-                loadRecentUsers();
-                document.getElementById('permission-user').value = '';
-                document.getElementById('permission-fullname').value = '';
-                document.getElementById('permission-email').value = '';
-                document.getElementById('permission-role').value = '';
+//
+        const searchInput = document.getElementById("permission-user");
+        const searchResults = document.getElementById("search-results");
+        searchInput.addEventListener("input", () => {
+            const keyword = searchInput.value.trim().toLowerCase();
+            if(keyword === "") {
+                searchResults.style.display = "none";
+                return;
             }
+            const filtered = users.filter(user => 
+                user.fullName.toLowerCase().includes(keyword) ||
+                user.username.toLowerCase().includes(keyword) ||
+                user.department.toLowerCase().includes(keyword)
+            );
+            renderSearchResults(filtered);
+        })
+        let selectUser = null;
+        function renderSearchResults(list) {
+            searchResults.innerHTML = "";
+
+            if(list.length === 0) {
+                searchResults.innerHTML = "<div>Không có kết quả</div>";
+            } else {
+                list.forEach(user => {
+                    const div = document.createElement("div");
+                    div.textContent = `${user.fullName} - ${user.username} (${user.email})`;
+                    div.addEventListener("click",() => {
+                        selectUser = user;
+                        searchInput.value = `${user.fullName} - ${user.username} (${user.email})`;    
+                        searchResults.style.display = "none";
+                    });
+                    searchResults.appendChild(div);
+                });
+            }
+            searchResults.style.display = "block";
+        }
+        document.addEventListener("click",(e) => {
+            if(!e.target.closest(".form-group")) {
+                searchResults.style.display = "none";
+            }
+        })
+//
+const searchInput02 = document.getElementById("assign-user");
+const searchResults02 = document.getElementById("assign-results");
+searchInput02.addEventListener("input", () => {
+    const keyword = searchInput02.value.trim().toLowerCase();
+    if(keyword === "") {
+        searchResults02.style.display = "none";
+        return;
+    }
+    const filtered = users.filter(user => 
+        user.fullName.toLowerCase().includes(keyword) ||
+        user.username.toLowerCase().includes(keyword) ||
+        user.department.toLowerCase().includes(keyword)
+    );
+    renderSearchResults02(filtered);
+})
+let selectUser02 = null;
+function renderSearchResults02(list) {
+    searchResults02.innerHTML = "";
+
+    if(list.length === 0) {
+        searchResults02.innerHTML = "<div>Không có kết quả</div>";
+    } else {
+        list.forEach(user => {
+            const div = document.createElement("div");
+            div.textContent = `${user.fullName} - ${user.username} (${user.email})`;
+            div.addEventListener("click",() => {
+                selectUser02 = user;
+                searchInput02.value = `${user.fullName} - ${user.username} (${user.email})`;    
+                searchResults02.style.display = "none";
+            });
+            searchResults02.appendChild(div);
+        });
+    }
+    searchResults02.style.display = "block";
+}
+document.addEventListener("click",(e) => {
+    if(!e.target.closest(".form-group")) {
+        searchResults02.style.display = "none";
+    }
+})
+
+    
+        function updatePermission() {
+        
+           if(!selectUser) {
+            alert("Vui lòng chọn nhân viên trước");
+            return;
+           }
+           const selectRole = document.getElementById("permission-role").value;
+           const addreddApiUpdateUser = `http://localhost:8080/admin/updateRole/${selectUser.username}`;
+           const updateData = {
+                username: selectUser.username,
+                roleLevel: parseInt(selectRole)
+           };
+           console.log(updateData);
+           fetch(addreddApiUpdateUser, {
+            method:"PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updateData)
+           })
+           .then(response => {
+            if(!response.ok) {
+                throw new Error("Cập nhập thất bại");
+            }
+            return response.json();
+           })
+           .then(data => {
+                alert("Chỉnh sửa chức vụ thành công");
+                window.location.reload();
+           })
+           .catch(error => {
+            console.error(error);
+           })
         }
 
         function filterUsers() {
@@ -522,7 +640,7 @@
             loadRecentLogs();
             filterHistory();
             document.getElementById('search-document').addEventListener('input', filterDocuments);
-            document.getElementById('search-user').addEventListener('input', filterUsers);
+            // document.getElementById('search-user').addEventListener('input', filterUsers);
             document.getElementById('search-department').addEventListener('input', filterDepartments);
             document.getElementById('search-log').addEventListener('input', filterHistory);
             document.getElementById('search-date').addEventListener('input', filterDocuments);

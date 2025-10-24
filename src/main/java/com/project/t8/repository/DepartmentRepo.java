@@ -10,8 +10,11 @@ import com.project.t8.entity.Department;
 import java.util.List;
 
 @Repository
-public interface DepartmentRepo extends JpaRepository<Department,Long> {
+public interface DepartmentRepo extends JpaRepository<Department, Long> {
     @Query("SELECT d FROM Department d WHERE d.departmentName = :departmentName")
     List<Department> findByDepartmentName(@Param("departmentName") String departmentName);
+
     Department findByDepartmentNameAndDivision(String departmentName, String division);
-} 
+
+    Department findByDepartmentId(Long departmentId);
+}

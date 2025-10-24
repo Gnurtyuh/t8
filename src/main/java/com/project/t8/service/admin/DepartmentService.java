@@ -58,12 +58,12 @@ public class DepartmentService {
     public Department getDepartmentId(String departmentName, String division) {
         return departmentRepo.findByDepartmentNameAndDivision(departmentName, division);
     }
-    
 
     public Department dtoMapEntity(DepartmentDto departmentDto) {
         Department department = new Department();
 
-        Long departmentId = getDepartmentId(departmentDto.getDepartmentName(), departmentDto.getDivision()).getDepartmentId();
+        Long departmentId = getDepartmentId(departmentDto.getDepartmentName(), departmentDto.getDivision())
+                .getDepartmentId();
         department.setDepartmentId(departmentId);
         department.setDepartmentName(departmentDto.getDepartmentName());
         department.setDivision(departmentDto.getDivision());
