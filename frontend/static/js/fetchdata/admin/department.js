@@ -34,7 +34,7 @@ try{
 }
 });
 //
-const assignForm = document.getElementById('departmentuser"');
+const assignForm = document.getElementById('departmentuser');
 fetch(addreddApiGetAll)
 .then(response => {
     if(!response.ok) throw new Error("Error");
@@ -44,7 +44,10 @@ fetch(addreddApiGetAll)
     const departSelect = document.getElementById("department");
     data.forEach(depart => {
         const option = document.createElement("option");
-        option.textContent = depart.departmentName;
+        // option.textContent = depart.departmentName;
+        option.textContent = `${depart.departmentName} - ${depart.division}`;
+        option.dataset.departmentName = depart.departmentName;
+        option.dataset.division = depart.division;
         departSelect.appendChild(option);
     });
     console.log(data);

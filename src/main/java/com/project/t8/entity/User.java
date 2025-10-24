@@ -15,7 +15,7 @@ public class User {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "password",nullable = false,columnDefinition = "BYTEA")
+    @Column(name = "password", nullable = false, columnDefinition = "BYTEA")
     private byte[] password;
 
     @Column(name = "email")
@@ -24,7 +24,7 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "role_level", columnDefinition = "SMALLINT",updatable = false, insertable = false)
+    @Column(name = "role_level", columnDefinition = "SMALLINT", insertable = false)
     private Short roleLevel;
 
     @Column(name = "department_id")

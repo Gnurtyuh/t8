@@ -26,7 +26,8 @@ public class LogService {
     private UserService userService;
     @Autowired
     private DocumentService documentService;
-    public Log createLog(DocumentDto documentDto,String action) {
+    public Log createLog(Document document,String action) {
+        DocumentDto documentDto = documentService.dtoMapEntityDoc(document);
         LogDto logDto=new LogDto();
         logDto.setUserDto(documentDto.getUserDto());
         logDto.setDepartmentDto(documentDto.getDepartmentDto());
@@ -34,7 +35,10 @@ public class LogService {
         logDto.setDocumentDto(documentDto);
         logDto.setTarget(documentDto.getTitle());
         logDto.setDescription(documentDto.getDescription());
-        return logRepo.save(dtoMapEntityLog(logDto));
+        Log log= dtoMapEntityLog(logDto);
+        log.setLogId(null);
+        log.setCreatedAt(null);
+        return logRepo.save(log);
     }
     public Log updateLog(long id,LogDto logDto) {
         Log log = dtoMapEntityLog(findByLogId(id));
@@ -63,6 +67,14 @@ public class LogService {
     }
     public List<LogDto> findByDepartmentId(Long departmentId) {
         List<Log> logs = logRepo.findByDepartmentId(departmentId);
+        List<LogDto> logDto = new ArrayList<>();
+        for (Log log : logs) {
+            logDto.add(entityMapDtoLog(log));
+        }
+        return logDto;
+    }
+    public List<LogDto> findByDocumentId(Long documentId) {
+        List<Log> logs = logRepo.findByDocumentId(documentId);
         List<LogDto> logDto = new ArrayList<>();
         for (Log log : logs) {
             logDto.add(entityMapDtoLog(log));
@@ -110,9 +122,9 @@ public class LogService {
     }
     Log dtoMapEntityLog(LogDto logDto) {
         Log log = new Log();
-        Department department = departmentService.getDepartmentById(log.getDepartmentId());
-        User user = userService.findByUserId(log.getUserId());
-        Document document = documentService.getDocumentById(log.getDocumentId());
+        Department department = departmentService.getDepartmentById(logDto.getDepartmentDto().getDepartmentId());
+        User user = userService.findByUsername(logDto.getUserDto().getUsername());
+        Document document = documentService.getDocumentById(logDto.getDocumentDto().getDocumentId());
         log.setLogId(logDto.getLogId());
         log.setAction(logDto.getAction());
         log.setDescription(logDto.getDescription());

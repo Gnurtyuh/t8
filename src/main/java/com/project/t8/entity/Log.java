@@ -26,16 +26,16 @@ public class Log {
     @Column(name = "document_id")
     private Long documentId;
 
-    @Column(name = "status")
+    @Column(name = "status", insertable = false, updatable = false)
     private String status;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
-    @Column(name = "completed_at")
+    @Column(name = "completed_at", insertable = false, updatable = false)
     private Timestamp completedAt;
 
     @Column(name = "department_id")

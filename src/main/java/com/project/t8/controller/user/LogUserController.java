@@ -42,8 +42,14 @@ public class LogUserController {
         List<LogDto> logs = logService.findByDepartmentId(departmentId);
         return ResponseEntity.ok(logs);
     }
+    @PreAuthorize("authentication.principal.roleLevel <= 2")
+    @GetMapping("/document/{documentId}")
+    public ResponseEntity<?> getLogByDocumentId(@PathVariable long documentId) {
+        List<LogDto> logs = logService.findByDocumentId(documentId);
+        return ResponseEntity.ok(logs);
+    }
     @PreAuthorize("authentication.principal.roleLevel <= 1")
-    @GetMapping("/department/{departmentName}")
+    @GetMapping("/departments/{departmentName}")
     public ResponseEntity<?> getLogByDepartmentName(@PathVariable String departmentName) {
         List<LogDto> logs = logService.findByDepartmentName(departmentName);
         return ResponseEntity.ok(logs);

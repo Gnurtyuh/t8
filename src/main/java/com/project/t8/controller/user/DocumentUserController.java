@@ -34,14 +34,18 @@ public class DocumentUserController {
     public ResponseEntity<?> createDocument( @RequestBody DocumentDto documentDto) {
          
         Document document= documentService.createDocument(documentDto);
-        logService.createLog(documentDto,"CREATED DOCUMENT");
-        return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
+        if(document!=null){
+            logService.createLog(document,"CREATED DOCUMENT");
+            return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
+        }
+        return ResponseEntity.badRequest().build();
+
     }
     @PreAuthorize("authentication.principal.roleLevel <= 2")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateDocument(@PathVariable long id, @RequestBody DocumentDto documentDto ){
         Document document= documentService.updateDocument(id,documentDto);
-        logService.createLog(documentDto,"UPDATED DOCUMENT");
+        logService.createLog(document,"UPDATED DOCUMENT");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
     }
     @PreAuthorize("authentication.principal.roleLevel <= 2")
@@ -57,7 +61,7 @@ public class DocumentUserController {
         return ResponseEntity.ok(documentDto);
     }
     @PreAuthorize("authentication.principal.roleLevel <= 3")
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<?> getDocumentByUsername(@PathVariable String username) {
         List<DocumentDto> documentDto= documentService.findByUser(username);
         return ResponseEntity.ok(documentDto);

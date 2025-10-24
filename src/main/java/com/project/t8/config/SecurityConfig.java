@@ -1,6 +1,5 @@
 package com.project.t8.config;
 
-
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +19,15 @@ import com.project.t8.filter.JwtAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-     private final CorsConfigurationSource corsConfigurationSource;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     public SecurityConfig(CorsConfigurationSource corsConfigurationSource) {
         this.corsConfigurationSource = corsConfigurationSource;
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -36,11 +36,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/admin/adminauth").permitAll()
                         .requestMatchers("/user/auth").permitAll()
-                        // .requestMatchers("/user/aes/encrypt").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/users/**").hasRole("USER")
+                        // Cho phep tat ca endpoint admin k can jwt
+                        .requestMatchers("/admin/**").permitAll()
                         .anyRequest().authenticated()
-                    
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -50,8 +50,7 @@ public class SecurityConfig {
                             response.setContentType("application/json");
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.getOutputStream().println("{ \"error\": \"Unauthorized\" }");
-                        })
-                );
+                        }));
         http.addFilterBefore(new CorsFilter(corsConfigurationSource), ChannelProcessingFilter.class);
         return http.build();
     }

@@ -19,7 +19,7 @@ public class Document {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "upload_date")
+    @Column(name = "upload_date", insertable = false, updatable = false)
     private Timestamp uploadDate;
 
     @Column(name = "file_path")
