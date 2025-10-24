@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('fileInput');
     const passwordInput = document.getElementById('passwordInput');
+    const note = document.getElementById('noteInput');
+    const title = document.getElementById('titleInput');
     const nextBtn = document.querySelector('.nextBtn');
     const browseBtn = document.querySelector('.browseBtn');
     const fileUpload = document.querySelector('.fileUpload');
@@ -9,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileNameDisplay = document.getElementById('fileNameDisplay');
     const togglePasswordBtn = document.querySelector('.toggle-password-btn');
     const sendDataBtn = document.querySelector('.sendDataBtn');
-
-
 
     // Kiểm tra điều kiện kích hoạt nút tải và gửi
     function checkButtonState() {
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // ✅ Fix lỗi click 2 lần
+    // Fix lỗi click 2 lần
     browseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         fileInput.click();
@@ -81,86 +81,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // post path file về cho server xử lý
     // Xử lý mã hóa & tải file
-    nextBtn.addEventListener('click', async () => {
+    nextBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); // chặn form reload trang
+
     if (nextBtn.disabled) return;
 
     const file = fileInput.files[0];
     const password = passwordInput.value;
     const token = localStorage.getItem("access_token");
 
-    if (!token) {
-        alert("Bạn chưa đăng nhập!");
-        return;
-    }
-    
+    // if (!token) {
+    //     alert("Bạn chưa đăng nhập!");
+    //     return;
+    // }
+
     const formData = new FormData();
     formData.append("password", password);
     formData.append("file", file);
     console.log("token:", token);
-    console.log("file:", file.name)
+    console.log("file:", file.name);
     console.log("password:", password);
-    const response = await fetch("http://localhost:8080/user/aes/encrypt", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${token}`
-        },
-        body: formData
-        
-    });
-    
-    if (response.ok) {
+
+    try {
+        const response = await fetch("http://localhost:8080/user/aes/encrypt", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            console.error("Upload thất bại:", response.status);
+            return;
+        }
         const result = await response.json();
         console.log("Server trả về:", result);
-    } else {
-        console.error("Upload thất bại:", response.status);
+        // alert("Mã hóa thành công!");
+    } catch (error) {
+        console.error("Lỗi khi mã hóa:", error);
     }
 });
 
 
 
-
-
-
-
-    // ✅ Xử lý gửi dữ liệu
-    sendDataBtn.addEventListener('click', () => {
-        if (sendDataBtn.disabled) return;
-
-        const file = fileInput.files[0];
-        const password = passwordInput.value;
-
-        // Giả lập gửi dữ liệu (có thể thay bằng API gửi file)
-        try {
-            const now = new Date();
-            const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('vi-VN');
-            const notificationList = document.querySelector('.notification-list');
-            const newNotification = document.createElement('li');
-            newNotification.textContent = `✅ Tập tin "${file.name}" đã được gửi lúc ${time}, ${date}.`;
-            notificationList.insertBefore(newNotification, notificationList.firstChild);
-
-            alert(`✅ Tập tin "${file.name}" đã được gửi thành công!`);
-            // Xóa file và mật khẩu sau khi gửi (tuỳ chọn)
-            fileInput.value = '';
-            passwordInput.value = '';
-            fileNameDisplay.textContent = '';
-            checkButtonState();
-        } catch (error) {
-            console.error('Send data error:', error);
-            const now = new Date();
-            const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('vi-VN');
-            const notificationList = document.querySelector('.notification-list');
-            const newNotification = document.createElement('li');
-            newNotification.textContent = `⚠️ Lỗi gửi tập tin "${file.name}" lúc ${time}, ${date}.`;
-            notificationList.insertBefore(newNotification, notificationList.firstChild);
-
-            alert(`Đã xảy ra lỗi khi gửi tập tin "${file.name}". Vui lòng thử lại!`);
+ 
+// Lấy thông tin userdto va departmentdto từ server dựa trên username
+async function getUserByUsername(username) {
+    const token = localStorage.getItem("access_token");
+    const response = await fetch(`http://localhost:8080/user/${username}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
         }
     });
 
+    if (!response.ok) {
+        throw new Error("Không lấy được thông tin người dùng!");
+    }
 
-    
+    return await response.json(); 
+}
+
+
+
+  // Xử lý gửi tài liệu
+    sendDataBtn.addEventListener('click', async () => {
+    if (sendDataBtn.disabled) return;
+
+    const noteValue = note.value.trim();
+    const titleValue = title.value.trim();
+    const token = localStorage.getItem("access_token");
+    const username = localStorage.getItem("username");
+    const file = fileInput.files[0]; 
+
+    try {
+        const userdto = await getUserByUsername(username);
+        const departmentDto = userdto.departmentDto;
+
+        const documentDto = {
+            title: titleValue,
+            description: noteValue,
+            filePath: file.name,
+            userDto: userdto,
+            departmentDto: departmentDto
+        };
+        console.log("📦 Document gửi đi:", documentDto);
+
+        const response = await fetch("http://localhost:8080/user/document", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(documentDto)
+        });
+
+        if (!response.ok) {
+            throw new Error("Gửi tài liệu thất bại!");
+        }
+
+        const result = await response.json();
+        console.log("📤Server trả về:", result);
+        alert("Gửi thành công!");
+    } catch (err) {
+        console.error("Send document error:", err);
+        alert(err.message);
+    }
+});
+
+       
     // ✅ Xử lý hiển thị panel thông báo
     notificationBell.addEventListener('click', () => {
         notificationPanel.style.display = notificationPanel.style.display === 'block' ? 'none' : 'block';

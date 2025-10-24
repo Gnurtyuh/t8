@@ -46,10 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Payload:', payload);
             console.log('Username trong token:', payload.sub);
             console.log('Role:', payload.role);
-
+            console.log("User ID:", payload.id);
             // 🔹 Lưu token vào localStorage
             localStorage.setItem('access_token', token);
-
+            localStorage.setItem("user_id", payload.id);
+            localStorage.setItem("username", payload.sub);
             // 🔹 (Tuỳ chọn) Chuyển hướng sang trang chính
             window.location.href = "/t8/frontend/static/home.html";
         })

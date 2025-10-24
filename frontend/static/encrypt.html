@@ -65,14 +65,16 @@
                     <div class="step">
                         <span class="stepNumber">2</span>
                         <h3>Nhập mật khẩu</h3>
-                        <input type="password" id="passwordInput" placeholder="Nhập mật khẩu" required>
-                        <button type="button" class="toggle-password-btn">👁️</button>
+                        <form id="encryptForm" onsubmit="return false;">
+                         <input type="password" id="passwordInput" placeholder="Nhập mật khẩu" autocomplete="off" required>
+                         <button type="button" class="toggle-password-btn">👁️</button>
+                        </form>
                     </div>
 
                     <div class="step">
                         <span class="stepNumber">3</span>
                         <h3>Tải tập tin mã hóa</h3>
-                        <button class="nextBtn" disabled>Mã hóa</button>
+                        <button type="button" class="nextBtn" disabled>Mã hóa</button>
                     </div>
 
                     <div class="step">
@@ -82,7 +84,7 @@
                             <input type="text" id="noteInput" placeholder="Nhập ghi chú (tùy chọn)" class="note-input">
                             <input type="text" id="titleInput" placeholder="Nhập tiêu đề" class="note-input">
                         </div>
-                        <button class="sendDataBtn" disabled>GỬI DỮ LIỆU</button>
+                        <button type="button" class="sendDataBtn" disabled>GỬI DỮ LIỆU</button>
                     </div>
                 </div>
             </section>

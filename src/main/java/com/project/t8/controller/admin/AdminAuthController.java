@@ -29,7 +29,7 @@ public class AdminAuthController {
                  AuthenticationDto result = authenticationService.adminauthenticate(authentications);
         return ResponseEntity.ok(result);
     }
-    
+     
     @GetMapping("/test")
 public ResponseEntity<String> testToken(Authentication authentication) {
     return ResponseEntity.ok("Token hợp lệ, user = " + authentication.getName());

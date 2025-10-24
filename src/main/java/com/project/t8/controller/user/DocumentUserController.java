@@ -32,6 +32,7 @@ public class DocumentUserController {
     }
     @PostMapping
     public ResponseEntity<?> createDocument( @RequestBody DocumentDto documentDto) {
+         
         Document document= documentService.createDocument(documentDto);
         logService.createLog(documentDto,"CREATED DOCUMENT");
         return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
