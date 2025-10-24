@@ -38,10 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         checkButtonState();
     });
 
+
+
     // Nhập mật khẩu để kiểm tra trạng thái nút
     passwordInput.addEventListener('input', checkButtonState);
 
 
+    
     // Kéo thả file
     fileUpload.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -70,96 +73,48 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.click();
     });
 
-
-
+    const file = fileInput.files[0];
+    const password = passwordInput.value.trim();
+    const formData = new FormData();
+    formData.append("password", password);
+    formData.append("file", file);
 
     // post path file về cho server xử lý
     // Xử lý mã hóa & tải file
     nextBtn.addEventListener('click', async () => {
-        if (nextBtn.disabled) return;
+    if (nextBtn.disabled) return;
 
-        const file = fileInput.files[0];
-        const password = passwordInput.value;
-        fetch("http://localhost:8080/user/encrypt", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                fileName: file.name,
-                password: password
-            })
-        });
+    const file = fileInput.files[0];
+    const password = passwordInput.value;
+    const token = localStorage.getItem("access_token");
 
-        try {
-            const encoder = new TextEncoder();
-            const data = await file.arrayBuffer();
-            const salt = crypto.getRandomValues(new Uint8Array(16));
-            const passwordKey = await crypto.subtle.importKey(
-                'raw',
-                encoder.encode(password),
-                'PBKDF2',
-                false,
-                ['deriveKey']
-            );
-            const aesKey = await crypto.subtle.deriveKey(
-                {
-                    name: 'PBKDF2',
-                    salt,
-                    iterations: 100000,
-                    hash: 'SHA-256'
-                },
-                passwordKey,
-                { name: 'AES-CBC', length: 256 },
-                false,
-                ['encrypt']
-            );
-            const iv = crypto.getRandomValues(new Uint8Array(16));
-            const encrypted = await crypto.subtle.encrypt(
-                { name: 'AES-CBC', iv },
-                aesKey,
-                data
-            );
-
-            const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
-            combined.set(salt, 0);
-            combined.set(iv, salt.length);
-            combined.set(new Uint8Array(encrypted), salt.length + iv.length);
-
-            const blob = new Blob([combined], { type: 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${file.name}.encrypted`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            // Thêm thông báo thành công
-            const now = new Date();
-            const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('vi-VN');
-            const notificationList = document.querySelector('.notification-list');
-            const newNotification = document.createElement('li');
-            newNotification.textContent = `✅ Tập tin "${file.name}" đã được mã hóa lúc ${time}, ${date}.`;
-            notificationList.insertBefore(newNotification, notificationList.firstChild);
-
-            alert('✅ Tập tin đã được mã hóa và tải về thành công!');
-        } catch (error) {
-            console.error('Encryption error:', error);
-            // Thêm thông báo lỗi
-            const now = new Date();
-            const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('vi-VN');
-            const notificationList = document.querySelector('.notification-list');
-            const newNotification = document.createElement('li');
-            newNotification.textContent = `⚠️ Lỗi mã hóa tập tin "${file.name}" lúc ${time}, ${date}.`;
-            notificationList.insertBefore(newNotification, notificationList.firstChild);
-
-            alert('❌ Đã xảy ra lỗi khi mã hóa tập tin. Vui lòng thử lại!');
-        }
+    if (!token) {
+        alert("Bạn chưa đăng nhập!");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append("password", password);
+    formData.append("file", file);
+    console.log("token:", token);
+    console.log("file:", file.name)
+    console.log("password:", password);
+    const response = await fetch("http://localhost:8080/user/aes/encrypt", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        body: formData
+        
     });
+    
+    if (response.ok) {
+        const result = await response.json();
+        console.log("Server trả về:", result);
+    } else {
+        console.error("Upload thất bại:", response.status);
+    }
+});
 
 
 
@@ -200,10 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
             newNotification.textContent = `⚠️ Lỗi gửi tập tin "${file.name}" lúc ${time}, ${date}.`;
             notificationList.insertBefore(newNotification, notificationList.firstChild);
 
-            alert(`❌ Đã xảy ra lỗi khi gửi tập tin "${file.name}". Vui lòng thử lại!`);
+            alert(`Đã xảy ra lỗi khi gửi tập tin "${file.name}". Vui lòng thử lại!`);
         }
     });
 
+
+    
     // ✅ Xử lý hiển thị panel thông báo
     notificationBell.addEventListener('click', () => {
         notificationPanel.style.display = notificationPanel.style.display === 'block' ? 'none' : 'block';

@@ -35,7 +35,10 @@ public class DocumentService {
     private UserService userService;
 
     public Document createDocument(DocumentDto documentDto) {
-        return documentRepo.save(entityMapDtoDoc(documentDto));
+        Document document = entityMapDtoDoc(documentDto);
+        document.setDocumentId(null);
+        document.setUploadDate(null);
+        return documentRepo.save(document);
     }
 
     public Document updateDocument(long id, DocumentDto documentDto) {
@@ -69,7 +72,7 @@ public class DocumentService {
     }
     public List<DocumentDto> findByUser(String username) {
         User user = userService.findByUsername(username);
-        Long userId = user.getUserId();
+        Integer userId = Math.toIntExact(user.getUserId());
         List<Document> documents = documentRepo.findByUser(userId);
         List<DocumentDto> documentsDto = new ArrayList<>();
         for (Document document : documents) {
@@ -92,6 +95,7 @@ public class DocumentService {
         Document document = new Document();
         Department department = departmentService.dtoMapEntity(documentDto.getDepartmentDto());
         User user = userService.dtoMapEntity(documentDto.getUserDto());
+        document.setDocumentId(documentDto.getDocumentId());
         document.setTitle(documentDto.getTitle());
         document.setDescription(documentDto.getDescription());
         document.setDepartmentId(department.getDepartmentId());
@@ -103,6 +107,7 @@ public class DocumentService {
         DocumentDto document = new DocumentDto();
         Department department = departmentService.getDepartmentById(doc.getDepartmentId());
         User user = userService.findByUserId(doc.getUploadedByUser());
+        document.setDocumentId(doc.getDocumentId());
         document.setTitle(doc.getTitle());
         document.setDescription(doc.getDescription());
         document.setDepartmentDto(departmentService.entityMapDto(department));

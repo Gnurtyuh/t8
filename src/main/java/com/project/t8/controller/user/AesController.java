@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user/aes")
@@ -34,7 +37,8 @@ public class AesController {
             @RequestParam("file") MultipartFile file) throws Exception {
 
         //  Tạo file tạm trên server
-        File tempFile = File.createTempFile("upload_", "_" + file.getOriginalFilename());
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File tempFile = new File(tempDir, Objects.requireNonNull(file.getOriginalFilename()));
         file.transferTo(tempFile);
 
         try {
@@ -47,6 +51,7 @@ public class AesController {
                     "path", encryptedPath
             ));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", e.getMessage()));
         }
@@ -56,8 +61,6 @@ public class AesController {
     public ResponseEntity<byte[]> decryptFile(
             @RequestParam("password") String password,
             @RequestParam("filename") String filename) throws Exception {
-
-
 
         // Giải mã file (hàm decrypt sẽ tạo file giải mã trên server)
         String decryptedPath = AesUtil.decrypt(password.toCharArray(), filename);

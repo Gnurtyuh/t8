@@ -14,6 +14,6 @@ import java.util.List;
 public interface DocumentRepo extends JpaRepository<Document,Long>{
     List<Document> findByDepartmentId(Long departmentId);
     @Query("SELECT d FROM Document d WHERE d.uploadedByUser = :uploadedByUser")
-    List<Document> findByUser(@Param("uploadedByUser") Long uploadedByUser);
+    List<Document> findByUser(@Param("uploadedByUser") Integer uploadedByUser);
 
 } 

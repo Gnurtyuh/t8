@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public User dtoMapEntity(UserDto userDto) {
-        User user = new User();
+        User user = findByUsername(userDto.getUsername());
         DepartmentDto departmentDto = userDto.getDepartmentDto();
         user.setDepartmentId(departmentService.dtoMapEntity(departmentDto).getDepartmentId());
         user.setUsername(userDto.getUsername());

@@ -35,9 +35,13 @@ public class AesUtil {
     public static String encrypt(char[] password, File input) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         byte[] iv = new byte[16];
         String extension = getFileExtension(input);
+        File folder = new File("path");
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs(); // chỉ tạo nếu chưa tồn tại
+        }
         String path ="path\\"+ renameFile(input) +".enc";
         SecretKey secretKey = generateAesKey(password);
-        Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
         cipher.init(Cipher.ENCRYPT_MODE,secretKey,gcmParameterSpec);
         try (FileInputStream fileInputStream = new FileInputStream(input);
@@ -78,6 +82,10 @@ public class AesUtil {
     public static String decrypt(char[] password, String filename) throws Exception {
         Path encryptedPath = Paths.get("path\\" + rename(filename)+".enc");
         File encryptedFile = encryptedPath.toFile();
+        File folder = new File("decrypted");
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs(); // chỉ tạo nếu chưa tồn tại
+        }
         try (FileInputStream fis = new FileInputStream(encryptedFile)) {
             int extLen = fis.read();
             byte[] extBytes = new byte[extLen];
@@ -87,9 +95,9 @@ public class AesUtil {
             if (fis.read(iv) != 16) {
                 throw new IllegalArgumentException("File too short or missing iv");
             }
-            String output ="/decrypted/"+ renameFile(encryptedFile)+extension;
+            String output ="decrypted/"+ renameFile(encryptedFile)+extension;
             SecretKey key = generateAesKey(password);
-            Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
             cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
 

@@ -1,6 +1,7 @@
 package com.project.t8.controller.user;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,4 +42,8 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/test")
+public ResponseEntity<String> testToken(Authentication authentication) {
+    return ResponseEntity.ok("Token hợp lệ, user = " + authentication.getName());
+}
 }

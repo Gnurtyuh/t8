@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('access_token', token);
 
             // 🔹 (Tuỳ chọn) Chuyển hướng sang trang chính
-            window.location.href = "/t8/frontend/home.html";
+            window.location.href = "/t8/frontend/static/home.html";
         })
         .catch(err => {
             alert(err.message);
