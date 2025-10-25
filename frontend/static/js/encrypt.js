@@ -82,18 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // post path file về cho server xử lý
     // Xử lý mã hóa & tải file
     nextBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // chặn form reload trang
+    e.preventDefault();
 
     if (nextBtn.disabled) return;
 
     const file = fileInput.files[0];
     const password = passwordInput.value;
     const token = localStorage.getItem("access_token");
-
-    // if (!token) {
-    //     alert("Bạn chưa đăng nhập!");
-    //     return;
-    // }
 
     const formData = new FormData();
     formData.append("password", password);
@@ -167,7 +162,7 @@ async function getUserByUsername(username) {
             userDto: userdto,
             departmentDto: departmentDto
         };
-        console.log("📦 Document gửi đi:", documentDto);
+        console.log("Document gửi đi:", documentDto);
 
         const response = await fetch("http://localhost:8080/user/document", {
             method: "POST",
@@ -192,7 +187,7 @@ async function getUserByUsername(username) {
 });
 
        
-    // ✅ Xử lý hiển thị panel thông báo
+    // Xử lý hiển thị panel thông báo
     notificationBell.addEventListener('click', () => {
         notificationPanel.style.display = notificationPanel.style.display === 'block' ? 'none' : 'block';
     });
@@ -204,7 +199,7 @@ async function getUserByUsername(username) {
         }
     });
 
-    // ✅ Xử lý ẩn/hiện mật khẩu
+    // Xử lý ẩn/hiện mật khẩu
     togglePasswordBtn.addEventListener('click', () => {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         const isPassword = type === 'password';

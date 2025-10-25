@@ -76,7 +76,7 @@ public class AuthenticationService {
         .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
         .claim("id", users.getUserId())
-        .claim("role level", users.getRoleLevel())
+        .claim("rolelevel", users.getRoleLevel())
         .jwtID(UUID.randomUUID().toString())
         .build();
 
@@ -136,7 +136,6 @@ public class AuthenticationService {
         .build();
     }
     //validate token
-
     public boolean validateToken(String token){
         try{
             JWSObject verifyJwsObject = JWSObject.parse(token);

@@ -134,29 +134,21 @@ nav a {
 
 /* ====== DOCUMENT LIST ====== */
 /* ====== DOCUMENT LIST (ĐÃ TINH CHỈNH) ====== */
-.document-list {
+#document-list {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-top: 30px;
+    flex-wrap: wrap; 
+    gap: 16px;       
 }
 
 .document-item {
+    text-align: left;
+    flex: 0 1 calc(50% - 16px); 
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background-color: #fff;
-    border-radius: 15px; /* Giảm bán kính viền */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Giảm độ mờ của shadow */
-    padding: 20px 30px; /* Giảm padding để khung nhỏ hơn */
-    width: 350px; /* Giảm chiều rộng */
     box-sizing: border-box;
-    transition: all 0.3s ease;
-    text-align: left; /* căn lề trái cho các dòng thông tin */
-    line-height: 1.7;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Phân bổ không gian để nút ở giữa */
-    min-height: 250px; /* Đảm bảo chiều cao tối thiểu */
 }
 
 .document-item:hover {

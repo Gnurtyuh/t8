@@ -10,5 +10,4 @@ public class UserDto {
     private String fullName;
     private Short roleLevel;
     private DepartmentDto departmentDto;
-
 }

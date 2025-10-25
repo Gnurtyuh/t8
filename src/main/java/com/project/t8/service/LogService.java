@@ -29,10 +29,12 @@ public class LogService {
     public Log createLog(Document document,String action) {
         DocumentDto documentDto = documentService.dtoMapEntityDoc(document);
         LogDto logDto=new LogDto();
+        // LogDto.setCompletedAt(null);
         logDto.setUserDto(documentDto.getUserDto());
         logDto.setDepartmentDto(documentDto.getDepartmentDto());
         logDto.setAction(action);
         logDto.setDocumentDto(documentDto);
+        logDto.setStatus("PENDING");
         logDto.setTarget(documentDto.getTitle());
         logDto.setDescription(documentDto.getDescription());
         Log log= dtoMapEntityLog(logDto);
@@ -43,6 +45,7 @@ public class LogService {
     public Log updateLog(long id,LogDto logDto) {
         Log log = dtoMapEntityLog(findByLogId(id));
         log.setAction("UPDATED");
+        log.setStatus(logDto.getStatus());
         log.setDescription(logDto.getDescription());
         log.setCompletedAt(new Timestamp(System.currentTimeMillis()));
         return logRepo.save(log);
