@@ -281,11 +281,14 @@ h2 {
             font-family: 'Arial', 'Helvetica', sans-serif;
         }
         .document-list {
+            grid-template-columns: repeat(2, 1fr);
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             padding: 10px 0;
             justify-content: flex-start;
+            height: auto;
+            width: 100%;
         }
         .action-btn {
             background: #4a90e2;
@@ -441,6 +444,7 @@ h2 {
         }
         .chart-container {
             margin-top: 20px;
+           
         }
         .search-group {
             display: flex;

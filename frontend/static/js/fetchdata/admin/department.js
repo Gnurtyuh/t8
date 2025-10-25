@@ -1,8 +1,7 @@
 
 const addressApi = 'http://localhost:8080/admin/department';
-const addreddApiGetAll = 'http://localhost:8080/admin/department/AllDepartment';
 const addreddApiCreateUser = 'http://localhost:8080/admin/create';
-
+const addreddApiGetAll = 'http://localhost:8080/admin/department/AllDepartment';
 document.getElementById("buttonConfirm").addEventListener("click",async (event) =>  {
     event.preventDefault();
     document.getElementById("dept-name").value
