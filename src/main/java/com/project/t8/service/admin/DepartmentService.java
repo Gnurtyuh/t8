@@ -16,9 +16,13 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepo departmentRepo;
 
-    public Department createDepartment(DepartmentDto departmentdto) {
-        Department department = dtoMapEntity(departmentdto);
-        department.setDepartmentId(null);
+    public Department createDepartment(DepartmentDto departmentDto) {
+        Department department = new Department();
+
+        department.setDepartmentName(departmentDto.getDepartmentName());
+        department.setDivision(departmentDto.getDivision());
+        department.setDescription(departmentDto.getDescription());
+
         return departmentRepo.save(department);
     }
 
