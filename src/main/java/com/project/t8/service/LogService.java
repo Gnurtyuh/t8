@@ -29,10 +29,12 @@ public class LogService {
     public Log createLog(Document document,String action) {
         DocumentDto documentDto = documentService.dtoMapEntityDoc(document);
         LogDto logDto=new LogDto();
+        // LogDto.setCompletedAt(null);
         logDto.setUserDto(documentDto.getUserDto());
         logDto.setDepartmentDto(documentDto.getDepartmentDto());
         logDto.setAction(action);
         logDto.setDocumentDto(documentDto);
+        logDto.setStatus("PENDING");
         logDto.setTarget(documentDto.getTitle());
         logDto.setDescription(documentDto.getDescription());
         Log log= dtoMapEntityLog(logDto);
@@ -42,7 +44,8 @@ public class LogService {
     }
     public Log updateLog(long id,LogDto logDto) {
         Log log = dtoMapEntityLog(findByLogId(id));
-        log.setAction("UPDATED");
+        log.setStatus(logDto.getStatus());
+        log.setStatus(logDto.getStatus());
         log.setDescription(logDto.getDescription());
         log.setCompletedAt(new Timestamp(System.currentTimeMillis()));
         return logRepo.save(log);
@@ -103,7 +106,7 @@ public class LogService {
     public LogDto findByLogId(Long logId) {
         return entityMapDtoLog(logRepo.findByLogId(logId));
     }
-    LogDto entityMapDtoLog(Log log) {
+    public LogDto entityMapDtoLog(Log log) {
         Department department = departmentService.getDepartmentById(log.getDepartmentId());
         User user = userService.findByUserId(log.getUserId());
         Document document = documentService.getDocumentById(log.getDocumentId());
@@ -120,7 +123,7 @@ public class LogService {
         logDto.setUserDto(userService.entityMapDto(user));
         return logDto;
     }
-    Log dtoMapEntityLog(LogDto logDto) {
+    public Log dtoMapEntityLog(LogDto logDto) {
         Log log = new Log();
         Department department = departmentService.getDepartmentById(logDto.getDepartmentDto().getDepartmentId());
         User user = userService.findByUsername(logDto.getUserDto().getUsername());

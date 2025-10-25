@@ -25,6 +25,7 @@ public class DocumentUserController {
     private DocumentService documentService;
     @Autowired
     private LogService logService;
+    
     @GetMapping("/{id}")
     public ResponseEntity<?> getDocument(@PathVariable long id) {
         Document document= documentService.getDocumentById(id);

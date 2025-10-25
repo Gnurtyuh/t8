@@ -1,73 +1,217 @@
-let currentStatus = "Hoàn thành"; // Mặc định dựa trên dữ liệu User1
-const documentInfo = document.querySelector(".document-info");
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = localStorage.getItem("access_token");
+  const username = localStorage.getItem("username");
+  const roleLevel = localStorage.getItem("rolelevel");
+  console.log("Role Level:", roleLevel);
+  console.log("token:", token);
 
-// Dữ liệu từ yêu cầu
-const documentData = [
-    { actionUser: "Nguyen Van A", target: "User1", document: "document.pdf", status: "Hoàn thành", description: "Tài liệu đã được phê duyệt", createTime: "14/10/2025 09:00", completeTime: "15/10/2025 14:30", department: "Phòng CNTT" },
-    { actionUser: "Tran Thi B", target: "User2", document: "report.docx", status: "Đang xử lý", description: "Chờ phê duyệt", createTime: "13/10/2025 10:00", completeTime: "14/10/2025 16:00", department: "Phòng Nhân Sự" },
-    { actionUser: "Le Van C", target: "User3", document: "presentation.pptx", status: "Hoàn thành", description: "Tài liệu đã hoàn tất", createTime: "12/10/2025 08:30", completeTime: "13/10/2025 15:00", department: "Phòng CNTT" }
-];
+  if (!token || !username) {
+    alert("Bạn chưa đăng nhập!");
+    return;
+  }
+//  ? new Date(log.completedAt).toLocaleString('vi-VN') : 'Chưa hoàn thành'
+//  ? new Date(log.createdAt).toLocaleString('vi-VN') : (doc.uploadDate ? new Date(doc.uploadDate).toLocaleString('vi-VN') : 'Không rõ'
+  async function getUserByUsername(username) {
+    const res = await fetch(`http://localhost:8080/user/${username}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Không lấy được thông tin người dùng!");
+    return await res.json();
+  }
+  //hien thi list data log
+  function renderDocuments(data) {
+    const documentList = document.getElementById('document-list');
+    documentList.innerHTML = '';
 
-// Lấy dữ liệu cho target "User1"
-for (const item of documentData) {
-    const targetUserData = documentData.find(d => d.target === item.target);
+      data.forEach(log => {
+    const doc = log?.documentDto || {};
+    const user = log?.userDto || {};
+    const dept = log?.departmentDto || {};
 
-// Thêm dữ liệu vào giao diện khi trang tải
-document.addEventListener("DOMContentLoaded", function() {
-    if (targetUserData) {
-        const infoRows = [
-            { label: "Tên tài liệu:", value: targetUserData.document, id: "document-name" },
-            { label: "Trạng thái:", value: targetUserData.status, id: "status" },
-            { label: "Mô tả:", value: targetUserData.description, id: "description" },
-            { label: "Thời gian tạo file:", value: targetUserData.createTime, id: "create-time" },
-            { label: "Thời gian hoàn thành:", value: targetUserData.completeTime, id: "complete-time" },
-            { label: "Tên phòng ban:", value: targetUserData.department, id: "department" },
-            { label: "Người thực hiện:", value: targetUserData.actionUser, id: "action-user" }
-        ];
+    const title = doc.title || log.target;
+    const docDescription = doc.description;
+    const username = user.username;
+    const division = dept.division;
+    const departmentName = dept.departmentName;
+    const filePath = doc.filePath;
+    const status = log.status;
+    const createdAt = (log.createdAt).toLocaleString('vi-VN');
+    const completedAt = (log.completedAt).toLocaleString('vi-VN');
+    const item = document.createElement('div');
+    item.className = 'document-item';
+   item.innerHTML = `
+  <div class="document-item">
+    <div class="document-main">
+      <div class="cols">
+        <div class="doc-left">
+          <div class="file-name"><strong>Tên tài liệu:</strong> ${title}</div>
+          <div class="file-desc"><strong>Mô tả:</strong> ${docDescription}</div>
+          <div class="file-author"><strong>Người tạo:</strong> ${username}</div>
+          <div class="file-dept"><strong>Phòng ban:</strong> ${departmentName}</div>
+          <div class="file-division"><strong>Bộ phận:</strong> ${division}</div>
+        </div>
 
-        infoRows.forEach(data => {
-            const infoRow = document.createElement("div");
-            infoRow.className = "info-row";
-            const labelSpan = document.createElement("span");
-            labelSpan.className = "info-label";
-            labelSpan.textContent = data.label;
-            const valueSpan = document.createElement("span");
-            valueSpan.className = "info-value";
-            if (data.id) valueSpan.id = data.id;
-            valueSpan.textContent = data.value;
-            infoRow.appendChild(labelSpan);
-            infoRow.appendChild(valueSpan);
-            documentInfo.appendChild(infoRow);
-        });
-    } else {
-        documentInfo.innerHTML = "<div class='info-row'><span class='info-label'>Lỗi:</span><span class='info-value'>Không tìm thấy dữ liệu cho User1</span></div>";
+        <div class="doc-right">
+          <div class="file-path"><strong>Tên file:</strong> ${filePath}</div>
+          <div class="log-status"><strong>Trạng thái:</strong> ${status}</div>
+          <div class="log-created"><strong>Ngày tạo:</strong> ${createdAt}</div>
+          <div class="log-completed"><strong>Hoàn thành:</strong> ${completedAt}</div>
+        </div>
+      </div> 
+
+      <div class="action-group">
+        <a href="#" class="view-btn" data-file="${encodeURIComponent(filePath)}">Xem</a>
+        <button class="approve-btn">Phê duyệt</button>
+        <button class="reject-btn">Từ chối</button>
+      </div>
+    </div> 
+  </div> 
+`;
+    documentList.appendChild(item);
+
+  if (roleLevel === '3' || log.status && log.status.toLowerCase() !== 'PENDING') {
+  hideActionButtons(item);
+} 
+
+
+
+    // nút xem tài liệu
+const viewBtn = item.querySelector('.view-btn');
+if (viewBtn) {
+  viewBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const file = decodeURIComponent(viewBtn.dataset.file || '');
+    if (!file) return alert('Không có file để xem');
+    window.location.href = `decrypt.html?file=${encodeURIComponent(file)}`;
+  });
+}
+
+// nút phê duyệt
+const approveBtn = item.querySelector('.approve-btn');
+if (approveBtn) {
+  approveBtn.addEventListener('click', async () => {
+    try {
+      approveBtn.disabled = true;
+      const updatedLog = structuredClone(log);
+      updatedLog.status = 'APPROVED';
+      console.log("status", updatedLog.status);
+      const response = await fetch(`http://localhost:8080/user/log/update/${updatedLog.logId}`, {
+        method: 'PUT',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedLog)
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error('Update error:', errText);
+        alert('Lỗi khi cập nhật trạng thái!');
+        approveBtn.disabled = false;
+        return;
+      }
+
+      appendStatusLine(item, 'Tài liệu đã được phê duyệt');
+      hideActionButtons(item); 
+    } catch (e) {
+      console.error(e);
+      alert('Lỗi kết nối đến server!');
+      approveBtn.disabled = false;
     }
-});
+  });
 }
-function updateStatus(newStatus, completionTime = "") {
-    currentStatus = newStatus;
-    const statusElement = document.getElementById("status");
-    const completeTimeElement = document.getElementById("complete-time");
-    if (statusElement) statusElement.textContent = newStatus;
-    if (completeTimeElement) completeTimeElement.textContent = completionTime || "Chưa hoàn thành";
-    if (newStatus === "Tài liệu đã được phê duyệt" || newStatus === "Tài liệu bị từ chối") {
-        document.querySelector(".approve-btn").disabled = true;
-        document.querySelector(".reject-btn").disabled = true;
+
+// nút từ chối
+const rejectBtn = item.querySelector('.reject-btn');
+if (rejectBtn) {
+  rejectBtn.addEventListener('click', async () => {
+    try {
+      rejectBtn.disabled = true;
+      const updatedLog = structuredClone(log);
+      updatedLog.status = 'FAILED';
+      console.log("status", updatedLog.status);
+      const response = await fetch(`http://localhost:8080/user/log/update/${updatedLog.logId}`, {
+        method: 'PUT',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedLog)
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error('Update error:', errText);
+        alert('Lỗi khi cập nhật trạng thái!');
+        rejectBtn.disabled = false;
+        return;
+      }
+
+      appendStatusLine(item, 'Tài liệu đã bị từ chối');
+      hideActionButtons(item); // ✅ ẩn 2 nút sau khi từ chối
+    } catch (e) {
+      console.error(e);
+      alert('Lỗi kết nối đến server!');
+      rejectBtn.disabled = false;
     }
+  });
+}
+  });
 }
 
-document.querySelector(".approve-btn").addEventListener("click", function() {
-    const now = new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
-    updateStatus("Tài liệu đã được phê duyệt", now);
-});
+//ẩn hiện dữ liệu
+function hideActionButtons(item) {
+  const approveBtn = item.querySelector('.approve-btn');
+  const rejectBtn = item.querySelector('.reject-btn');
 
-document.querySelector(".reject-btn").addEventListener("click", function() {
-    const now = new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
-    updateStatus("Tài liệu bị từ chối", now);
-});
-
-function toggleNotification() {
-    const statusElement = document.getElementById("status");
-    const completeTimeElement = document.getElementById("complete-time");
-    alert(`Trạng thái hiện tại: ${statusElement ? statusElement.textContent : currentStatus}\nThời gian cập nhật: ${completeTimeElement ? completeTimeElement.textContent : "Chưa hoàn thành"}`);
+  if (approveBtn) approveBtn.style.display = 'none';
+  if (rejectBtn) rejectBtn.style.display = 'none';
 }
+
+
+// thêm 1 dòng trạng thái vào item
+function appendStatusLine(item, text) {
+  const s = document.createElement('div');
+  s.className = 'status-line';
+  const now = new Date().toLocaleString('vi-VN');
+  s.textContent = `${text} — ${now}`;
+  item.appendChild(s);
+}
+
+  //goi api theo role
+  try {
+    if (roleLevel === '1') {
+      const userdto = await getUserByUsername(username);
+      const departmentName = userdto.departmentDto.departmentName;
+      const res = await fetch(`http://localhost:8080/user/log//departments/${departmentName}`, {
+         headers: {
+                'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            body: JSON.stringify({ departmentName })
+      });
+      const data = await res.json();
+      renderDocuments(data);
+
+    } else if (roleLevel === '2') {
+      const userdto = await getUserByUsername(username);
+      const departmentId = userdto.departmentDto.id;
+      const res = await fetch(`http://localhost:8080/user/document/department/${departmentId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      renderDocuments(data);
+
+    } else if (roleLevel === '3') {
+      const res = await fetch(`http://localhost:8080/user/log/userid/${username}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      renderDocuments(data);
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Không thể lấy dữ liệu từ server!");
+  }
+});

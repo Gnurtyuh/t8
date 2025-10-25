@@ -134,29 +134,24 @@ nav a {
 
 /* ====== DOCUMENT LIST ====== */
 /* ====== DOCUMENT LIST (ĐÃ TINH CHỈNH) ====== */
-.document-list {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
+#document-list {
 
-.document-item {
-    background-color: #fff;
-    border-radius: 15px; /* Giảm bán kính viền */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Giảm độ mờ của shadow */
-    padding: 20px 30px; /* Giảm padding để khung nhỏ hơn */
-    width: 350px; /* Giảm chiều rộng */
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    text-align: left; /* căn lề trái cho các dòng thông tin */
-    line-height: 1.7;
-    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Phân bổ không gian để nút ở giữa */
-    min-height: 250px; /* Đảm bảo chiều cao tối thiểu */
+    gap: 16px;
+
+    /* 👇 thêm phần này để có thanh cuộn */
+    max-height: 500px; /* hoặc chiều cao bạn muốn */
+    overflow-y: auto;  /* hiện thanh cuộn dọc khi vượt quá */
+    padding-right: 5px; /* tránh chữ bị dính sát thanh cuộn */
+}
+.document-item {
+  border: 1px solid #e0e6ef;
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(16,24,40,0.04);
+  margin-bottom: 14px;
 }
 
 .document-item:hover {

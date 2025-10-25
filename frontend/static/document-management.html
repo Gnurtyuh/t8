@@ -55,16 +55,15 @@
     <script src="../static/js/document-management.js"></script>
     <script>
         document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A' && e.target.textContent === 'Xem') {
-                const parent = e.target.closest('.document-item');
-                if (parent) {
-                    const fileName = parent.querySelector('.file-name').textContent;
-                    const date = parent.querySelector('.file-date').textContent;
-                    const author = parent.querySelector('.file-author').textContent;
-                    window.location.href = `decrypt.html?file=${encodeURIComponent(fileName)}&date=${encodeURIComponent(date)}&author=${encodeURIComponent(author)}`;
-                }
-            }
-        });
+    if (e.target.classList.contains('view-btn')) {
+        const parent = e.target.closest('.document-item');
+        if (parent) {
+            const filePath = parent.querySelector('.file-path').textContent.replace('Đường dẫn: ', '');
+            // encodeURIComponent để an toàn với ký tự đặc biệt
+            window.location.href = `decrypt.html?file=${encodeURIComponent(filePath)}`;
+        }
+    }
+});
     </script>
 </body>
 </html>
