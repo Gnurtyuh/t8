@@ -1,5 +1,6 @@
 const addreddApiGetAllUser = 'http://localhost:8080/admin/users';
-fetch(addreddApiGetAllUser)
+function getAllUser() {
+return fetch(addreddApiGetAllUser)
 .then(response => {
     if(!response.ok) throw new Error("Lỗi khi tải nhân viên");
     return response.json();
@@ -24,8 +25,11 @@ fetch(addreddApiGetAllUser)
         };
     });
     console.log("Danh sách nhân viên",users);
+    return users;
 })
 .catch(error => {
     console.error("Lỗi", error);
+    return [];
 });
+}
 // Tim kiem nguoi dung
