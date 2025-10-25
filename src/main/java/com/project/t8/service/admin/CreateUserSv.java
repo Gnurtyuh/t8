@@ -2,8 +2,10 @@ package com.project.t8.service.admin;
 
 import com.project.t8.dto.UserDto;
 import com.project.t8.dto.DepartmentDto;
+import com.project.t8.entity.Admin;
 import com.project.t8.entity.Department;
 import com.project.t8.entity.User;
+import com.project.t8.repository.AdminRepo;
 import com.project.t8.repository.DepartmentRepo;
 import com.project.t8.repository.DocumentRepo;
 import com.project.t8.repository.UserRepo;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.lang.StackWalker.Option;
 import java.lang.annotation.Documented;
 import java.nio.charset.StandardCharsets;
@@ -31,6 +34,8 @@ public class CreateUserSv {
     private DepartmentRepo departmentRepo;
     @Autowired
     private DocumentService documentService;
+    @Autowired
+    private AdminRepo adminRepo;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public Department getDepartmentId(String departmentName, String division) {
@@ -46,12 +51,16 @@ public class CreateUserSv {
     }
 
     public User updateRoleUser(UserDto userDto, String username) {
-
-        System.out.println("ten" + username);
-        System.out.println("role" + userDto.getRoleLevel());
         User user = getUserByUsername(username);
-        System.out.println("id :" + user.getUserId());
         user.setRoleLevel(userDto.getRoleLevel());
+        return userRepo.save(user);
+    }
+
+    public User updateDepartment(UserDto userDto, String username) {
+        User user = getUserByUsername(username);
+        Department department = getDepartmentId(userDto.getDepartmentDto().getDepartmentName(),
+                userDto.getDepartmentDto().getDivision());
+        user.setDepartmentId(department.getDepartmentId());
         return userRepo.save(user);
     }
 
@@ -93,4 +102,18 @@ public class CreateUserSv {
         return userRepo.save(user);
     }
 
+    public boolean login(String username, String inputPassword) {
+        Optional<Admin> adminOpt = adminRepo.findByUsername(username);
+
+        // Nếu không tồn tại → sai thông tin đăng nhập
+        if (adminOpt.isEmpty()) {
+            return false;
+        }
+
+        Admin admin = adminOpt.get();
+
+        // So sánh password plain text
+        return admin.getPassword().equals(inputPassword);
+
+    }
 }

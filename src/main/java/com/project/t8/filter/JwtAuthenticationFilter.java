@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         // Bo qua kiem tra jwt cho cac duong dam admin
-        if (path.startsWith("/admin")) {
+        if (path.startsWith("/admin/") || path.equals("/admin")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-
     }
 
 }
