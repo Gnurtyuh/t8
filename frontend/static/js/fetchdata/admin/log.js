@@ -25,6 +25,7 @@ return fetch(addreddApiGetAllLog)
             });
         };
         return {
+            status: log.status,
             action: log.action,
             target: log.target,
             role: roleName,

@@ -9,7 +9,7 @@ return fetch(addreddApiGetAllUser)
     users = data.map(user => {
         const departmentName = user.departmentDto?.departmentName;
         const division = user.departmentDto?.division;
-        const departmentDisplay = departmentName ? `${departmentName} - ${division}` : division;
+        const departmentDisplay = departmentName ? `${departmentName} ${division}` : division;
 
         let roleName = "";
         if(user.roleLevel === 1) roleName = "Giám đốc";
@@ -24,7 +24,7 @@ return fetch(addreddApiGetAllUser)
         role: roleName
         };
     });
-    console.log("Danh sách nhân viên",users);
+    // console.log("Danh sách nhân viên",users);
     return users;
 })
 .catch(error => {
