@@ -49,7 +49,7 @@ fetch(addreddApiGetAll)
         option.dataset.division = depart.division;
         departSelect.appendChild(option);
     });
-    console.log(data);
+    // console.log(data);
 })
 .catch(error => 
     console.error(error));

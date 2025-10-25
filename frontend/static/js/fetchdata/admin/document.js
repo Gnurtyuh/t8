@@ -28,6 +28,7 @@ return fetch(addreddApiGetAllDocument)
             formattedDate = "Không xác định";
         }
         return {
+            path: document.filePath,
             name: document.title,
             fullName: document.userDto.fullName,
             email: document.userDto.email,
@@ -36,7 +37,7 @@ return fetch(addreddApiGetAllDocument)
             roleName: document.roleName
         };
     });
-    console.log("Danh sách tài liệu",documents);
+    // console.log("Danh sách tài liệu",documents);
     return documents;
 })
 .catch(error => {
