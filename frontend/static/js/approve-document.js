@@ -129,7 +129,7 @@ if (rejectBtn) {
     try {
       rejectBtn.disabled = true;
       const updatedLog = structuredClone(log);
-      updatedLog.status = 'NOT_APPROVED';
+      updatedLog.status = 'FAILED';
       console.log("status", updatedLog.status);
       const response = await fetch(`http://localhost:8080/user/log/update/${updatedLog.logId}`, {
         method: 'PUT',
