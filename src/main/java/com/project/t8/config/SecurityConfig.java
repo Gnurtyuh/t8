@@ -34,11 +34,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/admin/adminauth").permitAll()
+                        .requestMatchers("/admin/**").permitAll()
+                        // .requestMatchers("/admin/adminauth").permitAll()
                         .requestMatchers("/user/auth").permitAll()
                         .requestMatchers("/users/**").hasRole("USER")
-                        // Cho phep tat ca endpoint admin k can jwt
-                        .requestMatchers("/admin/**").permitAll()
                         .anyRequest().authenticated()
 
                 )

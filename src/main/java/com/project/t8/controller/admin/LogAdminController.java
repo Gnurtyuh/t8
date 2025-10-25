@@ -40,6 +40,7 @@ public class LogAdminController {
     public ResponseEntity<?> getAllLog() {
         List<LogDto> logs = logService.getAllLog();
         Collections.reverse(logs);
+        System.out.println(logs);
         return ResponseEntity.ok(logs);
     }
 

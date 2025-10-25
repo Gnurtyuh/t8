@@ -10,10 +10,11 @@ public class Cors implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Ap dung cho tat ca
-                .allowedOrigins("http://127.0.0.1:5500")
+                // .allowedOrigins("http://127.0.0.1:5500")
+                .allowedOrigins("http://localhost:63342")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
-    //sdfsdf
+    // sdfsdf
 }

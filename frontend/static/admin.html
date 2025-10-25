@@ -16,7 +16,7 @@
           <li><a href="#users">Quản Lý Người Dùng</a></li>
           <li><a href="#departments">Quản Lý Phòng Ban</a></li>
           <li><a href="#history">Quản Lý Log</a></li>
-          <li><a href="loginadmin.html" id="logout-link">Đăng Xuất</a></li>
+          <li><a href="loginadmin.html">Đăng Xuất</a></li>
         </ul>
       </nav>
 
@@ -75,7 +75,7 @@
               <div id="assign-results1" class="search-results02"></div>
             </div>
             <div class="search-group">
-              <input type="date" id="search-date" class="input-field" />
+              <!-- <input type="date" id="search-date" class="input-field" /> -->
               <button class="action-btn" onclick="filterDocuments()">
                 Tìm
               </button>
@@ -258,13 +258,13 @@
                 </select>
               </div>
               <div class="form-group">
-                <select id="assign-user" class="input-field">
-                  <option value="">Chọn người dùng</option>
-                  <option value="user1">Nguyen Van A</option>
-                  <option value="user2">Tran Thi B</option>
+                <select id="assign-user-select" class="input-field">
+                  <option text value="">Chọn người dùng</option>
                 </select>
               </div>
-              <button class="action-btn">Xác Nhận Gán</button>
+              <button onclick="confirm()" class="action-btn">
+                Xác Nhận Gán
+              </button>
             </div>
           </div>
 
@@ -288,7 +288,7 @@
               <button class="action-btn" onclick="filterHistory()">Tìm</button>
             </div>
             <div class="search-group">
-              <input type="date" id="history-date-filter" class="input-field" />
+              <!-- <input type="date" id="history-date-filter" class="input-field" /> -->
               <button class="action-btn" onclick="filterHistory()">Tìm</button>
             </div>
           </div>
@@ -299,8 +299,8 @@
       </main>
     </div>
     <script src="/t8/frontend/static/js/fetchdata/admin/manageruser.js"></script>
-    <script src="/t8/frontend/static/js/admin.js"></script>
     <script src="/t8/frontend/static/js/fetchdata/admin/department.js"></script>
+    <script src="/t8/frontend/static/js/admin.js"></script>
     <script src="/t8/frontend/static/js/fetchdata/admin/document.js"></script>
     <script src="/t8/frontend/static/js/fetchdata/admin/log.js"></script>
   </body>

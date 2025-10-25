@@ -12,11 +12,11 @@ public class Admin {
     @Column(name = "admin_id")
     private Long adminId;
 
-    @Column(name = "username",nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "password", nullable = false,columnDefinition = "BYTEA")
-    private byte[] password;
+    @Column(name = "password", nullable = false, columnDefinition = "BYTEA")
+    private String password;
 
     @Column(name = "email")
     private String email;
@@ -24,12 +24,11 @@ public class Admin {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "role_level", columnDefinition = "SMALLINT",updatable = false, insertable = false)
+    @Column(name = "role_level", columnDefinition = "SMALLINT", updatable = false, insertable = false)
     private Short roleLevel;
 
     public Admin() {
 
     }
-
 
 }

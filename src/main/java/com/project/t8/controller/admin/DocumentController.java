@@ -6,12 +6,10 @@ import com.project.t8.repository.DocumentRepo;
 import com.project.t8.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@PreAuthorize("authentication.principal.roleLevel = 0")
 @RestController
 @RequestMapping("/admin/document")
 public class DocumentController {
@@ -43,7 +41,7 @@ public class DocumentController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> getDocumentByUser(@PathVariable String  username) {
+    public ResponseEntity<?> getDocumentByUser(@PathVariable String username) {
         List<DocumentDto> documentDto = documentService.findByUser(username);
         return ResponseEntity.ok(documentDto);
     }
