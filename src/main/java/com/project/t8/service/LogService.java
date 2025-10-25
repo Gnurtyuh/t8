@@ -44,7 +44,6 @@ public class LogService {
     }
     public Log updateLog(long id,LogDto logDto) {
         Log log = dtoMapEntityLog(findByLogId(id));
-        log.setAction("UPDATED");
         log.setStatus(logDto.getStatus());
         log.setDescription(logDto.getDescription());
         log.setCompletedAt(new Timestamp(System.currentTimeMillis()));
