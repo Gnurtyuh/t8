@@ -106,7 +106,7 @@ public class LogService {
     public LogDto findByLogId(Long logId) {
         return entityMapDtoLog(logRepo.findByLogId(logId));
     }
-    LogDto entityMapDtoLog(Log log) {
+    public LogDto entityMapDtoLog(Log log) {
         Department department = departmentService.getDepartmentById(log.getDepartmentId());
         User user = userService.findByUserId(log.getUserId());
         Document document = documentService.getDocumentById(log.getDocumentId());
@@ -123,7 +123,7 @@ public class LogService {
         logDto.setUserDto(userService.entityMapDto(user));
         return logDto;
     }
-    Log dtoMapEntityLog(LogDto logDto) {
+    public Log dtoMapEntityLog(LogDto logDto) {
         Log log = new Log();
         Department department = departmentService.getDepartmentById(logDto.getDepartmentDto().getDepartmentId());
         User user = userService.findByUsername(logDto.getUserDto().getUsername());

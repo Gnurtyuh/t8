@@ -26,7 +26,7 @@ public class LogUserController {
     @PutMapping("/update/{logId}")
     public ResponseEntity<?> updateLog(@PathVariable long logId, @RequestBody LogDto logDto) {
         Log log = logService.updateLog(logId, logDto);
-        return ResponseEntity.ok(log);
+        return ResponseEntity.ok(logService.entityMapDtoLog(log));
     }
 
     @PreAuthorize("authentication.principal.roleLevel <= 3")
