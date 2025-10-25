@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LogService {
@@ -85,15 +86,18 @@ public class LogService {
         return logDto;
     }
     public List<LogDto> findByDepartmentName(String departmentName) {
-        List<Department> departments = departmentService.getDepartmentByName(departmentName);
-        List<LogDto> logDto = new ArrayList<>();
-        for(Department department : departments) {
-            List<Log> logs = logRepo.findByDepartmentId(department.getDepartmentId());
-            for (Log log : logs) {
-                logDto.add(entityMapDtoLog(log));
-            }
+        Department department = departmentService.getDepartmentByName(departmentName).stream()
+                .findFirst()
+                .orElse(null);
+
+        if (department == null) {
+            return new ArrayList<>();
         }
-        return logDto;
+
+        List<Log> logs = logRepo.findByDepartmentId(department.getDepartmentId());
+        return logs.stream()
+                .map(this::entityMapDtoLog)
+                .collect(Collectors.toList());
     }
     public List<LogDto> getAllLog() {
         List<Log> logs = logRepo.findAll();
