@@ -43,13 +43,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userdto = await getUserByUsername(username);
         const departmentDto = userdto.departmentDto;
         const departmentName = departmentDto.departmentName;
-        const response = await fetch(`http://localhost:8080/user/document`, {
+        const response = await fetch(`http://localhost:8080/user/document?departmentName=${departmentName}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-            body: JSON.stringify({ departmentName })
             });
 
             const data = await response.json();
@@ -91,15 +90,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const userdto = await getUserByUsername(username);
         const departmentDto = userdto.departmentDto;
-        const departmentId = departmentDto.id;
-        const response = await fetch(`http://localhost:8080/user/document/departmentId`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            body: JSON.stringify({ departmentId })
-            });
+        console.log("userdto:", userdto);
+        const departmentId = departmentDto.departmentId;
+        console.log("departmentId:", departmentId);
+        const response = await fetch(
+          `http://localhost:8080/user/document/departmentId?departmentId=${departmentId}`,
+        {
+          method: 'GET',
+          headers: {
+          'Authorization': `Bearer ${token}`
+           }
+        }
+        );
 
             const data = await response.json();
 

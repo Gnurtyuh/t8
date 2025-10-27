@@ -36,7 +36,7 @@ public class DocumentUserController {
          
         Document document= documentService.createDocument(documentDto);
         if(document!=null){
-            logService.createLog(document,"CREATED DOCUMENT");
+            logService.createLog(document,"NHÂN VIÊN GỬI TÀI LIỆU");
             return ResponseEntity.ok(documentService.dtoMapEntityDoc(document));
         }
         return ResponseEntity.badRequest().build();

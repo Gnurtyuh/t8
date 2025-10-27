@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem("access_token");
   const username = localStorage.getItem("username");
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const doc = log?.documentDto || {};
     const user = log?.userDto || {};
     const dept = log?.departmentDto || {};
-
+    const action = log.action || "NHÂN VIÊN GỬI TÀI LIỆU";
     const title = doc.title || log.target;
     const docDescription = doc.description;
     const username = user.username;
@@ -35,8 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const departmentName = dept.departmentName;
     const filePath = doc.filePath;
     const status = log.status;
-    const createdAt = (log.createdAt).toLocaleString('vi-VN');
-    const completedAt = (log.completedAt).toLocaleString('vi-VN');
+    const createdAt = log.createdAt
+  ? new Date(log.createdAt).toLocaleString('vi-VN')
+  : 'Chưa hoàn thành';
+
+const completedAt = log.completedAt
+  ? new Date(log.completedAt).toLocaleString('vi-VN')
+  : 'Chưa có thời gian hoàn thành';
     const item = document.createElement('div');
     item.className = 'document-item';
    item.innerHTML = `
@@ -44,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     <div class="document-main">
       <div class="cols">
         <div class="doc-left">
-          <div class="file-name"><strong>Tên tài liệu:</strong> ${title}</div>
+          <div class="file-name"><strong>Tên tài liệu:</strong> ${action}</div>
           <div class="file-desc"><strong>Mô tả:</strong> ${docDescription}</div>
           <div class="file-author"><strong>Người tạo:</strong> ${username}</div>
           <div class="file-dept"><strong>Phòng ban:</strong> ${departmentName}</div>
@@ -52,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
 
         <div class="doc-right">
+        <div class="file-action"><strong>Hành động:</strong> ${title}</div>
           <div class="file-path"><strong>Tên file:</strong> ${filePath}</div>
           <div class="log-status"><strong>Trạng thái:</strong> ${status}</div>
           <div class="log-created"><strong>Ngày tạo:</strong> ${createdAt}</div>
@@ -68,12 +75,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   </div> 
 `;
     documentList.appendChild(item);
-
-  if (roleLevel === '3' || log.status && log.status.toLowerCase() !== 'PENDING') {
+// || (log.status !== 'CHỜ XÉT DUYỆT' && log.status !== 'APPROVED')
+//dieu kien quyen
+if (roleLevel === '3') {
   hideActionButtons(item);
-} 
+}
+if (roleLevel ==='2' && (log.status === 'ĐÃ ĐƯỢC PHÊ DUYỆT'||log.status === 'HOÀN THÀNH')){
+  hideActionButtons(item);
+}
 
-
+if (roleLevel == '1' && (log.status === 'CHỜ XÉT DUYỆT' ||log.status === 'HOÀN THÀNH' )){
+  hideActionButtons(item);
+}
 
     // nút xem tài liệu
 const viewBtn = item.querySelector('.view-btn');
@@ -93,7 +106,10 @@ if (approveBtn) {
     try {
       approveBtn.disabled = true;
       const updatedLog = structuredClone(log);
-      updatedLog.status = 'APPROVED';
+      if(roleLevel ==='2'){updatedLog.status = 'ĐÃ ĐƯỢC PHÊ DUYỆT';}
+      else if(roleLevel ==='1'){
+        updatedLog.status = 'HOÀN THÀNH';
+      }
       console.log("status", updatedLog.status);
       const response = await fetch(`http://localhost:8080/user/log/update/${updatedLog.logId}`, {
         method: 'PUT',
@@ -129,7 +145,7 @@ if (rejectBtn) {
     try {
       rejectBtn.disabled = true;
       const updatedLog = structuredClone(log);
-      updatedLog.status = 'FAILED';
+      updatedLog.status = 'TỪ CHỐI';
       console.log("status", updatedLog.status);
       const response = await fetch(`http://localhost:8080/user/log/update/${updatedLog.logId}`, {
         method: 'PUT',
@@ -149,7 +165,7 @@ if (rejectBtn) {
       }
 
       appendStatusLine(item, 'Tài liệu đã bị từ chối');
-      hideActionButtons(item); // ✅ ẩn 2 nút sau khi từ chối
+      hideActionButtons(item); 
     } catch (e) {
       console.error(e);
       alert('Lỗi kết nối đến server!');
@@ -184,20 +200,21 @@ function appendStatusLine(item, text) {
     if (roleLevel === '1') {
       const userdto = await getUserByUsername(username);
       const departmentName = userdto.departmentDto.departmentName;
-      const res = await fetch(`http://localhost:8080/user/log//departments/${departmentName}`, {
+      const res = await fetch(`http://localhost:8080/user/log/departments?departmentName=${departmentName}`, {
          headers: {
                 'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-            body: JSON.stringify({ departmentName })
       });
       const data = await res.json();
       renderDocuments(data);
 
     } else if (roleLevel === '2') {
       const userdto = await getUserByUsername(username);
-      const departmentId = userdto.departmentDto.id;
-      const res = await fetch(`http://localhost:8080/user/document/department/${departmentId}`, {
+      console.log("user" ,userdto)
+      const departmentId = userdto.departmentDto.departmentId;
+      console.log("dep" ,departmentId)
+      const res = await fetch(`http://localhost:8080/user/log/department/${departmentId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

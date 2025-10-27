@@ -35,7 +35,7 @@ public class LogService {
         logDto.setDepartmentDto(documentDto.getDepartmentDto());
         logDto.setAction(action);
         logDto.setDocumentDto(documentDto);
-        logDto.setStatus("PENDING");
+        logDto.setStatus("CHỜ XÉT DUYỆT");
         logDto.setTarget(documentDto.getTitle());
         logDto.setDescription(documentDto.getDescription());
         Log log= dtoMapEntityLog(logDto);
