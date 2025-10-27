@@ -42,7 +42,7 @@ public class LogUserController {
         List<LogDto> logs = logService.findByDepartmentId(departmentId);
         return ResponseEntity.ok(logs);
     }
-    @PreAuthorize("authentication.principal.roleLevel <= 2")
+//    @PreAuthorize("authentication.principal.roleLevel <= 2")
     @GetMapping("/document/{documentId}")
     public ResponseEntity<?> getLogByDocumentId(@PathVariable long documentId) {
         List<LogDto> logs = logService.findByDocumentId(documentId);
