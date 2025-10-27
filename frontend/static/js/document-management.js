@@ -51,9 +51,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <span class="file-id">id: ${log.documentId}</span>
         <span class="file-name">Tên Tài Liệu: ${log.title}</span>
         <span class="file-date">Ngày Gửi: ${new Date(log.uploadDate).toLocaleDateString()}</span>
-        <span class="file-author">Người tạo: ${log.userDto.username}</span>
+        <span class="file-author">Người tạo: ${log.userDto.fullName}</span>
         <span class="file-dept">Phòng ban: ${log.departmentDto.departmentName}</span>
-        <span class="file-division">Division: ${log.departmentDto.division}</span>
+        <span class="file-division">Bộ phận: ${log.departmentDto.division}</span>
         <span class="file-desc">Mô tả: ${log.description}</span>
         <span class="file-path">Đường dẫn: ${log.filePath}</span>
         <a href="#" class="view-btn">Xem</a>
@@ -96,9 +96,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <span class="file-id">id: ${log.documentId}</span>
         <span class="file-name">Tên Tài Liệu: ${log.title}</span>
         <span class="file-date">Ngày Gửi: ${new Date(log.uploadDate).toLocaleDateString()}</span>
-        <span class="file-author">Người tạo: ${log.userDto.username}</span>
+        <span class="file-author">Người tạo: ${log.userDto.fullName}</span>
         <span class="file-dept">Phòng ban: ${log.departmentDto.departmentName}</span>
-        <span class="file-division">Division: ${log.departmentDto.division}</span>
+        <span class="file-division">Bộ phận: ${log.departmentDto.division}</span>
         <span class="file-desc">Mô tả: ${log.description}</span>
         <span class="file-path">Đường dẫn: ${log.filePath}</span>
         <a href="#" class="view-btn">Xem</a>
@@ -153,9 +153,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <span class="file-id">id: ${log.documentId}</span>
         <span class="file-name">Tên Tài Liệu: ${log.title}</span>
         <span class="file-date">Ngày Gửi: ${new Date(log.uploadDate).toLocaleDateString()}</span>
-        <span class="file-author">Người tạo: ${log.userDto.username}</span>
+        <span class="file-author">Người tạo: ${log.userDto.fullName}</span>
         <span class="file-dept">Phòng ban: ${log.departmentDto.departmentName}</span>
-        <span class="file-division">Division: ${log.departmentDto.division}</span>
+        <span class="file-division">Bộ phận: ${log.departmentDto.division}</span>
         <span class="file-desc">Mô tả: ${log.description}</span>
         <span class="file-path">Đường dẫn: ${log.filePath}</span>
         <a href="#" class="view-btn">Xem</a>

@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const title = doc.title || log.target;
     const docDescription = doc.description;
-    const username = user.username;
+    const username = user.fullName;
     const division = dept.division;
     const departmentName = dept.departmentName;
     const filePath = doc.filePath;
@@ -269,8 +269,8 @@ function appendStatusLine(item, text) {
   try {
     if (roleLevel === '1'&& documentId === null) {
       const userdto = await getUserByUsername(username);
-      const departmentName = userdto.departmentDto.departmentName;
-      const res = await fetch(`http://localhost:8080/user/log/departments?departmentName=${departmentName}`, {
+      const departmentId = userdto.departmentDto.departmentId;
+      const res = await fetch(`http://localhost:8080/user/log/department/${departmentId}`, {
          headers: {
                 'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`

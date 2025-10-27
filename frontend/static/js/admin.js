@@ -560,7 +560,7 @@ function assignUserToDepartment() {
         data.forEach(depart => {
           const option = document.createElement("option");
           option.value = `${depart.division}-${depart.departmentName}`;
-          option.textContent = depart.departmentName;
+          option.textContent = depart.departmentName +" "+depart.division ;
           departSelect.appendChild(option);
         });
       })
