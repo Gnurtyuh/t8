@@ -7,34 +7,77 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log("token:", token);
   const params = new URLSearchParams(window.location.search);
   const documentId = params.get('documentId');
-  try {
-  if (!documentId) {
+  const loginBtn = document.getElementById('loginBtn');
+  if (token) {
+    // Nếu đã đăng nhập
+    loginBtn.textContent = 'ĐĂNG XUẤT';
+    loginBtn.href = '#'; // không chuyển trang login nữa
+
+    // Khi bấm, sẽ đăng xuất
+    loginBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('token'); // xóa token
+      alert('Đã đăng xuất!');
+      window.location.href = 'login.html'; // quay về trang login
+    });
+  }
+//   try {
+//   if (!documentId) {
+//     alert("Không có documentId trong URL!");
+//     return;
+//   }
+//
+//   const res = await fetch(`http://localhost:8080/user/log/document/${encodeURIComponent(documentId)}`, {
+//     headers: {
+//       "Authorization": `Bearer ${token}`
+//     }
+//   });
+//
+//   if (!res.ok) {
+//     throw new Error("Không thể lấy log của tài liệu này!");
+//   }
+//
+//   const data = await res.json();
+//   renderDocuments(data);
+//
+// } catch (error) {
+//   console.error(error);
+//   alert("Lỗi khi tải log tài liệu!");
+// }
+  if (!token || !username) {
+    alert("Bạn chưa đăng nhập!");
+    return;
+  }
+  async function fetchDocumentLogs(documentId) {
+    try {
+      if (!documentId) {
     alert("Không có documentId trong URL!");
     return;
   }
-
-  const res = await fetch(`http://localhost:8080/user/log/document/${encodeURIComponent(documentId)}`, {
+      const res = await fetch(`http://localhost:8080/user/log/document/${encodeURIComponent(documentId)}`, {
     headers: {
       "Authorization": `Bearer ${token}`
     }
   });
 
-  if (!res.ok) {
+      if (!res.ok) {
     throw new Error("Không thể lấy log của tài liệu này!");
   }
 
   const data = await res.json();
   renderDocuments(data);
-
-} catch (error) {
-  console.error(error);
-  alert("Lỗi khi tải log tài liệu!");
-}
+    } catch (error) {
+      console.error("❌ Lỗi khi tải log tài liệu:", error);
+      alert("Lỗi khi tải log tài liệu!");
+    }
+  }
   if (!token || !username) {
     alert("Bạn chưa đăng nhập!");
     return;
   }
-
+  if (documentId!=null)  {
+    await fetchDocumentLogs(documentId);
+  }
   async function getUserByUsername(username) {
     const res = await fetch(`http://localhost:8080/user/${username}`, {
       headers: { "Authorization": `Bearer ${token}` }
@@ -47,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const documentList = document.getElementById('document-list');
     documentList.innerHTML = '';
 
-      data.forEach(log => {
+    data.forEach(log => {
     const doc = log?.documentDto || {};
     const user = log?.userDto || {};
     const dept = log?.departmentDto || {};
@@ -89,7 +132,7 @@ const completedAt = log.completedAt
       </div> 
 
       <div class="action-group">
-        <a href="#" class="view-btn" data-file="${encodeURIComponent(filePath)}">Xem</a>
+        <a href="#" class="view-btn" data-file="${encodeURIComponent(filePath)}"  data-id="${encodeURIComponent(doc.documentId)}">Xem</a>
         <button class="approve-btn">Phê duyệt</button>
         <button class="reject-btn">Từ chối</button>
       </div>
@@ -118,8 +161,11 @@ if (viewBtn) {
   viewBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const file = decodeURIComponent(viewBtn.dataset.file || '');
+    const documentId = decodeURIComponent(viewBtn.dataset.id || '');
+
     if (!file) return alert('Không có file để xem');
-    window.location.href = `decrypt.html?file=${encodeURIComponent(file)}`;
+    window.location.href = `decrypt.html?file=${encodeURIComponent(file)}&documentId=${encodeURIComponent(doc.documentId)}`;
+
   });
 }
 
@@ -153,7 +199,7 @@ if (approveBtn) {
       }
 
       appendStatusLine(item, 'Tài liệu đã được phê duyệt');
-      hideActionButtons(item); 
+      hideActionButtons(item);
     } catch (e) {
       console.error(e);
       alert('Lỗi kết nối đến server!');
@@ -189,7 +235,7 @@ if (rejectBtn) {
       }
 
       appendStatusLine(item, 'Tài liệu đã bị từ chối');
-      hideActionButtons(item); 
+      hideActionButtons(item);
     } catch (e) {
       console.error(e);
       alert('Lỗi kết nối đến server!');
@@ -219,7 +265,7 @@ function appendStatusLine(item, text) {
   item.appendChild(s);
 }
 
-  //goi api theo role
+
   try {
     if (roleLevel === '1'&& documentId === null) {
       const userdto = await getUserByUsername(username);
@@ -231,6 +277,7 @@ function appendStatusLine(item, text) {
                 },
       });
       const data = await res.json();
+
       renderDocuments(data);
 
     } else if (roleLevel === '2' && documentId === null ) {
@@ -254,5 +301,5 @@ function appendStatusLine(item, text) {
   } catch (error) {
     console.error(error);
     alert("Không thể lấy dữ liệu từ server!");
-  }
-});
+  }});
+

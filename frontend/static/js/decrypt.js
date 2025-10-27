@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendDataBtn = document.querySelector('.sendDataBtn');
     const params = new URLSearchParams(window.location.search);
     const filePath = params.get('file');
-    const documentId = params.get('documentId'); 
+    const documentId = params.get('documentId');
+    const token = localStorage.getItem("access_token");
 if (sendDataBtn) {
     sendDataBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -21,7 +22,20 @@ if (sendDataBtn) {
 if (filePath) {
     fileNameDisplay.textContent = `📁 File đã chọn: ${filePath}`;
 }
+    const loginBtn = document.getElementById('loginBtn');
+    if (token) {
+        // Nếu đã đăng nhập
+        loginBtn.textContent = 'ĐĂNG XUẤT';
+        loginBtn.href = '#'; // không chuyển trang login nữa
 
+        // Khi bấm, sẽ đăng xuất
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token'); // xóa token
+            alert('Đã đăng xuất!');
+            window.location.href = 'login.html'; // quay về trang login
+        });
+    }
     // Kiểm tra điều kiện kích hoạt nút tải và gửi
     function checkButtonState() {
         const hasFile = fileNameDisplay.textContent.trim() !== '';

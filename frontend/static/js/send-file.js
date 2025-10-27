@@ -34,6 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // ✅ Nhập email người nhận
     recipientEmail.addEventListener('input', checkButtonState);
 
+    const loginBtn = document.getElementById('loginBtn');
+    if (token) {
+        // Nếu đã đăng nhập
+        loginBtn.textContent = 'ĐĂNG XUẤT';
+        loginBtn.href = '#'; // không chuyển trang login nữa
+
+        // Khi bấm, sẽ đăng xuất
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token'); // xóa token
+            alert('Đã đăng xuất!');
+            window.location.href = 'login.html'; // quay về trang login
+        });
+    }
     // ✅ Kéo thả file
     fileUpload.addEventListener('dragover', (e) => {
         e.preventDefault();

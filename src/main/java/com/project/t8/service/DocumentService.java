@@ -41,13 +41,6 @@ public class DocumentService {
         return documentRepo.save(document);
     }
 
-    public Document updateDocument(long id, DocumentDto documentDto) {
-        Document document = getDocumentById(id);
-        document.setTitle(documentDto.getTitle());
-        document.setDescription(documentDto.getDescription());
-        document.setFilePath(documentDto.getFilePath());
-        return documentRepo.save(document);
-    }
     public List<DocumentDto> findByDepartmentId(Long departmentId) {
         List<Document> documents = documentRepo.findByDepartmentId(departmentId);
         List<DocumentDto> documentsDto = new ArrayList<>();
@@ -87,6 +80,13 @@ public class DocumentService {
             documentsDto.add(dtoMapEntityDoc(document));
         }
         return documentsDto;
+    }
+    public Document updateDocument(long id, DocumentDto documentDto) {
+        Document document = getDocumentById(id);
+        document.setTitle(documentDto.getTitle());
+        document.setDescription(documentDto.getDescription());
+        document.setFilePath(documentDto.getFilePath());
+        return documentRepo.save(document);
     }
     public void deleteDocument(Long documentId) {
         documentRepo.deleteById(documentId);

@@ -14,7 +14,7 @@
                 <a href="#"></a>
                 <a href="#"></a>
                 <a href="#"></a>
-                <a href="login.html" class="downloadBtn">ĐĂNG NHẬP</a>
+                <a href="login.html" class="downloadBtn" id="loginBtn">ĐĂNG NHẬP</a>
                  <div class="notification-bell">🔔</div>
                
             </nav>
@@ -71,5 +71,22 @@
             </div>
         </footer>
     </div>
+<script>
+    const token = localStorage.getItem("access_token");
+    const loginBtn = document.getElementById('loginBtn');
+    if (token) {
+        // Nếu đã đăng nhập
+        loginBtn.textContent = 'ĐĂNG XUẤT';
+        loginBtn.href = '#'; // không chuyển trang login nữa
+
+        // Khi bấm, sẽ đăng xuất
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token'); // xóa token
+            alert('Đã đăng xuất!');
+            window.location.href = 'login.html'; // quay về trang login
+        });
+    }
+</script>
 </body>
 </html>

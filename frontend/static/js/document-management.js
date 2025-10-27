@@ -8,12 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert("Bạn chưa đăng nhập!");
         return;
     }
-
-
-    
-
-
-    // Lấy departmentId của user hien tai
     async function getUserByUsername(username) {
     const token = localStorage.getItem("access_token");
     const response = await fetch(`http://localhost:8080/user/${username}`, {
@@ -30,12 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     return await response.json(); 
     }
-   
-
-
-
-
-
 
     //lay tai lieu cua nhan vien rolelevel = 1
     if (roleLevel === '1') {
@@ -78,14 +66,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-
-
-
-
-
-
-
-    //lay tai lieu cua nhan vien rolelevel = 2
     if (roleLevel === '2') {
    
     try {
@@ -130,9 +110,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert("Không thể lấy dữ liệu từ server!");
         }
     }
-    
 
+    const loginBtn = document.getElementById('loginBtn');
+    if (token) {
+        // Nếu đã đăng nhập
+        loginBtn.textContent = 'ĐĂNG XUẤT';
+        loginBtn.href = '#'; // không chuyển trang login nữa
 
+        // Khi bấm, sẽ đăng xuất
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token'); // xóa token
+            alert('Đã đăng xuất!');
+            window.location.href = 'login.html'; // quay về trang login
+        });
+    }
 
 
 
@@ -180,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-        document.addEventListener('click', function(e) {
+  document.addEventListener('click', function(e) {
   if (e.target.classList.contains('view-btn')) {
     e.preventDefault();
 

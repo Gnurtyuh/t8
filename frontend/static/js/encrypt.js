@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileNameDisplay = document.getElementById('fileNameDisplay');
     const togglePasswordBtn = document.querySelector('.toggle-password-btn');
     const sendDataBtn = document.querySelector('.sendDataBtn');
-
+    const token = localStorage.getItem("access_token");
     // Kiểm tra điều kiện kích hoạt nút tải và gửi
     function checkButtonState() {
         const hasFile = fileInput.files.length > 0;
@@ -26,7 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
             sendDataBtn.classList.remove('enabled');
         }
     }
+    const loginBtn = document.getElementById('loginBtn');
+    if (token) {
+        // Nếu đã đăng nhập
+        loginBtn.textContent = 'ĐĂNG XUẤT';
+        loginBtn.href = '#'; // không chuyển trang login nữa
 
+        // Khi bấm, sẽ đăng xuất
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token'); // xóa token
+            alert('Đã đăng xuất!');
+            window.location.href = 'login.html'; // quay về trang login
+        });
+    }
     // nhập file và hiển thị tên file khi chọn 
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length > 0) {
