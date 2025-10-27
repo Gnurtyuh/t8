@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const item = document.createElement('div');
     item.className = 'document-item';
     item.innerHTML = `
+        <span class="file-id">id: ${log.documentId}</span>
         <span class="file-name">Tên Tài Liệu: ${log.title}</span>
         <span class="file-date">Ngày Gửi: ${new Date(log.uploadDate).toLocaleDateString()}</span>
         <span class="file-author">Người tạo: ${log.userDto.username}</span>
@@ -112,6 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const item = document.createElement('div');
     item.className = 'document-item';
     item.innerHTML = `
+        <span class="file-id">id: ${log.documentId}</span>
         <span class="file-name">Tên Tài Liệu: ${log.title}</span>
         <span class="file-date">Ngày Gửi: ${new Date(log.uploadDate).toLocaleDateString()}</span>
         <span class="file-author">Người tạo: ${log.userDto.username}</span>
@@ -156,6 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const item = document.createElement('div');
     item.className = 'document-item';
     item.innerHTML = `
+        <span class="file-id">id: ${log.documentId}</span>
         <span class="file-name">Tên Tài Liệu: ${log.title}</span>
         <span class="file-date">Ngày Gửi: ${new Date(log.uploadDate).toLocaleDateString()}</span>
         <span class="file-author">Người tạo: ${log.userDto.username}</span>
@@ -175,3 +178,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 }
 });
 
+
+
+        document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('view-btn')) {
+    e.preventDefault();
+
+    const parent = e.target.closest('.document-item');
+    if (!parent) return;
+
+    const idText = parent.querySelector('.file-id')?.textContent || '';
+    const match = idText.match(/(\d+)/); // tìm số trong chuỗi "id: 123"
+    const documentId = match ? match[1] : null;
+
+    const filePathText = parent.querySelector('.file-path')?.textContent || '';
+    const filePath = filePathText.replace('Đường dẫn:', '').trim();
+
+    if (!filePath || !documentId) {
+      alert("Thiếu thông tin tài liệu!");
+      return;
+    }
+    window.location.href = `decrypt.html?file=${encodeURIComponent(filePath)}&documentId=${encodeURIComponent(documentId)}`;
+  }
+});
+
+
+// document.addEventListener('click', function(e) {
+//   if (e.target.classList.contains('view-btn')) {
+//     e.preventDefault();
+//     const documentId = e.target.dataset.id;
+//     const filePath = decodeURIComponent(e.target.dataset.file);
+
+//     if (!filePath || !documentId) {
+//       alert("Thiếu thông tin tài liệu!");
+//       return;
+//     }
+//     window.location.href = `decrypt.html?file=${encodeURIComponent(filePath)}&documentId=${documentId}`;
+//   }
+// });

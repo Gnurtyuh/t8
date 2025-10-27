@@ -53,17 +53,5 @@
         </footer>
     </div>
     <script src="../static/js/document-management.js"></script>
-    <script>
-        document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('view-btn')) {
-        const parent = e.target.closest('.document-item');
-        if (parent) {
-            const filePath = parent.querySelector('.file-path').textContent.replace('Đường dẫn: ', '');
-            // encodeURIComponent để an toàn với ký tự đặc biệt
-            window.location.href = `decrypt.html?file=${encodeURIComponent(filePath)}`;
-        }
-    }
-});
-    </script>
 </body>
 </html>

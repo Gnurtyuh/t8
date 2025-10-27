@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
@@ -45,9 +46,16 @@ public class CreateUser {
     }
 
     @PutMapping("/updateDepartment/{username}")
-    public ResponseEntity<?> undateDepartment(@PathVariable String username, @RequestBody UserDto userDto) {
-        User updateDepartment = createUserSv.updateDepartment(userDto, username);
-        return ResponseEntity.ok(updateDepartment);
+    public ResponseEntity<?> undateDepartment(@PathVariable String username, @RequestBody Map<String, String> body) {
+        String departmentFull = body.get("department");
+        if (departmentFull == null || !departmentFull.contains("-")) {
+            throw new IllegalArgumentException("Dữ liệu department không hợp lệ");
+        }
+        String[] parts = departmentFull.split("-", 2);
+        String first = parts[0].trim();
+        String second = parts[1].trim();
+        User updatedUser = createUserSv.updateDepartment(username, first, second);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @PostMapping("/login")

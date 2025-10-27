@@ -34,12 +34,14 @@ try{
 });
 //
 const assignForm = document.getElementById('departmentuser');
+let departments = []; 
 fetch(addreddApiGetAll)
 .then(response => {
     if(!response.ok) throw new Error("Error");
     return response.json();
 })
 .then(data => {
+    departments = data;
     const departSelect = document.getElementById("department");
     data.forEach(depart => {
         const option = document.createElement("option");

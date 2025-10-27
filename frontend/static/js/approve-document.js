@@ -5,13 +5,36 @@ document.addEventListener('DOMContentLoaded', async () => {
   const roleLevel = localStorage.getItem("rolelevel");
   console.log("Role Level:", roleLevel);
   console.log("token:", token);
+  const params = new URLSearchParams(window.location.search);
+  const documentId = params.get('documentId');
+  try {
+  if (!documentId) {
+    alert("Không có documentId trong URL!");
+    return;
+  }
 
+  const res = await fetch(`http://localhost:8080/user/log/document/${encodeURIComponent(documentId)}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error("Không thể lấy log của tài liệu này!");
+  }
+
+  const data = await res.json();
+  renderDocuments(data);
+
+} catch (error) {
+  console.error(error);
+  alert("Lỗi khi tải log tài liệu!");
+}
   if (!token || !username) {
     alert("Bạn chưa đăng nhập!");
     return;
   }
-//  ? new Date(log.completedAt).toLocaleString('vi-VN') : 'Chưa hoàn thành'
-//  ? new Date(log.createdAt).toLocaleString('vi-VN') : (doc.uploadDate ? new Date(doc.uploadDate).toLocaleString('vi-VN') : 'Không rõ'
+
   async function getUserByUsername(username) {
     const res = await fetch(`http://localhost:8080/user/${username}`, {
       headers: { "Authorization": `Bearer ${token}` }
@@ -28,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const doc = log?.documentDto || {};
     const user = log?.userDto || {};
     const dept = log?.departmentDto || {};
-    const action = log.action || "NHÂN VIÊN GỬI TÀI LIỆU";
+
     const title = doc.title || log.target;
     const docDescription = doc.description;
     const username = user.username;
@@ -50,7 +73,7 @@ const completedAt = log.completedAt
     <div class="document-main">
       <div class="cols">
         <div class="doc-left">
-          <div class="file-name"><strong>Tên tài liệu:</strong> ${action}</div>
+          <div class="file-name"><strong>Tên tài liệu:</strong> ${title}</div>
           <div class="file-desc"><strong>Mô tả:</strong> ${docDescription}</div>
           <div class="file-author"><strong>Người tạo:</strong> ${username}</div>
           <div class="file-dept"><strong>Phòng ban:</strong> ${departmentName}</div>
@@ -58,7 +81,6 @@ const completedAt = log.completedAt
         </div>
 
         <div class="doc-right">
-        <div class="file-action"><strong>Hành động:</strong> ${title}</div>
           <div class="file-path"><strong>Tên file:</strong> ${filePath}</div>
           <div class="log-status"><strong>Trạng thái:</strong> ${status}</div>
           <div class="log-created"><strong>Ngày tạo:</strong> ${createdAt}</div>
@@ -75,7 +97,9 @@ const completedAt = log.completedAt
   </div> 
 `;
     documentList.appendChild(item);
-// || (log.status !== 'CHỜ XÉT DUYỆT' && log.status !== 'APPROVED')
+
+
+
 //dieu kien quyen
 if (roleLevel === '3') {
   hideActionButtons(item);
@@ -197,7 +221,7 @@ function appendStatusLine(item, text) {
 
   //goi api theo role
   try {
-    if (roleLevel === '1') {
+    if (roleLevel === '1'&& documentId === null) {
       const userdto = await getUserByUsername(username);
       const departmentName = userdto.departmentDto.departmentName;
       const res = await fetch(`http://localhost:8080/user/log/departments?departmentName=${departmentName}`, {
@@ -209,7 +233,7 @@ function appendStatusLine(item, text) {
       const data = await res.json();
       renderDocuments(data);
 
-    } else if (roleLevel === '2') {
+    } else if (roleLevel === '2' && documentId === null ) {
       const userdto = await getUserByUsername(username);
       console.log("user" ,userdto)
       const departmentId = userdto.departmentDto.departmentId;
@@ -220,7 +244,7 @@ function appendStatusLine(item, text) {
       const data = await res.json();
       renderDocuments(data);
 
-    } else if (roleLevel === '3') {
+    } else if (roleLevel === '3'&& documentId === null ) {
       const res = await fetch(`http://localhost:8080/user/log/userid/${username}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });

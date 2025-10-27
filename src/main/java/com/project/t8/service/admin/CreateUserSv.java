@@ -56,10 +56,17 @@ public class CreateUserSv {
         return userRepo.save(user);
     }
 
-    public User updateDepartment(UserDto userDto, String username) {
+    public User updateDepartment(String username, String first, String second) {
         User user = getUserByUsername(username);
-        Department department = getDepartmentId(userDto.getDepartmentDto().getDepartmentName(),
-                userDto.getDepartmentDto().getDivision());
+        Department department = getDepartmentId(first, second);
+        if (department == null) {
+            // Nếu không tìm thấy thì thử ngược lại
+            department = getDepartmentId(second, first);
+        }
+
+        if (department == null) {
+            throw new IllegalArgumentException("Không tìm thấy phòng ban phù hợp với: " + first + " - " + second);
+        }
         user.setDepartmentId(department.getDepartmentId());
         return userRepo.save(user);
     }
@@ -103,17 +110,56 @@ public class CreateUserSv {
     }
 
     public boolean login(String username, String inputPassword) {
-        Optional<Admin> adminOpt = adminRepo.findByUsername(username);
 
-        // Nếu không tồn tại → sai thông tin đăng nhập
+        System.out.println("📥 [LOGIN] Username nhận được: " + username);
+        System.out.println("📥 [LOGIN] Password nhập vào: " + inputPassword);
+        Optional<Admin> adminOpt = adminRepo.findByUsername(username);
         if (adminOpt.isEmpty()) {
+            System.out.println("❌ Không tìm thấy admin có username: " + username);
             return false;
         }
-
         Admin admin = adminOpt.get();
+        String storedPassword = admin.getPassword();
 
-        // So sánh password plain text
-        return admin.getPassword().equals(inputPassword);
+        String decoded = decodeHexIfNeeded(storedPassword);
+        boolean match = false;
 
+        if (decoded != null) {
+            match = inputPassword.equals(decoded);
+            System.out.println("✅ [HEX] Giải mã ra: " + decoded + " → Kết quả so sánh: " + match);
+        }
+
+        return match;
+    }
+
+    private String decodeHexIfNeeded(String s) {
+        if (s == null)
+            return null;
+
+        String str = s.trim();
+        // Trường hợp \x313233 hoặc \\x313233
+        if (str.contains("\\x") || str.startsWith("\\x")) {
+            String cleaned = str.replaceAll("\\\\x", ""); // xóa "\x"
+            if (cleaned.matches("^[0-9A-Fa-f]+$") && cleaned.length() % 2 == 0) {
+                return hexToString(cleaned);
+            }
+            return null;
+        }
+
+        // Trường hợp chỉ toàn ký tự hex: "313233"
+        if (str.matches("^[0-9A-Fa-f]+$") && str.length() % 2 == 0) {
+            return hexToString(str);
+        }
+
+        return null;
+    }
+
+    private String hexToString(String hex) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hex.length(); i += 2) {
+            String byteStr = hex.substring(i, i + 2);
+            sb.append((char) Integer.parseInt(byteStr, 16));
+        }
+        return sb.toString();
     }
 }

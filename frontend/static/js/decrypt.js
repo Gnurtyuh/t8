@@ -7,11 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const notificationPanel = document.querySelector('.notification-panel');
     const fileNameDisplay = document.getElementById('fileNameDisplay');
     const togglePasswordBtn = document.querySelector('.toggle-password-btn');
+    const fileInput = document.getElementById('fileInput');
     const sendDataBtn = document.querySelector('.sendDataBtn');
     const params = new URLSearchParams(window.location.search);
-    const filePath = params.get('file'); 
-    const fileInput = document.getElementById('fileInput');
-
+    const filePath = params.get('file');
+    const documentId = params.get('documentId'); 
+if (sendDataBtn) {
+    sendDataBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = `approve-document.html?documentId=${encodeURIComponent(documentId)}`;
+    });
+  }
 if (filePath) {
     fileNameDisplay.textContent = `📁 File đã chọn: ${filePath}`;
 }

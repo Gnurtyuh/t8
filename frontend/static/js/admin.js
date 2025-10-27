@@ -10,16 +10,25 @@ updateTime();
 
 // Chuyển tab
 document.querySelectorAll('.sidebar a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const tabId = this.getAttribute('href').substring(1);
-        if (tabId === 'logout-link') return;
-        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
-        this.parentElement.classList.add('active');
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href'); 
+        if (href === 'loginadmin.html') {
+            window.location.href = 'loginadmin.html';
+            return;
+        }
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const tabId = href.substring(1);
+
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+            this.parentElement.classList.add('active');
+        }
     });
 });
+
 
 // Danh sach nhan vien sau khi call api
 let users = [];
@@ -251,23 +260,23 @@ function updatePermission() {
    })
 }
 
-function filterUsers() {
-    getAllUser().then(user => {
-    const searchTerm = document.getElementById('search-user').value.toLowerCase();
-    const tbody = document.getElementById('user-table').getElementsByTagName('tbody')[0];
-    const rows = tbody.getElementsByTagName('tr');
-    for (let i = 0; i < rows.length; i++) {
-        user.fullName = rows[i].cells[0].textContent.toLowerCase();
-        user.sername = rows[i].cells[1].textContent.toLowerCase();
-        user.email = rows[i].cells[2].textContent.toLowerCase();
-        if (searchTerm === '' || fullName.includes(searchTerm) || username.includes(searchTerm) || email.includes(searchTerm)) {
-            rows[i].style.display = '';
-        } else {
-            rows[i].style.display = 'none';
-        }
-    }
-});
-}
+// function filterUsers() {
+//     getAllUser().then(user => {
+//     const searchTerm = document.getElementById('search-user').value.toLowerCase();
+//     const tbody = document.getElementById('user-table').getElementsByTagName('tbody')[0];
+//     const rows = tbody.getElementsByTagName('tr');
+//     for (let i = 0; i < rows.length; i++) {
+//         user.fullName = rows[i].cells[0].textContent.toLowerCase();
+//         user.sername = rows[i].cells[1].textContent.toLowerCase();
+//         user.email = rows[i].cells[2].textContent.toLowerCase();
+//         if (searchTerm === '' || fullName.includes(searchTerm) || username.includes(searchTerm) || email.includes(searchTerm)) {
+//             rows[i].style.display = '';
+//         } else {
+//             rows[i].style.display = 'none';
+//         }
+//     }
+// });
+// }
 
 
 // Hàm tải dữ liệu tài liệu động (giả lập API)
@@ -307,22 +316,25 @@ getAllDocument().then(docs => {
 }
 
 function filterDocuments() {
-    getAllDocument().then(docs => {
-    const filterDate = document.getElementById('search-date').value;
+getAllDocument().then(docs => {
     const searchTerm = document.getElementById('search-document').value.toLowerCase();
     const documentList = document.getElementById('document-list');
     documentList.innerHTML = '';
 
-    const filteredDocs = docs.filter(doc => 
-        (!filterDate || doc.date === filterDate) && 
-        (!searchTerm || doc.name.toLowerCase().includes(searchTerm))
+    const filteredDocs = docs.filter(doc =>
+        !searchTerm || doc.name.toLowerCase().includes(searchTerm)
     );
+
+    if (filteredDocs.length === 0) {
+        documentList.innerHTML = `<p style="color: gray;">Không tìm thấy tài liệu nào</p>`;
+        return;
+    }
+
     filteredDocs.forEach(doc => {
         const card = document.createElement('div');
         card.className = 'doc-card';
         card.innerHTML = `
             <p class="title">Tên Tài Liệu: ${doc.name}</p>
-            <p>Ngày Gửi: ${doc.date}</p>
             <p>Trạng Thái: ${doc.status}</p>
         `;
         documentList.appendChild(card);
@@ -431,56 +443,42 @@ function loadRecentLogs() {
 });
 }
 
-// function filterHistory() {
-//     getAllLog().then(logs => {
-//     const filterDate = document.getElementById('history-date-filter').value;
-//     const searchTerm = document.getElementById('search-log').value.toLowerCase();
+function filterHistory() {
+    getAllLog().then(logs => {
+        const searchTerm = document.getElementById('search-log').value.toLowerCase();
+        const logContainer = document.getElementById('log-container');
+        logContainer.innerHTML = ''; 
+    
+        const filteredLogs = logs.filter(log =>
+          !searchTerm ||
+          log.fullName.toLowerCase().includes(searchTerm) ||
+          log.documentName.toLowerCase().includes(searchTerm) ||
+          log.departmentName.toLowerCase().includes(searchTerm)
+        );
+    
+        if (filteredLogs.length === 0) {
+          logContainer.innerHTML = `<p class="no-result">Không tìm thấy kết quả phù hợp</p>`;
+          return;
+        }
+    
+        filteredLogs.forEach(log => {
+          const logCard = document.createElement('div');
+          logCard.classList.add('log-card');
+          logCard.innerHTML = `
+            <p class="title">Tên người đăng hành động: ${log.fullName}</p>
+            <p>Target: ${log.target}</p>
+            <p>Tên tài liệu: ${log.documentName}</p>
+            <p>Trạng thái: ${log.status}</p>
+            <p>Description: ${log.description}</p>
+            <p>Thời gian tạo file: ${log.timeCreate}</p>
+            <p>Thời gian hoàn thành: ${log.timeCompleted}</p>
+            <p>Tên phòng ban: ${log.departmentName}</p>
+          `;
+          logContainer.appendChild(logCard);
+        });
+      });
+}
 
-
-//     const logContainer = document.getElementById('log-container');
-//     logContainer.innerHTML = '';
-
-//     const filteredLogs = logs.filter(log => 
-//         (!filterDate || log.timeCompleted.split(' ')[0] === filterDate) && 
-//         (!searchTerm || log.fullName.toLowerCase().includes(searchTerm) || log.documentName.toLowerCase().includes(searchTerm) || log.departmentName.toLowerCase().includes(searchTerm))
-//     );
-//     filteredLogs.forEach(log => {
-//         const card = document.createElement('div');
-//         card.className = 'log-card';
-//         card.innerHTML = `
-//             <p class="title">Tên người đăng hành động: ${log.fullName}</p>
-//             <p>Target: ${log.target}</p>
-//             <p>Tên tài liệu: ${log.documentName}</p>
-//             <p>Trạng thái: ${log.status}</p>
-//             <p>Description: ${log.description}</p>
-//             <p>Thời gian tạo file: ${log.timeCreate}</p>
-//             <p>Thời gian hoàn thành: ${log.timeCompleted}</p>
-//             <p>Tên phòng ban: ${log.departmentName}</p>
-//         `;
-//         logContainer.appendChild(card);
-//     });
-// });
-// }
-
-// Quản Lý Phòng Ban
-// function loadDepartments() {
-//     const departments = [
-//         { name: "Phòng Nhân Sự", description: "Quản lý nhân sự công ty", division: "Bộ phận Hành chính" },
-//         { name: "Phòng CNTT", description: "Hỗ trợ công nghệ thông tin", division: "Bộ phận Công nghệ" }
-//     ];
-//     const departmentList = document.getElementById('department-list');
-//     departmentList.innerHTML = '';
-//     departments.forEach(dept => {
-//         const card = document.createElement('div');
-//         card.className = 'dept-card';
-//         card.innerHTML = `
-//             <p class="title">Tên Phòng Ban: ${dept.name}</p>
-//             <p>Mô Tả: ${dept.description}</p>
-//             <p>Tên Bộ Phận: ${dept.division}</p>
-//         `;
-//         departmentList.appendChild(card);
-//     });
-// }
 function loadDepartmentList() {
     fetch('http://localhost:8080/admin/department/AllDepartment')
     .then(response => {
@@ -506,8 +504,7 @@ function loadDepartmentList() {
         console.error(error);
     })
 }
-// setInterval(loadDepartments, 5000);
-window.onload = loadDepartmentList;
+
 
 
 function loadDepartmentInfo() {
@@ -562,7 +559,7 @@ function assignUserToDepartment() {
   
         data.forEach(depart => {
           const option = document.createElement("option");
-          option.value = `${depart.division} ${depart.departmentName}`;
+          option.value = `${depart.division}-${depart.departmentName}`;
           option.textContent = depart.departmentName;
           departSelect.appendChild(option);
         });
@@ -587,24 +584,32 @@ function assignUserToDepartment() {
       .catch(error => console.error("User error:", error));
   }
     
-// function filterDepartments() {
-//     const searchTerm = document.getElementById('search-department').value.toLowerCase();
-//     const departmentList = document.getElementById('department-list');
-//     departmentList.innerHTML = '';
-//     const filteredDepartments = departmentList.filter(dept => 
-//         !searchTerm || dept.name.toLowerCase().includes(searchTerm)
-//     );
-//     filteredDepartments.forEach(dept => {
-//         const card = document.createElement('div');
-//         card.className = 'dept-card';
-//         card.innerHTML = `
-//             <p class="title">Tên Phòng Ban: ${dept.departmentName}</p>
-//             <p>Mô Tả: ${dept.description}</p>
-//             <p>Tên Bộ Phận: ${dept.division}</p>
-//         `;
-//         departmentList.appendChild(card);
-//     });
-// }
+function filterDepartments() {
+    const searchTerm = document.getElementById('search-department').value.toLowerCase();
+    const departmentList = document.getElementById('department-list');
+    departmentList.innerHTML = '';
+
+    // Lọc theo tên phòng ban
+    const filteredDepartments = departments.filter(dept =>
+        !searchTerm || dept.departmentName.toLowerCase().includes(searchTerm)
+    );
+
+    if (filteredDepartments.length === 0) {
+        departmentList.innerHTML = `<p style="color: gray;">Không tìm thấy phòng ban nào</p>`;
+        return;
+    }
+
+    filteredDepartments.forEach(dept => {
+        const card = document.createElement('div');
+        card.className = 'dept-card';
+        card.innerHTML = `
+            <p class="title">Tên Phòng Ban: ${dept.departmentName}</p>
+            <p>Mô Tả: ${dept.description || "Không có mô tả"}</p>
+            <p>Tên Bộ Phận: ${dept.division}</p>
+        `;
+        departmentList.appendChild(card);
+    });
+}
 function confirm() {
     const deptSelect = document.getElementById("assign-dept");
     const userSelect = document.getElementById("assign-user-select");
@@ -621,9 +626,9 @@ function confirm() {
   
     // Tạo object gửi đi
     const updateData = {
-      username: selectedUser,
-      department: selectedDept 
+      department: selectedDept,
     };
+    console.log(updateData);
     const addreddApiUpdateDepartment = `http://localhost:8080/admin/updateDepartment/${selectedUser}`;
     fetch(addreddApiUpdateDepartment, {
         method: "PUT",
@@ -640,7 +645,7 @@ function confirm() {
         })
         .then(data => {
           alert("Cập nhật phòng ban thành công!");
-          console.log("Phản hồi BE:", data);
+     
         })
         .catch(error => {
           console.error("Lỗi khi cập nhật:", error);
@@ -659,11 +664,12 @@ window.onload = function() {
     loadDepartmentInfo();
     loadLogs();
     loadRecentLogs();
-    // filterHistory();
-    // document.getElementById('search-document').addEventListener('input', filterDocuments);
+    filterHistory();
+
+    document.getElementById('search-document').addEventListener('input', filterDocuments);
     // document.getElementById('search-user').addEventListener('input', filterUsers);
-    // document.getElementById('search-department').addEventListener('input', filterDepartments);
-    // document.getElementById('search-log').addEventListener('input', filterHistory);
+    document.getElementById('search-department').addEventListener('input', filterDepartments);
+    document.getElementById('search-log').addEventListener('input', filterHistory);
     // document.getElementById('search-date').addEventListener('input', filterDocuments);
     // document.getElementById('history-date-filter').addEventListener('input', filterHistory);
 };
